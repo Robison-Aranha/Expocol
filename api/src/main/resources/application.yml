@@ -13,3 +13,16 @@ spring:
         format_sql: true
     database: postgresql
     database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+  server:
+    error:
+      include-message: always
+
+
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            clientId: 258245324813-utq8cs1ha769grflheufv7r4u1m4roub.apps.googleusercontent.com
+            clientSecret: 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
