@@ -18,13 +18,6 @@ public class PerfilUsuario {
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
-    private String descricao;
-
-    private String apelido;
-
-    private Integer idade;
-
-
     @Column(name = "imagem_perfil")
     private String imagemPerfil;
 

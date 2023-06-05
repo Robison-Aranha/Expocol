@@ -1,0 +1,19 @@
+.TopBar-section {
+
+    top: 0;
+    height: 10%;
+    background-color: bisque;
+    border: 1px solid black;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+}
+
+
+.TopBar-icons {
+
+    width: 2%;
+    cursor: pointer;
+
+}

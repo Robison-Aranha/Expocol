@@ -1,0 +1,23 @@
+.LoginRegister-Section {
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+
+}
+
+
+.LoginRegister {
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    width: 30%;
+    height: 30%;
+    border: 1px solid black;
+    border-radius: 25px;
+
+}

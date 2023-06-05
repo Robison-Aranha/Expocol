@@ -1,0 +1,10 @@
+
+.Modal-section {
+    display: flex;
+    position: fixed;
+    width: fit-content;
+    height: fit-content;
+    z-index: 2;
+}
+
+

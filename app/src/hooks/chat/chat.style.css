@@ -1,0 +1,146 @@
+
+
+.Chat-section {
+
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    opacity: 0.5;
+    background-color: gray;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    display: none;
+
+}
+
+.Chat-container {
+
+    width: 60%;
+    height: 50%;
+    background-color: white;
+    border: 1px solid black;
+    border-radius: 25px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+
+}
+
+.Chat-exit {
+    width: 100%;
+    height: 10%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.Chat-exit-button {
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+.Chat-content {
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 90%;
+    border: 1px solid black;
+
+}
+
+.Chat-conversation {
+    width: 70%;
+    height: 100%;
+    max-height: fit-content;
+    border-left: 1px solid black;
+}
+
+.Chat-friends {
+
+    width: 30%;
+    height: 100%;
+
+
+}
+
+.Chat-message {
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.Chat-search {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+}
+
+.Chat-search-box {
+
+    width: 100%;
+    height: 15%;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    border-bottom: 1px solid black;
+
+}
+
+.Chat-search-result {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.Chat-search-users {
+
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    border: 1px solid gray;
+
+}
+
+.Chat-search-users-img {
+
+    width: 10%;
+    margin-right: 10px;
+}
+
+.Chat-search-result {
+
+    height: 85%;
+    width: 100%;
+
+}
+
+.Chat-friends-users {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    border: 1px solid gray;
+}
+
+.Chat-friends-img {
+    width: 10%;
+    margin-right: 10px;
+}
+
+.modal {
+
+    display: flex;
+
+}

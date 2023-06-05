@@ -1,6 +1,7 @@
 package com.br.expocol.api.security.domain;
 
 import com.br.expocol.api.domain.Usuario;
+import jakarta.validation.constraints.Pattern;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 

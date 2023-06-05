@@ -14,10 +14,13 @@ public class ExceptionMessageHandler {
 
     private String message;
 
-    public ExceptionMessageHandler(Integer status, String message) {
+    private String fields;
+
+    public ExceptionMessageHandler(Integer status, String message, String fields) {
         this.timeStamp = new Date();
         this.status = status;
         this.message = message;
+        this.fields = fields;
     }
 
 }

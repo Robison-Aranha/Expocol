@@ -5,6 +5,7 @@ import com.br.expocol.api.security.controller.request.UsuarioRequest;
 import com.br.expocol.api.security.controller.response.UsuarioResponse;
 import com.br.expocol.api.security.service.BuscarUsuarioSecurityAuthService;
 import com.br.expocol.api.security.service.IncluirUsuarioService;
+import com.br.expocol.api.security.service.VerificarCredenciais;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,6 +25,10 @@ public class LoginRegisterController {
     @Autowired
     private IncluirUsuarioService incluirUsuarioService;
 
+
+    @Autowired
+    private VerificarCredenciais verificarCredenciais;
+
     @PostMapping("/login")
     public UsuarioResponse login() {
         return buscarUsuarioService.buscar();
@@ -31,6 +36,9 @@ public class LoginRegisterController {
 
     @PostMapping("/register")
     public UsuarioResponse incluir(@Valid @RequestBody UsuarioRequest request) {
+
+        verificarCredenciais.verificar(request);
+
         return incluirUsuarioService.incluir(request);
     }
 }

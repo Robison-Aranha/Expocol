@@ -1,6 +1,7 @@
 package com.br.expocol.api.security.domain;
 
 
+
 import com.br.expocol.api.domain.Usuario;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

@@ -1,8 +1,8 @@
 package com.br.expocol.api.domain;
 
-
 import com.br.expocol.api.security.domain.Permissao;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Pattern;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,16 +22,22 @@ public class Usuario {
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
+    @Column(unique = true)
     private String nome;
+
+    @Column(unique = true)
     private String email;
+
     private String senha;
+
     private boolean ativo;
 
     @OneToOne(mappedBy = "usuario")
     private PerfilUsuario perfilUsuario;
 
-    @OneToMany(mappedBy = "usuarioPostagem")
-    private List<Publicacao> publicacoes;
+
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<Permissao> permissoes = new ArrayList<>();
 
     @ManyToMany
     @JoinTable(
@@ -48,12 +54,6 @@ public class Usuario {
             inverseJoinColumns = @JoinColumn(name = "id_usuario1")
     )
     private List<Usuario> solicitacoes = new ArrayList<>();
-
-    @OneToMany(mappedBy = "usuarioComentario")
-    List<Comentario> comentarios = new ArrayList<>();
-
-    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<Permissao> permissoes = new ArrayList<>();
 
     public void adicionarPermissao(Permissao permissao) {
         this.permissoes.add(permissao);
@@ -81,4 +81,5 @@ public class Usuario {
     public void desfazerSolicitacao(Usuario amigo) {
         amigo.getSolicitacoes().remove(this);
     }
+
 }

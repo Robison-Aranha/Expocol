@@ -2,6 +2,7 @@ package com.br.expocol.api.security.service;
 
 
 import com.br.expocol.api.domain.Usuario;
+import com.br.expocol.api.exception.UserNotFound;
 import com.br.expocol.api.security.domain.UsuarioSecurity;
 import com.br.expocol.api.security.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,6 @@ public class UsuarioAutenticadoService {
 
     public Usuario get() {
         return usuarioRepository.findById(getId())
-                .orElseThrow(() -> new ResponseStatusException(INTERNAL_SERVER_ERROR, "Usuário não existe ou não está autenticado"));
+                .orElseThrow(() -> new UserNotFound());
     }
 }
