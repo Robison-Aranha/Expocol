@@ -1,26 +1,47 @@
 import { useState, useEffect } from "react"
+import { useGlobalModal } from "../../globalState/globalState"
+import "./notification.style.css"
 
+export const Notification = () => {
 
-export const Notification = (props) => {
-
-    const [timer, setTimer] = useState(5)
+    const [timer, setTimer] = useState(0)
+    const [timePassed, setTimePassed] = useState(0)
+    const [globalModal, setGlobalModal] = useGlobalModal()
 
 
     useEffect(() => {
 
-        setInterval(() => setTimer(timer - 1), 1000)
+        setTimer(globalModal.length * 1)
 
-        if (timer == 0) {
-            document.getElementsByClassName("Modal-section").remove();
-        }
+    }, [globalModal])
 
+    useEffect(() => {
+
+        setTimeout(() => { 
+            
+            setTimePassed(timePassed + 1)
+
+        } , 1000) 
+        
     }, [timer])
 
 
+    useEffect(() => {
+
+        console.log("batata")
+        setGlobalModal([...globalModal.slice(1, globalModal.length)])
+
+    }, [timePassed])
+
+
     return (
-        <div className="Modal-section" style={{ "backgroundColor" : props.color }}>
-            <p> {props.notification} </p>
-        </div>
+        <>
+            { globalModal.length > 0 ? globalModal.map((notification, index) =>
+                <div className="Modal-section" style={{ display : ( globalModal.length > 0 ? "flex" : "none" ), "backgroundColor" : notification.color }} key={index}>
+                    <p> {notification.message} </p>
+                </div>
+            ): null}
+       </>
     )
 
 }

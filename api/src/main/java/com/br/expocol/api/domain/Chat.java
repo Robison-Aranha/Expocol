@@ -5,7 +5,9 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
 
@@ -30,6 +32,7 @@ public class Chat {
     private Usuario destinatario;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "chat", cascade = CascadeType.ALL)
-    private List<Mensagem> usuarioMensagens = new ArrayList<>();
+    @MapKey(name = "index")
+    private Map<Integer ,Mensagem> usuarioMensagens = new HashMap();
 
 }

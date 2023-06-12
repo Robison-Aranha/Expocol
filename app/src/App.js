@@ -1,5 +1,5 @@
 import { Route, Routes } from "react-router-dom";
-import { LoginRegister } from "./hooks/login-register/login-register.hook";
+import { LoginRegister } from "./page/login-register/login-register.hook";
 import { Protected } from "./redirect/protected.hook";
 
 function App() {

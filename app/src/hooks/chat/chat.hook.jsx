@@ -7,6 +7,7 @@ import "./chat.style.css";
 import { Conversation } from "../hooks";
 import { useFriendsApi } from "../../api/api";
 import { useGlobalState } from "../../globalState/globalState";
+import { useVerifyScrollBottom } from "../../scripts/verifyScrollBottom";
 
 export const Chat = (props) => {
   const [userState, setUserState] = useState(false);
@@ -16,6 +17,7 @@ export const Chat = (props) => {
   const [useSock, setUseSock] = useState();
   const [useIsSocket, setUseIsSocket] = useState();
   const [useStomp, setUseStomp] = useState({});
+  const [loadMore, setLoadMore] = useState(false)
 
   const [userData, setUserData] = useState({
     to: "",
@@ -26,6 +28,7 @@ export const Chat = (props) => {
 
   const { listUser } = useUsersApi();
   const { listFriends } = useFriendsApi();
+  const { verifyScrollBottom } = useVerifyScrollBottom()
 
   const handlerValue = (event) => {
     const { value, name } = event.target;
@@ -33,11 +36,15 @@ export const Chat = (props) => {
   };
 
   useEffect(() => {
+    setUserData({...userData, page: 0})
     listUsersService();
   }, [useMemo(() => userData.search)]);
 
   useEffect(() => {
     setUseSock(new SockJS("http://localhost:8080/ws"));
+    verifyScrollBottom(() => { 
+      setLoadMore(true)
+    }, "scroll-user")
     setUseIsSocket(1);
     listFriendsService();
   }, []);
@@ -50,6 +57,16 @@ export const Chat = (props) => {
       connectNotification();
     }
   }, [useIsSocket]);
+
+  useEffect(() => {
+    if (loadMore) {
+      userData.page++
+      setUserData({...userData, page: userData.page + 1})
+      listUsersService()
+      setLoadMore(false);
+    }
+  }, [loadMore]);
+
 
   const connectNotification = () => {
     useStomp.notification.debug = null;
@@ -74,9 +91,18 @@ export const Chat = (props) => {
   const listUsersService = async () => {
     try {
       const response = await listUser(userData.search, userData.page);
+     
+      if (userData.page == 0) {
 
-      setUseSearch([...response.content]);
+        setUseSearch([...response.content])
+
+      } else {
+
+        setUseSearch([...useSearch, ...response.content])
+      }
     } catch (response) {
+
+      setUseSearch([])
       console.log(response);
     }
   };
@@ -105,7 +131,7 @@ export const Chat = (props) => {
             <select className="Chat-search-tag"></select>
             <select className="Chat-search-tag2"></select>
           </dev>
-          <dev className="Chat-search-result">
+          <dev className="Chat-search-result" id="scroll-user">
             {useSearch.length > 0
               ? useSearch.map((user, index) => (
                   <dev
@@ -135,7 +161,7 @@ export const Chat = (props) => {
         </div>
       );
     } else {
-      return <Conversation to={userData.to} />;
+      return <Conversation to={userData.to} return={() => setUserState(false)}/>;
     }
   };
 

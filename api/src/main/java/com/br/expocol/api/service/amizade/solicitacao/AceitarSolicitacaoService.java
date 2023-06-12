@@ -69,7 +69,7 @@ public class AceitarSolicitacaoService {
 
         Notification notificationAmigo = new Notification();
         notificationAmigo.setTo(amigo.getNome());
-        notificationAmigo.setNotification(usuario.getNome() + " foi aceito como amigo!");
+        notificationAmigo.setNotification(usuario.getNome() + " aceitou sua solicitação!");
 
         mandarNotificaçãoService.mandar(notificationUsuario, "/notification/friends");
         mandarNotificaçãoService.mandar(notificationAmigo, "/notification/friends");

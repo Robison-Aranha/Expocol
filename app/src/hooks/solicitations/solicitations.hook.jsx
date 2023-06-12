@@ -4,10 +4,11 @@ import { useEffect, useState } from "react";
 import { useFriendsApi } from "../../api/api";
 import defaultImgAccount from "../../assets/account/default.png";
 import "./solicitations.style.css";
-import { useGlobalState } from "../../globalState/globalState";
+import { useGlobalModal, useGlobalState } from "../../globalState/globalState";
 
 export const Solicitations = (props) => {
   const [useFriendsSolicitation, setUseFriendsSolicitation] = useState([]);
+  const [globalModal, setGlobalModal] = useGlobalModal()
   const [userGlobalState] = useGlobalState()
   const [useSock, setUseSock] = useState();
   const [useIsSocket, setUseIsSocket] = useState();
@@ -52,6 +53,10 @@ export const Solicitations = (props) => {
 
   const onMessageNotification = (payload) => {
     listFriendsSolicitationsService();
+
+    let payloadData = JSON.parse(payload.body);
+
+    setGlobalModal([...globalModal, { message: payloadData.notification, color : "green"}])
   };
 
   const onError = (error) => {

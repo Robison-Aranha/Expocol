@@ -3,10 +3,12 @@ import { useLoginRegister } from "../../api/api";
 import "./login-register.style.css";
 import { useNavigate } from "react-router-dom";
 import { useGlobalState } from "../../globalState/globalState";
+import { useGlobalModal } from "../../globalState/globalState";
 import { Notification } from "../../modal/notification/notification.modal";
 
 export const LoginRegister = () => {
   const [userGlobalState, setUserGlobalState] = useGlobalState();
+  const [globalModal, setGlobalModal] = useGlobalModal()
 
   const [userData, setUserData] = useState({
     gmail: "",
@@ -56,7 +58,7 @@ export const LoginRegister = () => {
         register();
       }
     } else {
-      console.log("Credencias invalidas!");
+      setGlobalModal([...globalModal, { message: "Credenciais Invalidas!", color: "red" }])
     }
   };
 
@@ -81,7 +83,7 @@ export const LoginRegister = () => {
 
       navigate("/home");
     } catch (response) {
-      console.log(response.data);
+      setGlobalModal([ ...globalModal, { message: "Login falhou!", color: "red" }])
     }
   };
 
@@ -94,63 +96,67 @@ export const LoginRegister = () => {
       );
 
       setUserState(false);
+      setGlobalModal([...globalModal, { message: "Conta criada com sucesso!", color : "green" }])
     } catch (response) {
       console.log(response.data);
     }
   };
 
   return (
-    <section className="LoginRegister-Section">
-      <div className="LoginRegister">
-        <div className="LoginRegister-Credentials">
-          <input
-            name="gmail"
-            value={userData.gmail}
-            onChange={handlerValue}
-            placeholder="Digite seu gmail"
-          />
-          {userState == true ? (
+    <>
+      <Notification />
+      <section className="LoginRegister-Section">
+        <div className="LoginRegister">
+          <div className="LoginRegister-Credentials">
             <input
-              name="username"
-              value={userData.username}
+              name="gmail"
+              value={userData.gmail}
               onChange={handlerValue}
-              placeholder="Digite seu nome de usuario"
+              placeholder="Digite seu gmail"
             />
-          ) : null}
-          <input
-            name="password"
-            type="password"
-            value={userData.password}
-            onChange={handlerValue}
-            placeholder="Digite sua senha"
-          />
-          {userState == true ? (
+            {userState == true ? (
+              <input
+                name="username"
+                value={userData.username}
+                onChange={handlerValue}
+                placeholder="Digite seu nome de usuario"
+              />
+            ) : null}
             <input
-              name="passwordConfirm"
+              name="password"
               type="password"
-              value={userData.passwordConfirm}
+              value={userData.password}
               onChange={handlerValue}
-              placeholder="Confirme Sua Senha"
+              placeholder="Digite sua senha"
             />
-          ) : null}
+            {userState == true ? (
+              <input
+                name="passwordConfirm"
+                type="password"
+                value={userData.passwordConfirm}
+                onChange={handlerValue}
+                placeholder="Confirme Sua Senha"
+              />
+            ) : null}
+          </div>
+          <div className="LoginRegister-switch">
+            <p>
+              {" "}
+              {userState == false
+                ? "Não possui uma Conta ainda?"
+                : "Ja possui uma conta?"}{" "}
+            </p>
+            <a onClick={handleChangeState}>
+              {" "}
+              {userState == false ? "Registrar" : "Logar"}{" "}
+            </a>
+            <button onClick={handleCommit}>
+              {" "}
+              {userState == false ? "Login" : "Register"}
+            </button>
+          </div>
         </div>
-        <div className="LoginRegister-switch">
-          <p>
-            {" "}
-            {userState == false
-              ? "Não possui uma Conta ainda?"
-              : "Ja possui uma conta?"}{" "}
-          </p>
-          <a onClick={handleChangeState}>
-            {" "}
-            {userState == false ? "Registrar" : "Logar"}{" "}
-          </a>
-          <button onClick={handleCommit}>
-            {" "}
-            {userState == false ? "Login" : "Register"}
-          </button>
-        </div>
-      </div>
-    </section>
+      </section>
+    </>
   );
 };

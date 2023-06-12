@@ -19,9 +19,14 @@ public class ListarUsuarioService {
     @Autowired
     BuscarUsuarioSecurityAuthService buscarUsuarioSecurityAuthService;
 
+    @Autowired
+    VerificarParametroUsuarioService verificarParametroUsuarioService;
+
     public Page<UsuarioListaResponse> listar(String nome, Pageable pageable) {
 
         UsuarioResponse usuarioId = buscarUsuarioSecurityAuthService.buscar();
+
+        verificarParametroUsuarioService.verificar(nome);
 
         return usuarioRepository.findUsuarios(usuarioId.getId(), nome, pageable)
                 .map(ListarUsuarioMapper::toResponse);

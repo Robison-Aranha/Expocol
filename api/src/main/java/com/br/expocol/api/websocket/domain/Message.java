@@ -17,6 +17,8 @@ public class Message {
 
     private String to;
 
+    private Integer index;
+
     private String message;
 
 }

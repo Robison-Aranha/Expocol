@@ -5,7 +5,7 @@ const http = axios.create({
     withCredentials: true
 })
 
-const FINAL_SIZE = 10;
+const FINAL_SIZE = 5;
 
 
 export const useUsersApi = () => {

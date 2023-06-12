@@ -1,10 +1,12 @@
 import { over } from "stompjs";
 import SockJS from "sockjs-client";
 import { useEffect, useState } from "react";
-import { useGlobalState } from "../../globalState/globalState";
+import { useGlobalModal, useGlobalState } from "../../globalState/globalState";
 import "./conversation.style.css";
 import { useFriendsApi, useMessageApi } from "../../api/api";
 import { useReognizeScroll } from "../../scripts/scrollChat";
+import { useVerifyScrollTop } from "../../scripts/verifyScrollTop";
+import { useSetScrollDown } from "../../scripts/setScrollDown";
 
 export const Conversation = (props) => {
   const [chat, setChat] = useState([]);
@@ -13,16 +15,21 @@ export const Conversation = (props) => {
   const [useSock, setUseSock] = useState();
   const [useIsSocket, setUseIsSocket] = useState();
   const [useStomp, setUseStomp] = useState({});
+  const [loadMore, setLoadMore] = useState(false);
+  const [first, setFirst] = useState(true);
 
   const [userData, setUserData] = useState({
     username: userGlobalState.nome,
     to: props.to.nome,
-    message: ""
+    message: "",
   });
 
   const { sendFriendSolicitation, verifyRelationShip } = useFriendsApi();
   const { listMessages } = useMessageApi();
   const { organizeScroll } = useReognizeScroll();
+  const { verifyScrollTop } = useVerifyScrollTop();
+  const { setScrollDown } = useSetScrollDown();
+  const [, setGlobalModal] = useGlobalModal();
 
   useEffect(() => {
     verifyRelationShipService();
@@ -32,6 +39,7 @@ export const Conversation = (props) => {
     setUseSock(new SockJS("http://localhost:8080/ws"));
 
     if (useRelationShip == 0) {
+      verifyScrollTop(() => setLoadMore(true), "scroll-chat");
       setUseIsSocket(1);
     } else if (useRelationShip == 2) {
       setUseIsSocket(3);
@@ -40,40 +48,51 @@ export const Conversation = (props) => {
 
   useEffect(() => {
     if (useIsSocket == 1) {
-      listMessagesService();
+      listMessagesService(null);
       setUseStomp({ ...useStomp, chat: over(useSock) });
       setUseIsSocket(2);
     } else if (useIsSocket == 3) {
       setUseStomp({ ...useStomp, notification: over(useSock) });
       setUseIsSocket(6);
     } else if (useIsSocket == 2) {
-      connectChat()
+      connectChat();
     } else if (useIsSocket == 6) {
-      connectNotification()
+      connectNotification();
     }
   }, [useIsSocket]);
 
   useEffect(() => {
     if (useRelationShip == 0) {
-      organizeScroll();
+      organizeScroll("scroll-chat");
+      if (first) {
+        setScrollDown("scroll-chat");
+        setFirst(false);
+      }
     }
   }, [chat]);
+
+  useEffect(() => {
+    if (loadMore) {
+      listMessagesService(chat[0].index);
+      setLoadMore(false);
+    }
+  }, [loadMore]);
 
   const connectChat = () => {
     useStomp.chat.debug = null;
     useStomp.chat.connect({}, onConnectedMessage, onError);
-  }
+  };
 
   const connectNotification = () => {
     useStomp.notification.debug = null;
     useStomp.notification.connect({}, onConnectedNotification, onError);
-  }
+  };
 
-  const listMessagesService = async () => {
+  const listMessagesService = async (index) => {
     try {
-      const response = await listMessages(props.to.id);
+      const response = await listMessages(props.to.id, index);
 
-      setChat([...chat, ...response]);
+      setChat([...response.reverse(), ...chat]);
     } catch (response) {
       console.log(response);
     }
@@ -110,6 +129,13 @@ export const Conversation = (props) => {
 
   const onMessageNotification = (payload) => {
     verifyRelationShipService();
+
+    let payloadData = JSON.parse(payload.body);
+
+    setGlobalModal((prev) => [
+      ...prev,
+      { message: payloadData.notification, color: "green" },
+    ]);
   };
 
   const onMessageChat = (payload) => {
@@ -120,6 +146,7 @@ export const Conversation = (props) => {
 
   const sendMessageChat = () => {
     let chatMessage = {
+      index: chat.length + 1,
       from: userGlobalState.id,
       to: userData.to,
       message: userData.message,
@@ -146,18 +173,23 @@ export const Conversation = (props) => {
   };
 
   const returnNotification = () => {
-    if (useRelationShip == 1) {
+    if (useRelationShip == 1 || useRelationShip == 2) {
       return (
-        <dev className="Chat-friend-notification">
-          <p> Você e o usuario não são amigos ainda!! </p>
-          <button onClick={sendSolicitation}> mandar solicitação</button>
-        </dev>
-      );
-    } else if (useRelationShip == 2) {
-      return (
-        <dev className="Chat-friend-notification">
-          <p> Uma solicitação de amizade foi enviada a esse usuario!! </p>
-        </dev>
+        <>
+          <dev className="Chat-friend-exit">
+            <button onClick={props.return}>voltar</button>
+          </dev>
+          {useRelationShip == 1 ? (
+            <dev className="Chat-friend-notification">
+              <p> Você e o usuario não são amigos ainda!! </p>
+              <button onClick={sendSolicitation}> mandar solicitação</button>
+            </dev>
+          ) : (
+            <dev className="Chat-friend-notification">
+              <p> Uma solicitação de amizade foi enviada a esse usuario!! </p>
+            </dev>
+          )}
+        </>
       );
     }
   };
@@ -166,7 +198,7 @@ export const Conversation = (props) => {
     if (useRelationShip == 0) {
       return (
         <dev className="Chat-conversation-section">
-          <dev className="Chat-conversation-content" id="scroll">
+          <dev className="Chat-conversation-content" id="scroll-chat">
             {chat.length > 0
               ? chat.map((menssage, index) => (
                   <dev

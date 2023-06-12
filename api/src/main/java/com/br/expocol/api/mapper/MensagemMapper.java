@@ -10,6 +10,7 @@ public class MensagemMapper {
 
         return Message.builder()
                 .to(entity.getDestinatario().getNome())
+                .index(entity.getIndex())
                 .message(entity.getMensagem())
                 .build();
     }

@@ -1,5 +1,6 @@
 
 import { ToPBar } from "../../hooks/hooks"
+import { Notification } from "../../modal/notification/notification.modal"
 
 
 
@@ -7,13 +8,12 @@ import { ToPBar } from "../../hooks/hooks"
 
 export const Home = () => {
 
-
-
-
     return (
 
-        <ToPBar />
-
+        <>
+            <Notification />
+            <ToPBar />
+        </>
 
     )
 

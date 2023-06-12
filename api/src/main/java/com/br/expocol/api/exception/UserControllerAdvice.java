@@ -78,5 +78,15 @@ public class UserControllerAdvice {
 
     }
 
+    @ResponseBody
+    @ExceptionHandler(InvalidCredentials.class)
+    public ResponseEntity<ExceptionMessageHandler> userAlreadyExists(InvalidCredentials invalidCredentials){
+
+        ExceptionMessageHandler error = new ExceptionMessageHandler(
+                HttpStatus.CONFLICT.value(), "Credenciais Inválidas!", ""
+        );
+
+        return new ResponseEntity<>(error, HttpStatus.CONFLICT);
+    }
 
 }

@@ -17,6 +17,9 @@ public class Mensagem {
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
+    @Column(unique = true)
+    private Integer index;
+
     @OneToOne
     @JoinColumn(name = "id_usuario")
     private Usuario usuario;

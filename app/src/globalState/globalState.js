@@ -8,5 +8,7 @@ export const [useGlobalState, Provider] = createGlobalState(localStorage.getItem
     loged: false
 })
 
+export const [useGlobalModal, ModalProvider] = createGlobalState([]);
+
 
 

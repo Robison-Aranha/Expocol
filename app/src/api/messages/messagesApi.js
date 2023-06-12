@@ -6,13 +6,11 @@ const http = axios.create({
 })
 
 
-
 export const useMessageApi = () => {
 
+    const listMessages = async (id, index) => {
 
-    const listMessages = async (id) => {
-
-        const response = await http.get("/" + id)
+        const response = await http.get("/" + id + "?index=" + (index ? index : ""))
 
         return response.data
     }
