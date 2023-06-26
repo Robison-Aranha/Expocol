@@ -3,6 +3,7 @@ package com.br.expocol.api.exception;
 
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
+import org.apache.tomcat.util.http.fileupload.impl.SizeLimitExceededException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -87,6 +88,17 @@ public class UserControllerAdvice {
         );
 
         return new ResponseEntity<>(error, HttpStatus.CONFLICT);
+    }
+
+    @ResponseBody
+    @ExceptionHandler(SizeLimitExceededException.class)
+    public ResponseEntity<ExceptionMessageHandler> sizeLimitUpload(SizeLimitExceededException overflowLimitation){
+
+        ExceptionMessageHandler error = new ExceptionMessageHandler(
+                HttpStatus.FORBIDDEN.value(), "O Arquivo execeu o limite de upload!", ""
+        );
+
+        return new ResponseEntity<>(error, HttpStatus.FORBIDDEN);
     }
 
 }

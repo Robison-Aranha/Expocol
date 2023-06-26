@@ -58,9 +58,10 @@ export const Indexes = (props) => {
       event.target.value = ""
     
       returnIndexesService()
-      setGlobalModal((prev) => [...prev, { message: "Arquivo adicionado com sucesso!", color: "green" }])
+      setGlobalModal([...globalModal, { message: "Arquivo adicionado com sucesso!", color: "green" }])
     } catch (error) {
-      setGlobalModal((prev) => [...prev, { message: error.response.data.message }])
+      console.log(error)
+      setGlobalModal([...globalModal, { message: error.response.data.message }])
 
       event.target.value = ""
    

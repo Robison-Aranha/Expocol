@@ -108,7 +108,7 @@ export const Solicitations = (props) => {
       <div className="Friends-container">
         <div className="Friends-exit">
           <h2 className="Friends-title"><strong>Solicitações</strong></h2>
-          <button className="Friends-exit-button button-black" onClick={props.setModal}>
+          <button className="Friends-exit-button button-black button-small" onClick={props.setModal}>
             {" "}
             X{" "}
           </button>

@@ -174,7 +174,7 @@ export const Chat = (props) => {
       <div className="Chat-container">
         <div className="Chat-exit">
           <h2 className="Chat-title"><strong>Chat</strong></h2>
-          <button className="Chat-exit-button button-black" onClick={props.setModal}>
+          <button className="Chat-exit-button button-black button-small" onClick={props.setModal}>
             {" "}
             X{" "}
           </button>
