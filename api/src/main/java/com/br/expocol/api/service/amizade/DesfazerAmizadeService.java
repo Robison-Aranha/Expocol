@@ -1,7 +1,6 @@
 package com.br.expocol.api.service.amizade;
 
-import com.br.expocol.api.controller.request.IdRequest;
-import com.br.expocol.api.domain.Usuario;
+import com.br.expocol.api.domain.Usuario.Usuario;
 import com.br.expocol.api.security.controller.response.UsuarioResponse;
 import com.br.expocol.api.security.repository.UsuarioRepository;
 import com.br.expocol.api.security.service.BuscarUsuarioSecurityAuthService;

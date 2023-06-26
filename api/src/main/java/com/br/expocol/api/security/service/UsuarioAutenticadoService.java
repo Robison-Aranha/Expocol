@@ -1,7 +1,7 @@
 package com.br.expocol.api.security.service;
 
 
-import com.br.expocol.api.domain.Usuario;
+import com.br.expocol.api.domain.Usuario.Usuario;
 import com.br.expocol.api.exception.UserNotFound;
 import com.br.expocol.api.security.domain.UsuarioSecurity;
 import com.br.expocol.api.security.repository.UsuarioRepository;
@@ -9,9 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
-
-import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 
 @Service
 public class UsuarioAutenticadoService {

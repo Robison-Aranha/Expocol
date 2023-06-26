@@ -6,6 +6,7 @@ import com.br.expocol.api.security.controller.response.UsuarioResponse;
 import com.br.expocol.api.security.service.BuscarUsuarioSecurityAuthService;
 import com.br.expocol.api.security.service.IncluirUsuarioService;
 import com.br.expocol.api.security.service.VerificarCredenciais;
+import com.br.expocol.api.service.Calendario.CreateCalendarService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDate;
 
 
 @RestController
@@ -25,6 +27,8 @@ public class LoginRegisterController {
     @Autowired
     private IncluirUsuarioService incluirUsuarioService;
 
+    @Autowired
+    private CreateCalendarService createCalendarService;
 
     @Autowired
     private VerificarCredenciais verificarCredenciais;

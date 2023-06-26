@@ -1,10 +1,10 @@
 package com.br.expocol.api.service.perfilUsuario;
 
-import com.br.expocol.api.controller.response.UsuarioDetalharResponse;
-import com.br.expocol.api.domain.PerfilUsuario;
-import com.br.expocol.api.domain.Usuario;
-import com.br.expocol.api.mapper.DetalharPerfilUsuarioMapper;
-import com.br.expocol.api.repository.PerfilUsuarioRepository;
+import com.br.expocol.api.controller.response.Usuario.UsuarioDetalharResponse;
+import com.br.expocol.api.domain.Usuario.PerfilUsuario;
+import com.br.expocol.api.domain.Usuario.Usuario;
+import com.br.expocol.api.mapper.Usuario.DetalharPerfilUsuarioMapper;
+import com.br.expocol.api.repository.Usuario.PerfilUsuarioRepository;
 import com.br.expocol.api.security.controller.response.UsuarioResponse;
 import com.br.expocol.api.security.service.BuscarUsuarioSecurityAuthService;
 import com.br.expocol.api.service.usuario.BuscarUsuarioService;

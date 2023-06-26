@@ -1,9 +1,9 @@
 package com.br.expocol.api.security.service;
 
 
-import com.br.expocol.api.domain.PerfilUsuario;
-import com.br.expocol.api.domain.Usuario;
-import com.br.expocol.api.repository.PerfilUsuarioRepository;
+import com.br.expocol.api.domain.Usuario.PerfilUsuario;
+import com.br.expocol.api.domain.Usuario.Usuario;
+import com.br.expocol.api.repository.Usuario.PerfilUsuarioRepository;
 import com.br.expocol.api.security.controller.request.UsuarioRequest;
 import com.br.expocol.api.security.controller.response.UsuarioResponse;
 import com.br.expocol.api.security.domain.Permissao;
@@ -36,15 +36,13 @@ public class IncluirUsuarioService {
 
         PerfilUsuario perfil = new PerfilUsuario();
 
-        perfilUsuarioRepository.save(perfil);
-
         perfil.setUsuario(usuario);
 
-        usuario.setPerfilUsuario(perfil);
+        usuario.adicionarPermissao(Permissao.builder().nome("USUARIO").build());
 
         usuarioRepository.save(usuario);
 
-        usuario.adicionarPermissao(Permissao.builder().nome("USUARIO").build());
+        perfilUsuarioRepository.save(perfil);
 
         return toResponse(usuario);
     }

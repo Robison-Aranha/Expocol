@@ -2,3 +2,8 @@ export { ToPBar } from "./topBar/topBar.hook";
 export { Conversation } from "./conversation/conversation.hook";
 export { Chat } from "./chat/chat.hook";
 export { Solicitations } from "./solicitations/solicitations.hook";
+export { Calendar } from "./calendar/calendar.hook";
+export { Indexes } from "./indexes/indexes.hook";
+export { FileVisualizer } from "./file-visualizer/file-visualizer.hook";
+export { Notification } from "./notification/notification.hook";
+export { Loading } from "./loading/loading.hook";

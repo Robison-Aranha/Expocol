@@ -1,0 +1,31 @@
+
+.Modal-section {
+    position: fixed;
+    width: fit-content;
+    height: min-content;
+    padding: 1%;
+    align-items: center;
+    justify-content: center;
+    min-height: 5%;
+    z-index: 2;
+    animation-duration: 0.5s;
+    animation-name: slidein;
+    animation-iteration-count: 1;
+    background-color: #d1d1d1;
+    border-radius: 10px;
+}
+
+.Modal-section > p {
+    margin: 0;
+}
+
+@keyframes slidein {
+    from {
+        transform: translate(0, -100px)
+    }
+  
+    to {
+        transform: translate(0, 0px)
+    }
+  }
+

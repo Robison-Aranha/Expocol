@@ -1,9 +1,9 @@
 package com.br.expocol.api.service.mensagem;
 
 
-import com.br.expocol.api.domain.Chat;
-import com.br.expocol.api.domain.Usuario;
-import com.br.expocol.api.repository.ChatRepository;
+import com.br.expocol.api.domain.Usuario.Chat;
+import com.br.expocol.api.domain.Usuario.Usuario;
+import com.br.expocol.api.repository.Usuario.ChatRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;

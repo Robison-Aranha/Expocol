@@ -1,9 +1,8 @@
 package com.br.expocol.api.service.amizade.solicitacao;
 
-import com.br.expocol.api.controller.request.IdRequest;
-import com.br.expocol.api.domain.Chat;
-import com.br.expocol.api.domain.Usuario;
-import com.br.expocol.api.repository.ChatRepository;
+import com.br.expocol.api.domain.Usuario.Chat;
+import com.br.expocol.api.domain.Usuario.Usuario;
+import com.br.expocol.api.repository.Usuario.ChatRepository;
 import com.br.expocol.api.security.controller.response.UsuarioResponse;
 import com.br.expocol.api.security.repository.UsuarioRepository;
 import com.br.expocol.api.security.service.BuscarUsuarioSecurityAuthService;
@@ -12,9 +11,6 @@ import com.br.expocol.api.service.usuario.BuscarUsuarioService;
 import com.br.expocol.api.websocket.domain.Notification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.messaging.Message;
-import org.springframework.messaging.MessageHeaders;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 

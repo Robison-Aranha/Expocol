@@ -1,7 +1,7 @@
 package com.br.expocol.api.security.repository;
 
 
-import com.br.expocol.api.domain.Usuario;
+import com.br.expocol.api.domain.Usuario.Usuario;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

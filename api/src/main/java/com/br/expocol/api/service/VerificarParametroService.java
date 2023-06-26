@@ -1,0 +1,20 @@
+package com.br.expocol.api.service;
+
+
+import com.br.expocol.api.exception.InvalidCredentials;
+import org.springframework.stereotype.Service;
+
+@Service
+public class VerificarParametroService {
+
+    public void verificar(String parametro) {
+
+        String regex = ".*[@!#$%^&*()/\\\\]";
+
+        if (regex.matches(parametro) || parametro == null || parametro.isEmpty()) {
+            throw new InvalidCredentials();
+        }
+
+    }
+
+}

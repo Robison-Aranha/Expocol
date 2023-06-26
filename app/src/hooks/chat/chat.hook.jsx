@@ -8,6 +8,7 @@ import { Conversation } from "../hooks";
 import { useFriendsApi } from "../../api/api";
 import { useGlobalState } from "../../globalState/globalState";
 import { useVerifyScrollBottom } from "../../scripts/verifyScrollBottom";
+import searchImage from "../../assets/friends/search.png"
 
 export const Chat = (props) => {
   const [userState, setUserState] = useState(false);
@@ -17,7 +18,7 @@ export const Chat = (props) => {
   const [useSock, setUseSock] = useState();
   const [useIsSocket, setUseIsSocket] = useState();
   const [useStomp, setUseStomp] = useState({});
-  const [loadMore, setLoadMore] = useState(false)
+  const [loadMore, setLoadMore] = useState(false);
 
   const [userData, setUserData] = useState({
     to: "",
@@ -28,7 +29,7 @@ export const Chat = (props) => {
 
   const { listUser } = useUsersApi();
   const { listFriends } = useFriendsApi();
-  const { verifyScrollBottom } = useVerifyScrollBottom()
+  const { verifyScrollBottom } = useVerifyScrollBottom();
 
   const handlerValue = (event) => {
     const { value, name } = event.target;
@@ -36,18 +37,23 @@ export const Chat = (props) => {
   };
 
   useEffect(() => {
-    setUserData({...userData, page: 0})
+    setUserData({ ...userData, page: 0 });
     listUsersService();
   }, [useMemo(() => userData.search)]);
 
   useEffect(() => {
     setUseSock(new SockJS("http://localhost:8080/ws"));
-    verifyScrollBottom(() => { 
-      setLoadMore(true)
-    }, "scroll-user")
     setUseIsSocket(1);
     listFriendsService();
   }, []);
+
+  useEffect(() => {
+    if (!userState) {
+      verifyScrollBottom(() => {
+        setLoadMore(true);
+      }, "scroll-user");
+    }
+  }, [userState])
 
   useEffect(() => {
     if (useIsSocket == 1) {
@@ -60,13 +66,12 @@ export const Chat = (props) => {
 
   useEffect(() => {
     if (loadMore) {
-      userData.page++
-      setUserData({...userData, page: userData.page + 1})
-      listUsersService()
+      userData.page++;
+      setUserData({ ...userData, page: userData.page + 1 });
+      listUsersService();
       setLoadMore(false);
     }
   }, [loadMore]);
-
 
   const connectNotification = () => {
     useStomp.notification.debug = null;
@@ -91,18 +96,14 @@ export const Chat = (props) => {
   const listUsersService = async () => {
     try {
       const response = await listUser(userData.search, userData.page);
-     
+
       if (userData.page == 0) {
-
-        setUseSearch([...response.content])
-
+        setUseSearch([...response.content]);
       } else {
-
-        setUseSearch([...useSearch, ...response.content])
+        setUseSearch([...useSearch, ...response.content]);
       }
     } catch (response) {
-
-      setUseSearch([])
+      setUseSearch([]);
       console.log(response);
     }
   };
@@ -121,20 +122,21 @@ export const Chat = (props) => {
     if (userState == false) {
       return (
         <div className="Chat-search">
-          <dev className="Chat-search-box">
-            <input
-              name="search"
-              value={userData.search}
-              className="Chat-search-input"
-              onChange={handlerValue}
-            />
-            <select className="Chat-search-tag"></select>
-            <select className="Chat-search-tag2"></select>
-          </dev>
-          <dev className="Chat-search-result" id="scroll-user">
+          <div className="Chat-search-content">
+            <div className="Chat-search-box">
+              <img src={searchImage} className="Chat-search-box-img" />
+              <input
+                name="search"
+                value={userData.search}
+                className="Chat-search-input"
+                onChange={handlerValue}
+              />
+            </div>
+          </div>
+          <div className="Chat-search-result" id="scroll-user">
             {useSearch.length > 0
               ? useSearch.map((user, index) => (
-                  <dev
+                  <div
                     className="Chat-search-users"
                     key={index}
                     onClick={() => {
@@ -150,18 +152,20 @@ export const Chat = (props) => {
                       }
                       className="Chat-search-users-img"
                     />
-                    <dev className="Chat-search-users-content">
+                    <div className="Chat-search-users-content">
                       <p> {user.nome} </p>
                       <p> {user.email} </p>
-                    </dev>
-                  </dev>
+                    </div>
+                  </div>
                 ))
               : null}
-          </dev>
+          </div>
         </div>
       );
     } else {
-      return <Conversation to={userData.to} return={() => setUserState(false)}/>;
+      return (
+        <Conversation to={userData.to} return={() => setUserState(false)} />
+      );
     }
   };
 
@@ -169,39 +173,45 @@ export const Chat = (props) => {
     <div className={"Chat-section" + (props.modal == false ? "" : " modal")}>
       <div className="Chat-container">
         <div className="Chat-exit">
-          <p className="Chat-exit-button" onClick={props.setModal}>
+          <h2 className="Chat-title"><strong>Chat</strong></h2>
+          <button className="Chat-exit-button button-black" onClick={props.setModal}>
             {" "}
             X{" "}
-          </p>
+          </button>
         </div>
 
         <div className="Chat-content">
           <div className="Chat-friends">
-            {useFriends.length > 0
-              ? useFriends.map((friend, index) => (
-                  <div
-                    className="Chat-friends-users"
-                    key={index}
-                    onClick={() => {
-                      setUserState(!userState);
-                      setUserData({ ...userData, to: friend });
-                    }}
-                  >
-                    <img
-                      className="Chat-friends-img"
-                      src={
-                        friend.imagemPerfil
-                          ? friend.imagemPerfil
-                          : defaultImgAccount
-                      }
-                    />
-                    <div className="Chat-friends-content">
-                      <p> {friend.nome} </p>
-                      <p> {friend.email} </p>
+            <div className="Chat-friends-title">
+              <h4><strong> Amigos </strong></h4>
+            </div>
+            <div className="Chat-friends-list">
+              {useFriends.length > 0
+                ? useFriends.map((friend, index) => (
+                    <div
+                      className="Chat-friends-users"
+                      key={index}
+                      onClick={() => {
+                        setUserState(!userState);
+                        setUserData({ ...userData, to: friend });
+                      }}
+                    >
+                      <img
+                        className="Chat-friends-img"
+                        src={
+                          friend.imagemPerfil
+                            ? friend.imagemPerfil
+                            : defaultImgAccount
+                        }
+                      />
+                      <div className="Chat-friends-content">
+                        <p> {friend.nome} </p>
+                        <p> {friend.email} </p>
+                      </div>
                     </div>
-                  </div>
-                ))
-              : null}
+                  ))
+                : null}
+              </div>
           </div>
           <div className="Chat-conversation">{returnUserInteration()}</div>
         </div>

@@ -15,8 +15,9 @@
     flex-direction: column;
     justify-content: space-around;
     align-items: center;
+    padding: 5%;
     width: 30%;
-    height: 30%;
+    height: fit-content;
     border: 1px solid black;
     border-radius: 25px;
 

@@ -1,0 +1,53 @@
+.Calendar-section {
+
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.Calendar-table {
+    width: 90%;
+    height: 80%;
+    border: 5px solid gray;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.Calendar-table-column {
+    width: 100%;
+    height: 100%;
+}
+
+.Calendar-table-title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 2px solid gray;
+    height: 10%;
+}
+
+.Calendar-table-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+    height: 90%;
+}
+
+.Calendar-table-day {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    border: 1px solid gray;
+}

@@ -1,7 +1,7 @@
 package com.br.expocol.api.controller;
 
 
-import com.br.expocol.api.controller.response.UsuarioListaResponse;
+import com.br.expocol.api.controller.response.Usuario.UsuarioListaResponse;
 import com.br.expocol.api.service.amizade.DesfazerAmizadeService;
 import com.br.expocol.api.service.amizade.ListarAmigosService;
 import com.br.expocol.api.service.amizade.VerificarAmizadeSolicitacaoService;

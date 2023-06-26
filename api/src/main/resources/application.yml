@@ -4,9 +4,10 @@ spring:
     driver-class-name: org.postgresql.Driver
     username: postgres
     password: postgres
+    initialization-mode: always
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: none
     show-sql: true
     properties:
       hibernate:
@@ -14,15 +15,18 @@ spring:
     database: postgresql
     database-platform: org.hibernate.dialect.PostgreSQLDialect
 
-  server:
-    error:
-      include-message: always
 
+  servlet:
 
-  security:
-    oauth2:
-      client:
-        registration:
-          google:
-            clientId: 258245324813-utq8cs1ha769grflheufv7r4u1m4roub.apps.googleusercontent.com
-            clientSecret: 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
+    multipart:
+        enabled: true
+        max-file-size: 30MB
+        max-request-size: 30MB
+
+  sql:
+    init:
+      mode: always
+
+server:
+  error:
+    include-message: always

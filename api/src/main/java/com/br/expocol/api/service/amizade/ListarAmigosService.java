@@ -1,16 +1,14 @@
 package com.br.expocol.api.service.amizade;
 
-import com.br.expocol.api.controller.response.UsuarioListaResponse;
-import com.br.expocol.api.domain.Usuario;
-import com.br.expocol.api.mapper.ListarUsuarioMapper;
+import com.br.expocol.api.controller.response.Usuario.UsuarioListaResponse;
+import com.br.expocol.api.domain.Usuario.Usuario;
+import com.br.expocol.api.mapper.Usuario.ListarUsuarioMapper;
 import com.br.expocol.api.security.controller.response.UsuarioResponse;
-import com.br.expocol.api.security.repository.UsuarioRepository;
 import com.br.expocol.api.security.service.BuscarUsuarioSecurityAuthService;
 import com.br.expocol.api.service.usuario.BuscarUsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

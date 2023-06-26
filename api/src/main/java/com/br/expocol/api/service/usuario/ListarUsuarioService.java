@@ -1,10 +1,11 @@
 package com.br.expocol.api.service.usuario;
 
-import com.br.expocol.api.controller.response.UsuarioListaResponse;
-import com.br.expocol.api.mapper.ListarUsuarioMapper;
+import com.br.expocol.api.controller.response.Usuario.UsuarioListaResponse;
+import com.br.expocol.api.mapper.Usuario.ListarUsuarioMapper;
 import com.br.expocol.api.security.controller.response.UsuarioResponse;
 import com.br.expocol.api.security.repository.UsuarioRepository;
 import com.br.expocol.api.security.service.BuscarUsuarioSecurityAuthService;
+import com.br.expocol.api.service.VerificarParametroService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,7 +21,7 @@ public class ListarUsuarioService {
     BuscarUsuarioSecurityAuthService buscarUsuarioSecurityAuthService;
 
     @Autowired
-    VerificarParametroUsuarioService verificarParametroUsuarioService;
+    VerificarParametroService verificarParametroUsuarioService;
 
     public Page<UsuarioListaResponse> listar(String nome, Pageable pageable) {
 

@@ -4,7 +4,8 @@ import "./login-register.style.css";
 import { useNavigate } from "react-router-dom";
 import { useGlobalState } from "../../globalState/globalState";
 import { useGlobalModal } from "../../globalState/globalState";
-import { Notification } from "../../modal/notification/notification.modal";
+import { Notification } from "../../hooks/notification/notification.hook";
+
 
 export const LoginRegister = () => {
   const [userGlobalState, setUserGlobalState] = useGlobalState();
@@ -96,7 +97,7 @@ export const LoginRegister = () => {
       );
 
       setUserState(false);
-      setGlobalModal([...globalModal, { message: "Conta criada com sucesso!", color : "green" }])
+      setGlobalModal([...globalModal, { message: "Conta criada com sucesso!", error : false }])
     } catch (response) {
       console.log(response.data);
     }
@@ -150,7 +151,7 @@ export const LoginRegister = () => {
               {" "}
               {userState == false ? "Registrar" : "Logar"}{" "}
             </a>
-            <button onClick={handleCommit}>
+            <button  onClick={handleCommit}>
               {" "}
               {userState == false ? "Login" : "Register"}
             </button>

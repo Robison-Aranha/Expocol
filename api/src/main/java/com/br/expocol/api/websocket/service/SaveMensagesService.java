@@ -1,11 +1,12 @@
 package com.br.expocol.api.websocket.service;
 
 
-import com.br.expocol.api.domain.Chat;
-import com.br.expocol.api.domain.Mensagem;
-import com.br.expocol.api.domain.Usuario;
-import com.br.expocol.api.repository.ChatRepository;
-import com.br.expocol.api.repository.MensagemRepository;
+
+import com.br.expocol.api.domain.Usuario.Chat;
+import com.br.expocol.api.domain.Usuario.Mensagem;
+import com.br.expocol.api.domain.Usuario.Usuario;
+import com.br.expocol.api.repository.Usuario.ChatRepository;
+import com.br.expocol.api.repository.Usuario.MensagemRepository;
 import com.br.expocol.api.service.mensagem.BuscarChatService;
 import com.br.expocol.api.service.usuario.BuscarUsuarioService;
 import com.br.expocol.api.websocket.domain.Message;

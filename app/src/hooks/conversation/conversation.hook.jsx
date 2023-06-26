@@ -176,19 +176,19 @@ export const Conversation = (props) => {
     if (useRelationShip == 1 || useRelationShip == 2) {
       return (
         <>
-          <dev className="Chat-friend-exit">
-            <button onClick={props.return}>voltar</button>
-          </dev>
           {useRelationShip == 1 ? (
-            <dev className="Chat-friend-notification">
+            <div className="Chat-friend-notification">
               <p> Você e o usuario não são amigos ainda!! </p>
               <button onClick={sendSolicitation}> mandar solicitação</button>
-            </dev>
+            </div>
           ) : (
-            <dev className="Chat-friend-notification">
+            <div className="Chat-friend-notification">
               <p> Uma solicitação de amizade foi enviada a esse usuario!! </p>
-            </dev>
+            </div>
           )}
+          <div className="Chat-friend-exit">
+            <button className="button-black button-clear" onClick={props.return}>voltar...</button>
+          </div>
         </>
       );
     }
@@ -197,12 +197,18 @@ export const Conversation = (props) => {
   const returnChat = () => {
     if (useRelationShip == 0) {
       return (
-        <dev className="Chat-conversation-section">
-          <dev className="Chat-conversation-content" id="scroll-chat">
+        <div className="Chat-conversation-section">
+          <div className="Chat-conversation-exit">
+            <button className="button-small button-outline" onClick={props.return}>
+              voltar
+            </button>
+            <p> <strong> {props.to.nome} </strong></p>
+          </div>
+          <div className="Chat-conversation-content" id="scroll-chat">
             {chat.length > 0
               ? chat.map((menssage, index) => (
-                  <dev
-                    className="Chat-conversation-content-message"
+                  <div
+                    className="Chat-conversation-content-messages"
                     key={index}
                     style={{
                       justifyContent:
@@ -211,12 +217,14 @@ export const Conversation = (props) => {
                           : "flex-end",
                     }}
                   >
-                    <p> {menssage.message} </p>
-                  </dev>
+                    <div className="Chat-conversation-message" >
+                      <p> {menssage.message} </p>
+                    </div>
+                  </div>
                 ))
               : null}
-          </dev>
-          <dev className="Chat-conversation-send">
+          </div>
+          <div className="Chat-conversation-send">
             <input
               className="Chat-conversation-send-input"
               name="message"
@@ -231,8 +239,8 @@ export const Conversation = (props) => {
               {" "}
               send{" "}
             </button>
-          </dev>
-        </dev>
+          </div>
+        </div>
       );
     } else {
       return returnNotification();

@@ -104,19 +104,20 @@ export const Solicitations = (props) => {
   };
 
   return (
-    <dev className={"Friends-section" + (props.modal == false ? "" : " modal")}>
-      <dev className="Friends-container">
+    <div className={"Friends-section" + (props.modal == false ? "" : " modal")}>
+      <div className="Friends-container">
         <div className="Friends-exit">
-          <p className="Friends-exit-button" onClick={props.setModal}>
+          <h2 className="Friends-title"><strong>Solicitações</strong></h2>
+          <button className="Friends-exit-button button-black" onClick={props.setModal}>
             {" "}
             X{" "}
-          </p>
+          </button>
         </div>
 
         <div className="Friends-content">
           {useFriendsSolicitation.length > 0
             ? useFriendsSolicitation.map((solicitation, index) => (
-                <dev className="Friends-solicitations" key={index}>
+                <div className="Friends-solicitations" key={index}>
                   <img
                     src={
                       solicitation.imagemPerfil
@@ -126,11 +127,12 @@ export const Solicitations = (props) => {
                     className="Friends-solicitations-img"
                   />
                   <div className="Friends-solicitations-content">
-                    <p> {solicitation.nome} </p>
+                    <p><strong> {solicitation.nome} </strong></p>
                     <p> {solicitation.email} </p>
                   </div>
                   <div className="Friends-solicitation-actions">
-                    <button
+                    <button 
+                      className="button-small"
                       name="accept"
                       onClick={(event) =>
                         handleSolicitationEvent(event, solicitation.id, index)
@@ -139,7 +141,8 @@ export const Solicitations = (props) => {
                       {" "}
                       accept{" "}
                     </button>
-                    <button
+                    <button 
+                      className="button-small"
                       name="ignore"
                       onClick={(event) =>
                         handleSolicitationEvent(event, solicitation.id, index)
@@ -149,11 +152,11 @@ export const Solicitations = (props) => {
                       ignore{" "}
                     </button>
                   </div>
-                </dev>
+                </div>
               ))
             : null}
         </div>
-      </dev>
-    </dev>
+      </div>
+    </div>
   );
 };

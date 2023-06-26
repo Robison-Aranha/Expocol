@@ -10,5 +10,14 @@ export const [useGlobalState, Provider] = createGlobalState(localStorage.getItem
 
 export const [useGlobalModal, ModalProvider] = createGlobalState([]);
 
+export const [useGlobalIndexModal, IndexModalProvider] = createGlobalState(false);
+
+export const [useGlobalIndex, IndexProvider] = createGlobalState()
+
+export const [useGlobalLoading, LoadinProvider] = createGlobalState(false)
+
+export const [useGoogleCredentials, GoogleProvider] = createGlobalState(localStorage.getItem("google") ? JSON.parse(localStorage.getItem("google")) : {
+   loged: false
+})
 
 

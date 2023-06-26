@@ -1,0 +1,72 @@
+
+.Indexes-section {
+
+    width: 34%;
+    height: 100%;
+    display: flex;
+    position: fixed;
+    flex-direction: column;
+    align-items: center;
+    background-color: whitesmoke;
+    justify-content: space-around;
+    box-shadow: 10px 1px 14px 2px rgb(0 0 0 / 50%);
+    right: 0;
+    transform: translateX(100%);
+    transition: transform 0.5s ease;
+    flex-wrap: initial;
+}
+
+.Indexes-choice {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.Indexes-files {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 30%;
+}
+
+.Indexes-files > p {
+    text-align: center;
+    font-size: 13px;
+    width: 70%;
+}
+
+.Indexes-files-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    background-color: #e4daed;
+    border-radius: 10px;
+    padding: 5%;
+    width: 80%;
+    height: 100%;
+    overflow: auto;
+    overflow-x: hidden;
+}
+
+.Indexes-files-content > p {
+    margin-top: 10px;
+} 
+
+.Indexes-input-file {
+
+    width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+
+}
+
+
+

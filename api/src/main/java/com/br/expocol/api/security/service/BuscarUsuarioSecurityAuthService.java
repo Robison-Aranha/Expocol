@@ -1,7 +1,7 @@
 package com.br.expocol.api.security.service;
 
 
-import com.br.expocol.api.domain.Usuario;
+import com.br.expocol.api.domain.Usuario.Usuario;
 import com.br.expocol.api.security.controller.response.UsuarioResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
