@@ -1,6 +1,7 @@
 package com.br.expocol.api.domain.Usuario;
 
 import com.br.expocol.api.security.domain.Permissao;
+import com.br.expocol.api.security.domain.Token;
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -33,6 +34,9 @@ public class Usuario {
 
     @OneToOne(mappedBy = "usuario")
     private PerfilUsuario perfilUsuario;
+
+    @OneToOne(mappedBy = "usuarioToken")
+    private Token token;
 
 
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.EAGER)

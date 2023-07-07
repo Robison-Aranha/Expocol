@@ -1,0 +1,52 @@
+spring:
+  datasource:
+    url:  jdbc:postgresql://localhost:5432/postgres
+    driver-class-name: org.postgresql.Driver
+    username: postgres
+    password: postgres
+    initialization-mode: always
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+
+  quartz:
+    job-store-type: jdbc
+    initialize-schema: always
+    properties:
+      org:
+        quartz:
+          jobStore:
+            driverDelegateClass: org.quartz.impl.jdbcjobstore.PostgreSQLDelegate
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${EMAIL_SENDER_ID}
+    password: ${EMAIL_SENDER_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+  sql:
+    init:
+      mode: always
+
+server:
+  error:
+    include-message: always
+  port: 8001
+
+application:
+  security:
+    jwt:
+      secret-key: ${JWT_KEY}

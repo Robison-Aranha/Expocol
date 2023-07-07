@@ -5,24 +5,18 @@ const http = axios.create({
   withCredentials: true,
 });
 
-
 export const useIndexApi = () => {
+  const returnIndex = async (id) => {
+    const response = await http.get("/" + id);
 
-    const returnIndex = async (id) => {
+    return response.data;
+  };
 
-        const response = await http.get("/" + id)
+  const deleteIndex = async (id) => {
+    const response = await http.delete("/" + id);
 
-        return response.data
-    }
+    return response.data;
+  };
 
-    const deleteIndex = async (id) => {
-
-      const response = await http.delete("/" + id)
-
-      
-      return response.data
-    }
-
-    
-    return { returnIndex, deleteIndex }
-} 
+  return { returnIndex, deleteIndex };
+};

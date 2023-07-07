@@ -1,0 +1,90 @@
+
+.Event-section {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    top: 0;
+    left: 0;
+    align-items: center;
+    justify-content: center;
+    display: none;
+}
+
+.modal {
+    display: flex;
+}
+
+.Event-container {
+
+    width: 40%;
+    height: 65%;
+    background-color: #f4f5f6;
+    border-radius: 10px;
+    opacity: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+
+}
+
+.Event-choice {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 20%;
+}
+
+.Event-date-email {
+    opacity: 0.5;
+}
+
+.Event-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    height: 90%;
+    padding: 5%;
+}
+
+.Event-item {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    width: 100%;
+}
+
+.Event-item-email {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.Event-item-email > input,label {
+    margin: 0  
+}
+
+.checkbox {
+    margin-right: 10px;
+    width: 50px;
+}
+
+.Event-exit {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    width: 100%;
+    height: 10%;
+}
+
+.Event-exit-button {
+    cursor: pointer;
+    margin: 0;
+    margin-right: 10px;
+    max-height: 100%;
+}

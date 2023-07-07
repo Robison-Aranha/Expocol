@@ -6,6 +6,7 @@ import com.br.expocol.api.repository.Usuario.ChatRepository;
 import com.br.expocol.api.security.controller.response.UsuarioResponse;
 import com.br.expocol.api.security.repository.UsuarioRepository;
 import com.br.expocol.api.security.service.BuscarUsuarioSecurityAuthService;
+import com.br.expocol.api.security.service.UsuarioAutenticadoService;
 import com.br.expocol.api.service.mensagem.MandarNotificaçãoService;
 import com.br.expocol.api.service.usuario.BuscarUsuarioService;
 import com.br.expocol.api.websocket.domain.Notification;
@@ -19,22 +20,19 @@ public class AceitarSolicitacaoService {
 
 
     @Autowired
-    BuscarUsuarioSecurityAuthService buscarUsuarioSecurityAuthService;
+    UsuarioAutenticadoService usuarioAutenticadoService;
     @Autowired
     BuscarUsuarioService buscarUsuarioService;
     @Autowired
     UsuarioRepository usuarioRepository;
     @Autowired
     ChatRepository chatRepository;
-
     @Autowired
     MandarNotificaçãoService mandarNotificaçãoService;
 
     public void aceitar(Long id) {
 
-        UsuarioResponse usuarioId = buscarUsuarioSecurityAuthService.buscar();
-
-        Usuario usuario = buscarUsuarioService.porId(usuarioId.getId());
+        Usuario usuario = usuarioAutenticadoService.get();
 
         Usuario amigo = buscarUsuarioService.porId(id);
 

@@ -5,16 +5,17 @@ import com.br.expocol.api.domain.Usuario.PerfilUsuario;
 import com.br.expocol.api.domain.Usuario.Usuario;
 import com.br.expocol.api.repository.Usuario.PerfilUsuarioRepository;
 import com.br.expocol.api.security.controller.request.UsuarioRequest;
-import com.br.expocol.api.security.controller.response.UsuarioResponse;
 import com.br.expocol.api.security.domain.Permissao;
+import com.br.expocol.api.security.jwt.JwtService;
 import com.br.expocol.api.security.repository.UsuarioRepository;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 
 import static com.br.expocol.api.security.mapper.UsuarioMapper.toEntity;
-import static com.br.expocol.api.security.mapper.UsuarioMapper.toResponse;
 
 @Service
 public class IncluirUsuarioService {
@@ -28,7 +29,10 @@ public class IncluirUsuarioService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public UsuarioResponse incluir(UsuarioRequest request) {
+    @Autowired
+    JwtService jwtService;
+
+    public void incluir(UsuarioRequest request, HttpServletResponse response) {
 
         Usuario usuario = toEntity(request);
         usuario.setSenha(passwordEncoder.encode(request.getSenha()));
@@ -44,6 +48,8 @@ public class IncluirUsuarioService {
 
         perfilUsuarioRepository.save(perfil);
 
-        return toResponse(usuario);
+        String newToken = jwtService.generateToken(usuario);
+
+        jwtService.saveToken(usuario, newToken);
     }
 }

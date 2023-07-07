@@ -1,10 +1,12 @@
 package com.br.expocol.api.controller;
 
 
+import com.br.expocol.api.controller.request.EventoRequest;
 import com.br.expocol.api.controller.response.Calendario.CalendarioResponse;
-import com.br.expocol.api.controller.response.Calendario.IndexesResponse;
+import com.br.expocol.api.controller.response.Calendario.EventoContentResponse;
+import com.br.expocol.api.controller.response.Calendario.IndexesEventosResponse;
 import com.br.expocol.api.service.Calendario.*;
-import com.br.expocol.api.service.Index.AdicionarAnexo;
+import com.br.expocol.api.service.Calendario.AdicionarAnexoCalendarioService;
 import com.br.expocol.api.service.VerificarParametroService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -23,13 +25,22 @@ public class CalendarioController {
     CreateCalendarService createCalendarService;
 
     @Autowired
-    AdicionarAnexo adicionarAnexo;
+    AdicionarAnexoCalendarioService adicionarAnexo;
 
     @Autowired
     VerificarParametroService verificarParametroService;
 
     @Autowired
-    RetornarIndexesService retornarIndexesService;
+    RetornarIndexesEventosService retornarIndexesService;
+
+    @Autowired
+    AdicionarEvento adicionarEventoDia;
+
+    @Autowired
+    RetornarEventoContentService retornarEventoContentService;
+
+    @Autowired
+    DeletarEventoService deletarEventoService;
 
     @GetMapping("/{ano}")
     public CalendarioResponse retornarAno(@RequestParam("mes") String mes, @PathVariable Integer ano) {
@@ -53,9 +64,24 @@ public class CalendarioController {
     }
 
     @GetMapping("/index/{ano}")
-    public IndexesResponse retornarIndexes(@PathVariable Integer ano, @RequestParam("mes") String mes, @RequestParam("dia") Integer dia) {
+    public IndexesEventosResponse retornarIndexes(@PathVariable Integer ano, @RequestParam("mes") String mes, @RequestParam("dia") Integer dia) {
 
         return retornarIndexesService.retornar(ano, mes, dia);
+    }
+
+    @PostMapping("/evento/{ano}")
+    public void adicionarEvento(@PathVariable Integer ano, @RequestParam("mes") String mes, @RequestParam("dia") Integer dia, @RequestBody EventoRequest request) {
+        adicionarEventoDia.adicionar(ano, mes, dia, request);
+    }
+
+    @GetMapping("/evento/{id}")
+    public EventoContentResponse retornarEvento(@PathVariable Long id) {
+        return retornarEventoContentService.retornar(id);
+    }
+
+    @DeleteMapping("/evento/{id}")
+    public void deletarEvento(@PathVariable Long id) {
+        deletarEventoService.deletar(id);
     }
 
 }

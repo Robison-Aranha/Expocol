@@ -36,8 +36,11 @@ public class Dia {
     @JoinColumn(name = "id_mes")
     private Mes mes;
 
-    @OneToMany(mappedBy = "dia")
+    @OneToMany(mappedBy = "diaIndex")
     private List<Index> indexes = new ArrayList<>();
+
+    @OneToMany(mappedBy = "diaEvento")
+    private List<Evento> eventos = new ArrayList<>();
 
 
 }

@@ -3,6 +3,7 @@ package com.br.expocol.api.service.amizade;
 import com.br.expocol.api.domain.Usuario.Usuario;
 import com.br.expocol.api.security.controller.response.UsuarioResponse;
 import com.br.expocol.api.security.service.BuscarUsuarioSecurityAuthService;
+import com.br.expocol.api.security.service.UsuarioAutenticadoService;
 import com.br.expocol.api.service.usuario.BuscarUsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,13 +15,11 @@ public class VerificarAmizadeSolicitacaoService {
     BuscarUsuarioService buscarUsuarioService;
 
     @Autowired
-    BuscarUsuarioSecurityAuthService buscarUsuarioSecurityAuthService;
+    UsuarioAutenticadoService usuarioAutenticadoService;
 
     public Integer verificar(Long id) {
 
-        UsuarioResponse usuarioId = buscarUsuarioSecurityAuthService.buscar();
-
-        Usuario usuario = buscarUsuarioService.porId(usuarioId.getId());
+        Usuario usuario = usuarioAutenticadoService.get();
 
         Usuario verificado = buscarUsuarioService.porId(id);
 

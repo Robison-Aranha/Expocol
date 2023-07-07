@@ -16,7 +16,7 @@ public class DiaResponse {
 
     private String diaDaSemana;
 
-    private Integer diaValue;
+    private Integer diaValor;
 
     private Boolean index;
 

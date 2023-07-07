@@ -25,6 +25,7 @@
     align-items: center;
     justify-content: space-around;
     overflow: hidden;
+    min-width: 50vh;
 }
 
 .modal {

@@ -2,6 +2,7 @@ package com.br.expocol.api.security.mapper;
 
 import com.br.expocol.api.domain.Usuario.Usuario;
 import com.br.expocol.api.security.controller.request.UsuarioRequest;
+import com.br.expocol.api.security.controller.response.TokenResponse;
 import com.br.expocol.api.security.controller.response.UsuarioResponse;
 import com.br.expocol.api.security.domain.Permissao;
 
@@ -18,9 +19,9 @@ public class UsuarioMapper {
         return entity;
     }
 
-    public static UsuarioResponse toResponse(Usuario entity) {
-        return UsuarioResponse.builder()
-                .id(entity.getId())
+    public static TokenResponse toResponse(String entity) {
+        return TokenResponse.builder()
+                .token(entity)
                 .build();
     }
 

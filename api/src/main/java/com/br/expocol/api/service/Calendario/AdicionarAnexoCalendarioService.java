@@ -1,4 +1,4 @@
-package com.br.expocol.api.service.Index;
+package com.br.expocol.api.service.Calendario;
 
 
 import com.br.expocol.api.domain.Calendario.Ano;
@@ -7,10 +7,7 @@ import com.br.expocol.api.domain.Calendario.Index;
 import com.br.expocol.api.domain.Calendario.Mes;
 import com.br.expocol.api.domain.Usuario.Usuario;
 import com.br.expocol.api.repository.Calendario.IndexesRepository;
-import com.br.expocol.api.security.controller.response.UsuarioResponse;
-import com.br.expocol.api.security.service.BuscarUsuarioSecurityAuthService;
-import com.br.expocol.api.service.Calendario.BuscarAnoService;
-import com.br.expocol.api.service.usuario.BuscarUsuarioService;
+import com.br.expocol.api.security.service.UsuarioAutenticadoService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,7 +21,7 @@ import java.util.stream.Collectors;
 
 @Service
 @Transactional
-public class AdicionarAnexo {
+public class AdicionarAnexoCalendarioService {
 
     private final Integer MAX_CARACTERS_INDEX_NAME = 25;
 
@@ -32,10 +29,7 @@ public class AdicionarAnexo {
     BuscarAnoService buscarAnoService;
 
     @Autowired
-    BuscarUsuarioSecurityAuthService buscarUsuarioSecurityAuthService;
-
-    @Autowired
-    BuscarUsuarioService buscarUsuarioService;
+    UsuarioAutenticadoService usuarioAutenticadoService;
 
     @Autowired
     IndexesRepository indexesRepository;
@@ -47,9 +41,7 @@ public class AdicionarAnexo {
             throw new ResponseStatusException(HttpStatus.LENGTH_REQUIRED, "O arquivo deve exedeu o numero de caracteres no nome!!");
         }
 
-        UsuarioResponse usuarioId = buscarUsuarioSecurityAuthService.buscar();
-
-        Usuario usuario = buscarUsuarioService.porId(usuarioId.getId());
+        Usuario usuario = usuarioAutenticadoService.get();
 
         Ano ano = buscarAnoService.buscar(anoRequest, usuario);
 
@@ -66,7 +58,7 @@ public class AdicionarAnexo {
 
         Index index = new Index();
 
-        index.setDia(dia);
+        index.setDiaIndex(dia);
         index.setIndexName(arquivo.getOriginalFilename());
         index.setIndex(sb.toString());
         index.setIndexContent(arquivo.getContentType());

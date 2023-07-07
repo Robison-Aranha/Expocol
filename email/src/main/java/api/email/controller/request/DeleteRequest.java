@@ -1,4 +1,4 @@
-package com.br.expocol.api.controller.response.Calendario;
+package api.email.controller.request;
 
 
 import lombok.AllArgsConstructor;
@@ -6,14 +6,14 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class IndexesResponse {
+public class DeleteRequest {
 
-    private List<IndexResponse> indexes;
+    private String group;
+
+    private String name;
 
 }

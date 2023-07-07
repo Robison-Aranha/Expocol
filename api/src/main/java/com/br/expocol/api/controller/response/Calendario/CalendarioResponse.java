@@ -7,8 +7,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 
@@ -18,6 +16,6 @@ import java.util.Map;
 @Data
 public class CalendarioResponse {
 
-    Map<String, ArrayList<DiaResponse>> days;
+    Map<String, ArrayList<IndexesEventosResponse>> days;
 
 }

@@ -7,6 +7,7 @@ import com.br.expocol.api.mapper.Usuario.DetalharPerfilUsuarioMapper;
 import com.br.expocol.api.repository.Usuario.PerfilUsuarioRepository;
 import com.br.expocol.api.security.controller.response.UsuarioResponse;
 import com.br.expocol.api.security.service.BuscarUsuarioSecurityAuthService;
+import com.br.expocol.api.security.service.UsuarioAutenticadoService;
 import com.br.expocol.api.service.usuario.BuscarUsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,18 +22,12 @@ public class DetalharPerfilUsuarioService {
 
     @Autowired
     PerfilUsuarioRepository perfilUsuarioRepository;
-
     @Autowired
-    BuscarUsuarioService buscarUsuarioService;
-
-    @Autowired
-    BuscarUsuarioSecurityAuthService buscarUsuarioSecurityAuthService;
+    UsuarioAutenticadoService usuarioAutenticadoService;
 
     public UsuarioDetalharResponse detalhar() {
 
-        UsuarioResponse usuarioId = buscarUsuarioSecurityAuthService.buscar();
-
-        Usuario usuario = buscarUsuarioService.porId(usuarioId.getId());
+        Usuario usuario = usuarioAutenticadoService.get();
 
         PerfilUsuario perfilUsuario = usuario.getPerfilUsuario();
 

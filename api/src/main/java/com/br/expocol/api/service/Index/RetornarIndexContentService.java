@@ -1,18 +1,14 @@
-package com.br.expocol.api.service.Calendario;
+package com.br.expocol.api.service.Index;
 
 
-import com.br.expocol.api.controller.response.Calendario.IndexContentResponse;
+import com.br.expocol.api.controller.response.Index.IndexContentResponse;
 import com.br.expocol.api.domain.Calendario.Index;
-import org.apache.commons.io.FileUtils;
+import com.br.expocol.api.security.service.UsuarioAutenticadoService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.client.MultipartBodyBuilder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 
-import java.io.File;
 import java.io.IOException;
-import java.util.Base64;
 
 @Service
 public class RetornarIndexContentService {
@@ -21,7 +17,12 @@ public class RetornarIndexContentService {
     @Autowired
     BuscarIndexService buscarIndexService;
 
+    @Autowired
+    UsuarioAutenticadoService usuarioAutenticadoService;
+
     public IndexContentResponse retornar(Long id) throws IOException {
+
+        usuarioAutenticadoService.getId();
 
         Index index = buscarIndexService.buscar(id);
 

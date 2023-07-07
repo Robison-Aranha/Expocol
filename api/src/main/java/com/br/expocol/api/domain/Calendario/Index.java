@@ -21,7 +21,7 @@ public class Index {
 
     @ManyToOne
     @JoinColumn(name = "id_dia")
-    private Dia dia;
+    private Dia diaIndex;
 
     private String indexName;
 

@@ -1,38 +1,40 @@
 import { useEffect, useState, useMemo } from "react";
 import { useCalendarApi } from "../../api/api";
 import "./calendar.style.css";
-import { months } from "../../api/consts/months";
-import { weekDays } from "../../api/consts/weekDays";
-import { Indexes } from "../hooks";
-import { useGlobalIndexModal, useGlobalLoading } from "../../globalState/globalState";
+import { months } from "../../consts/months";
+import { weekDays } from "../../consts/weekDays";
+import {
+  useGlobalLoading,
+  useGlobalCalendar
+} from "../../globalState/globalState";
+import { LocalDate } from "@js-joda/core";
 
 export const Calendar = () => {
   const dataAtual = new Date();
   const [calendar, setCalendar] = useState({
     year: dataAtual.getFullYear(),
     month: "janeiro",
-    days: {}
+    days: {},
   });
 
-  const [selectedDay, setSelectedDay] = useState()
   const { returnMonth, createCalendar } = useCalendarApi();
-  const [, setIndexGlobalModal] = useGlobalIndexModal()
-  const [, setLoading] = useGlobalLoading()
+  const [globalCalendar, setGlobalCalendar] = useGlobalCalendar();
+  const [, setLoading] = useGlobalLoading();
 
   useEffect(() => {
     returnMonthService();
-  }, [useMemo(() => (calendar.year)), useMemo(() => (calendar.month))]);
+  }, [useMemo(() => calendar.year), useMemo(() => calendar.month)]);
 
   const returnMonthService = async () => {
     try {
-
-      setLoading(true)
+      setLoading(true);
 
       const response = await returnMonth(calendar.year, calendar.month);
 
-      setLoading(false)
+      setLoading(false);
+      console.log(response)
 
-      setCalendar({ ...calendar, days: {...response.days } });
+      setCalendar({ ...calendar, days: { ...response.days } });
     } catch (response) {
       if (response.response.status == 404) {
         createCalendarService();
@@ -44,9 +46,7 @@ export const Calendar = () => {
 
   const createCalendarService = async () => {
     try {
-      
       await createCalendar(calendar.year);
-
 
       returnMonthService();
     } catch (response) {
@@ -54,30 +54,35 @@ export const Calendar = () => {
     }
   };
 
-
   const handlerValue = (event) => {
     const { value, name } = event.target;
     setCalendar({ ...calendar, [name]: value });
-  }
+  };
 
   const handleIndexGlobalState = (diaValue) => {
-
     if (diaValue) {
-      setIndexGlobalModal(true)
+      setGlobalCalendar({...globalCalendar, dia: diaValue, mes: calendar.month, ano: calendar.year})
     }
-
-  }
+  };
 
   return (
     <>
       <div className="Calendar-section">
         <div className="Calendar-choice">
-          <select defaultValue={"JANIERO"} name="month" onChange={handlerValue}>
+          <select defaultValue={"JANEIRO"} name="month" onChange={handlerValue}>
             {months.map((month, key) => (
-              <option value={month} key={key}>{month}</option>
+              <option value={month} key={key}>
+                {month}
+              </option>
             ))}
           </select>
-          <input type="number" name="year" value={calendar.year} onChange={handlerValue}/>
+          <input
+            type="number"
+            name="year"
+            min={LocalDate.now().year().toString()}
+            value={calendar.year}
+            onChange={handlerValue}
+          />
         </div>
         <div className="Calendar-table">
           {weekDays.map((day, key) => (
@@ -87,11 +92,17 @@ export const Calendar = () => {
               </div>
               <div className="Calendar-table-content">
                 {calendar.days[day]?.map((dia, key) => (
-                  <div onClick={() => {
-                    setSelectedDay(dia.diaValue) 
-                    handleIndexGlobalState(dia.diaValue)
-                    }} className="Calendar-table-day" style={{ cursor: (dia.diaValue ? "pointer" : "")}} key={key}>
-                    {dia.diaValue ? dia.diaValue : ""}
+                  <div
+                    onClick={() => {
+                      if (!globalCalendar) {
+                        handleIndexGlobalState(dia.diaValor);
+                      }
+                    }}
+                    className="Calendar-table-day"
+                    style={{ cursor: dia.diaValor ? "pointer" : "" }}
+                    key={key}
+                  >
+                    {dia.diaValor ? dia.diaValor : ""}
                   </div>
                 ))}
               </div>
@@ -99,7 +110,6 @@ export const Calendar = () => {
           ))}
         </div>
       </div>
-      <Indexes year={calendar.year} month={calendar.month} day={selectedDay}/>
     </>
   );
 };

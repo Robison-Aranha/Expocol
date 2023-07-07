@@ -12,10 +12,10 @@ import java.util.Optional;
 
 public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
-    Usuario findByEmail(String email);
-
     @Query(value = "Select * from usuario where id != ?1 and (nome like ?2% or email like ?2%)", nativeQuery = true)
     Page<Usuario> findUsuarios(Long id, String nome, Pageable pageable);
 
     Optional<Usuario> findByNome(String nome);
+
+    Optional<Usuario> findByEmail(String username);
 }

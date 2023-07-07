@@ -13,6 +13,7 @@
     animation-iteration-count: 1;
     background-color: #d1d1d1;
     border-radius: 10px;
+    z-index: 400;
 }
 
 .Modal-section > p {

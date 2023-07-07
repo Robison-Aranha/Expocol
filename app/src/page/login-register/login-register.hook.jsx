@@ -8,7 +8,7 @@ import { Notification } from "../../hooks/notification/notification.hook";
 
 
 export const LoginRegister = () => {
-  const [userGlobalState, setUserGlobalState] = useGlobalState();
+  const [userGlobalState, setUserGlobalState] = useGlobalState()
   const [globalModal, setGlobalModal] = useGlobalModal()
 
   const [userData, setUserData] = useState({
@@ -20,7 +20,7 @@ export const LoginRegister = () => {
 
   const navigate = useNavigate();
 
-  const [Login, Register] = useLoginRegister();
+  const { login, register } = useLoginRegister();
 
   const [userState, setUserState] = useState(false);
 
@@ -54,9 +54,9 @@ export const LoginRegister = () => {
   const handleCommit = () => {
     if (verifyCredentials()) {
       if (userState == false) {
-        login();
+        loginService();
       } else {
-        register();
+        registerService();
       }
     } else {
       setGlobalModal([...globalModal, { message: "Credenciais Invalidas!", color: "red" }])
@@ -70,27 +70,29 @@ export const LoginRegister = () => {
       gmail: "",
       username: "",
       password: "",
-      passwordConfirm: "",
+      passwordConfirm: ""
     });
   };
 
-  const login = async () => {
+  const loginService = async () => {
     try {
-      const response = await Login(userData.gmail, userData.password);
+      const response = await login(userData.gmail, userData.password);
 
-      setUserGlobalState({ ...userGlobalState, loged: true, id: response.id });
+      const userInfo = { ...userGlobalState, loged: true, id: response.id, schedulerKey: response.token }
+
+      setUserGlobalState({...userInfo});
       
-      localStorage.setItem("user", JSON.stringify({ ...userGlobalState, loged: true, id: response.id }));
+      localStorage.setItem("user", JSON.stringify({...userInfo}));
 
       navigate("/home");
     } catch (response) {
-      setGlobalModal([ ...globalModal, { message: "Login falhou!", color: "red" }])
+      setGlobalModal([ ...globalModal, { message: "Login falhou!"}])
     }
   };
 
-  const register = async () => {
+  const registerService = async () => {
     try {
-      const response = await Register(
+      const response = await register(
         userData.gmail,
         userData.username,
         userData.password

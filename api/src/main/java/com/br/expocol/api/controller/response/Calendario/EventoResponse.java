@@ -7,17 +7,18 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 
+import java.time.LocalTime;
 
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class IndexContentResponse {
+public class EventoResponse {
 
-    private String index;
+    private Long id;
 
-    private String type;
+    private String titulo;
 
-    private String indexName;
+    private LocalTime tempo;
 
 }

@@ -1,99 +1,142 @@
 import { useEffect, useState } from "react";
 import { useCalendarApi } from "../../api/api";
-import "./indexes.style.css"
-import { useGlobalModal, useGlobalIndexModal, useGlobalIndex } from "../../globalState/globalState";
+import "./indexes.style.css";
+import {
+  useGlobalModal,
+  useGlobalIndexModal,
+  useGlobalIndex,
+  useGlobalEvent,
+  useGlobalCalendar
+} from "../../globalState/globalState";
 
-
-export const Indexes = (props) => {
+export const Indexes = () => {
   const [files, setFiles] = useState([]);
   const [events, setEvents] = useState([]);
-  const [indexGlobalState, ] = useGlobalIndexModal()
-  const [globalModal, setGlobalModal] = useGlobalModal()
-  const [globalIndex, setGlobalIndex] = useGlobalIndex()
+  const [indexGlobalState, setIndexGlobalState] = useGlobalIndexModal();
+  const [globalModal, setGlobalModal] = useGlobalModal();
+  const [globalIndex, setGlobalIndex] = useGlobalIndex();
+  const [globalEvent, setGlobalEvent] = useGlobalEvent()
+  const [globalCalendar, ] = useGlobalCalendar()
 
-  const { returnIndexes, addIndex } = useCalendarApi();
+  const { returnIndexesEvents, addIndex } = useCalendarApi();
 
-  useEffect(() => { 
-   
+  useEffect(() => {
     if (indexGlobalState) {
-      
-      const indexSection = document.getElementById("index")
-     
+      const indexSection = document.getElementById("index");
+
       indexSection.style.transform = "translatex(0)";
 
-      returnIndexesService()
     }
-  
-  }, [indexGlobalState])
+  }, [indexGlobalState]);
 
   useEffect(() => {
 
-    returnIndexesService()
+    if (globalCalendar) {
 
-  }, [globalIndex])
+      returnIndexesEventsService()
+      setIndexGlobalState(true)
+    }
 
-  const returnIndexesService = async () => {
+  }, [globalCalendar])
+
+  useEffect(() => {
+
+    if (globalIndex ||  globalEvent.sent) {
+      returnIndexesEventsService();
+      setGlobalEvent({...globalEvent, sent: false})
+    }
+  }, [globalIndex, globalEvent.sent]);
+
+  const returnIndexesEventsService = async () => {
     try {
-      const response = await returnIndexes(
-        props.year,
-        props.month,
-        props.day
-      );
+      const response = await returnIndexesEvents(globalCalendar.ano, globalCalendar.mes, globalCalendar.dia);
 
-      console.log(response)
-
-      setFiles([ ...response.indexes ]);
+      setFiles([...response.indexes]);
+      setEvents([...response.eventos]);
     } catch (response) {}
   };
 
   const addIndexService = async (event) => {
-    try  {
-      
-      const formData = new FormData()
+    try {
+      const formData = new FormData();
 
-      formData.append("file", event.target.files[0])
+      formData.append("file", event.target.files[0]);
 
-      await addIndex(props.year, props.month, props.day, formData)
+      await addIndex(globalCalendar.ano, globalCalendar.mes, globalCalendar.dia, formData);
 
-      event.target.value = ""
-    
-      returnIndexesService()
-      setGlobalModal([...globalModal, { message: "Arquivo adicionado com sucesso!", color: "green" }])
+      event.target.value = "";
+
+      returnIndexesEventsService();
+      setGlobalModal([
+        ...globalModal,
+        { message: "Arquivo adicionado com sucesso!", color: "green" },
+      ]);
     } catch (error) {
-      console.log(error)
-      setGlobalModal([...globalModal, { message: error.response.data.message }])
+      console.log(error);
+      setGlobalModal([
+        ...globalModal,
+        { message: error.response.data.message },
+      ]);
 
-      event.target.value = ""
-   
+      event.target.value = "";
     }
-
   }
 
   return (
     <div className="Indexes-section" id="index">
       <div className="Indexes-files">
         <h1> Arquivos </h1>
-        <p> Os arquivos devem ter um maximo de 25 caracteres em seus titulos!</p>
+        <p>
+          {" "}
+          Os arquivos devem ter um maximo de 25 caracteres em seus titulos!
+        </p>
         <div className="Indexes-files-content">
-          {files.length > 0 ? files.map((file, index) => (
-
-            <div className="Indexes-file button button-outline" onClick={() => setGlobalIndex(file.id)} key={index}>
-              <p>{file.indexName}</p>
-            </div>
-
-          )) : <p> Não há arquivos anexados ainda... </p>}
+          {files.length > 0 ? (
+            files.map((file, index) => (
+              <div
+                className="Indexes-file button button-outline"
+                onClick={() => setGlobalIndex(file.id)}
+                key={index}
+              >
+                <p>{file.indexName}</p>
+              </div>
+            ))
+          ) : (
+            <p> Não há arquivos anexados ainda... </p>
+          )}
         </div>
       </div>
       <div className="Indexes-events">
-      <h1> Eventos </h1>
-        <div>
-
+        <h1> Eventos </h1>
+        <div className="Indexes-events-content">
+          {events.length > 0 ? (
+              events.map((event, index) => (
+                <div
+                  className="Indexes-event button button-clear"
+                  onClick={() => setGlobalEvent({...globalEvent, visualization: true, event: event.id})}
+                  key={index}
+                >
+                  <p>{event.titulo + (event.tempo ? " : " + event.tempo : "" )}</p>
+                </div>
+              ))
+            ) : (
+              <p> Não há eventos marcados ainda... </p>
+            )}
         </div>
+        <div></div>
       </div>
       <div className="Indexes-choice">
-        <input type="file" name="file" id="file" className="Indexes-input-file" onChange={addIndexService}/>
-        <label className="button" htmlFor="file" >Choose a file</label>
-        <button> Adicionar evento </button>
+        <input
+          type="file"
+          name="file"
+          id="file"
+          className="Indexes-input-file"
+          onChange={addIndexService}
+        />
+        <label className="button" htmlFor="file">
+          Choose a file
+        </label>
+        <button onClick={() => setGlobalEvent({...globalEvent, visualization: true})}> Adicionar evento </button>
       </div>
     </div>
   );

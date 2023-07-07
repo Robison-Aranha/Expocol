@@ -2,6 +2,7 @@ package com.br.expocol.api.service.Index;
 
 
 import com.br.expocol.api.repository.Calendario.IndexesRepository;
+import com.br.expocol.api.security.service.UsuarioAutenticadoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,7 +12,13 @@ public class DeletarIndexService {
     @Autowired
     IndexesRepository indexesRepository;
 
+    @Autowired
+    UsuarioAutenticadoService usuarioAutenticadoService;
+
     public void deletar(Long id) {
+
+        usuarioAutenticadoService.getId();
+
         indexesRepository.deleteById(id);
     }
 

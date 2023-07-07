@@ -1,22 +1,25 @@
-import { useGlobalIndexModal, useGlobalIndex } from "../../globalState/globalState"
-import { FileVisualizer, ToPBar, Notification, Calendar, Loading } from "../../hooks/hooks"
+import { useGlobalIndexModal, useGlobalIndex, useGlobalCalendar } from "../../globalState/globalState"
+import { FileVisualizer, ToPBar, Notification, Calendar, Loading, EventVisualizerCreator, Indexes } from "../../hooks/hooks"
 import "./home.style.css"
 
 
 export const Home = () => {
 
     const [indexGlobalStateModal, setIndexGlobalIndexModal] = useGlobalIndexModal()
+    const [, setGlobalCalendar] = useGlobalCalendar()
     const [globalIndex, setGlobalIndex] = useGlobalIndex()
 
     const handleIndexModal = (event) => {
 
-        const index = document.getElementById("index")
+        const indexSection = document.getElementById("index")
         const fileSection = document.getElementById("file-index-section")
         const fileContainer = document.getElementById("file-index-container")
+        const eventSection = document.getElementById("event")
 
-        if (!index.contains(event.target) && indexGlobalStateModal && !fileSection.contains(event.target)) {
+        if (!indexSection.contains(event.target) && indexGlobalStateModal && !fileSection.contains(event.target) && !eventSection.contains(event.target)) {
             
-            index.style.transform = "translatex(100%)"
+            indexSection.style.transform = "translatex(100%)"
+            setGlobalCalendar(null)
             setIndexGlobalIndexModal(false)
         }
 
@@ -33,8 +36,10 @@ export const Home = () => {
             <Notification />
             <ToPBar />
             <Calendar />
+            <Indexes />
             <FileVisualizer />
             <Loading />
+            <EventVisualizerCreator />
         </div>
 
     )

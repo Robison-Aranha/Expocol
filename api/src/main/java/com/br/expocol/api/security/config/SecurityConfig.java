@@ -35,12 +35,15 @@ public class SecurityConfig {
                 .and()
                     .authorizeRequests().anyRequest().authenticated()
                 .and()
-                    .httpBasic().authenticationEntryPoint((request, response, authException) -> response.setStatus(UNAUTHORIZED.value()))
-                .and()
                     .logout().logoutSuccessHandler((request, response, authentication) -> response.setStatus(OK.value()))
                 .and()
+                    .httpBasic().authenticationEntryPoint((request, response, authException) -> response.setStatus(UNAUTHORIZED.value()))
+                .and()
                     .sessionManagement()
-                    .sessionCreationPolicy(SessionCreationPolicy.ALWAYS);
+                    .sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
+
+
+
         ;
 
         return http.build();

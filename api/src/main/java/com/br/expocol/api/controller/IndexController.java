@@ -1,8 +1,8 @@
 package com.br.expocol.api.controller;
 
 
-import com.br.expocol.api.controller.response.Calendario.IndexContentResponse;
-import com.br.expocol.api.service.Calendario.RetornarIndexContentService;
+import com.br.expocol.api.controller.response.Index.IndexContentResponse;
+import com.br.expocol.api.service.Index.RetornarIndexContentService;
 import com.br.expocol.api.service.Index.DeletarIndexService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

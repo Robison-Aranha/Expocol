@@ -2,7 +2,8 @@ package com.br.expocol.api.security.service;
 
 
 import com.br.expocol.api.domain.Usuario.Usuario;
-import com.br.expocol.api.security.controller.response.UsuarioResponse;
+import com.br.expocol.api.security.controller.response.TokenResponse;
+import com.br.expocol.api.security.jwt.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,8 +16,19 @@ public class BuscarUsuarioSecurityAuthService {
     @Autowired
     private UsuarioAutenticadoService usuarioAutenticadoService;
 
-    public UsuarioResponse buscar() {
+    @Autowired
+    JwtService jwtService;
+
+
+    public TokenResponse buscar() {
         Usuario usuarioAutenticado = usuarioAutenticadoService.get();
-        return toResponse(usuarioAutenticado);
+
+        jwtService.deleteToken(usuarioAutenticado);
+
+        String newToken = jwtService.generateToken(usuarioAutenticado);
+
+        jwtService.saveToken(usuarioAutenticado, newToken);
+
+        return toResponse(newToken);
     }
 }

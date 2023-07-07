@@ -1,4 +1,4 @@
-package com.br.expocol.api.service.Calendario;
+package com.br.expocol.api.service.Index;
 
 
 import com.br.expocol.api.domain.Calendario.Index;

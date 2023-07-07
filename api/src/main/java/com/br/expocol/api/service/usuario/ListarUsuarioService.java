@@ -5,6 +5,7 @@ import com.br.expocol.api.mapper.Usuario.ListarUsuarioMapper;
 import com.br.expocol.api.security.controller.response.UsuarioResponse;
 import com.br.expocol.api.security.repository.UsuarioRepository;
 import com.br.expocol.api.security.service.BuscarUsuarioSecurityAuthService;
+import com.br.expocol.api.security.service.UsuarioAutenticadoService;
 import com.br.expocol.api.service.VerificarParametroService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -18,18 +19,18 @@ public class ListarUsuarioService {
     UsuarioRepository usuarioRepository;
 
     @Autowired
-    BuscarUsuarioSecurityAuthService buscarUsuarioSecurityAuthService;
+    UsuarioAutenticadoService usuarioAutenticadoService;
 
     @Autowired
     VerificarParametroService verificarParametroUsuarioService;
 
     public Page<UsuarioListaResponse> listar(String nome, Pageable pageable) {
 
-        UsuarioResponse usuarioId = buscarUsuarioSecurityAuthService.buscar();
+        Long usuarioId = usuarioAutenticadoService.getId();
 
         verificarParametroUsuarioService.verificar(nome);
 
-        return usuarioRepository.findUsuarios(usuarioId.getId(), nome, pageable)
+        return usuarioRepository.findUsuarios(usuarioId, nome, pageable)
                 .map(ListarUsuarioMapper::toResponse);
 
     }

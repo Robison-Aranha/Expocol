@@ -12,6 +12,7 @@ import com.br.expocol.api.repository.Calendario.DiaRepository;
 import com.br.expocol.api.repository.Calendario.MesRepository;
 import com.br.expocol.api.security.controller.response.UsuarioResponse;
 import com.br.expocol.api.security.service.BuscarUsuarioSecurityAuthService;
+import com.br.expocol.api.security.service.UsuarioAutenticadoService;
 import com.br.expocol.api.service.usuario.BuscarUsuarioService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,19 +40,14 @@ public class CreateCalendarService {
     DiaRepository diaRepository;
 
     @Autowired
-    BuscarUsuarioSecurityAuthService buscarUsuarioSecurityAuthService;
-
-    @Autowired
-    BuscarUsuarioService buscarUsuarioServica;
+    UsuarioAutenticadoService usuarioAutenticadoService;
 
     @Autowired
     BuscarAnoService buscarAnoService;
 
     public void create(Integer anoRequest) {
 
-        UsuarioResponse usuarioId = buscarUsuarioSecurityAuthService.buscar();
-
-        Usuario usuario = buscarUsuarioServica.porId(usuarioId.getId());
+        Usuario usuario = usuarioAutenticadoService.get();
 
         try {
             buscarAnoService.buscar(anoRequest, usuario);

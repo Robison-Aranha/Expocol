@@ -8,9 +8,7 @@ import com.br.expocol.api.domain.Usuario.Usuario;
 import com.br.expocol.api.enumerator.DiasDaSemana;
 import com.br.expocol.api.mapper.Calendario.RetornarDiasMapper;
 import com.br.expocol.api.repository.Calendario.DiaRepository;
-import com.br.expocol.api.security.controller.response.UsuarioResponse;
-import com.br.expocol.api.security.service.BuscarUsuarioSecurityAuthService;
-import com.br.expocol.api.service.usuario.BuscarUsuarioService;
+import com.br.expocol.api.security.service.UsuarioAutenticadoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,19 +23,14 @@ public class RetornarMesService {
     BuscarAnoService buscarAnoService;
 
     @Autowired
-    BuscarUsuarioSecurityAuthService buscarUsuarioSecurityAuthService;
-
-    @Autowired
-    BuscarUsuarioService buscarUsuarioService;
+    UsuarioAutenticadoService usuarioAutenticadoService;
 
     @Autowired
     DiaRepository diaRepository;
 
     public CalendarioResponse retornar(Integer anoRequest, String mesRequest) {
 
-        UsuarioResponse usuarioId = buscarUsuarioSecurityAuthService.buscar();
-
-        Usuario usuario = buscarUsuarioService.porId(usuarioId.getId());
+        Usuario usuario = usuarioAutenticadoService.get();
 
         Ano ano = buscarAnoService.buscar(anoRequest, usuario);
 
@@ -53,7 +46,19 @@ public class RetornarMesService {
 
         for (DiasDaSemana dia : DiasDaSemana.values()) {
 
-            List diasDaSemana = mes.getDias().stream().filter(d -> d.getDiaDaSemana() == dia).map(RetornarDiasMapper::toResponse).collect(Collectors.toList());
+            List diasDaSemana = mes.getDias().stream().filter(d -> d.getDiaDaSemana() == dia).map(d -> {
+
+                DiaResponse diaResponse = RetornarDiasMapper.toResponse(d);
+
+                if (d.getIndexes().size() > 1) {
+                    diaResponse.setIndex(true);
+                } else {
+                    diaResponse.setIndex(false);
+                }
+
+                return diaResponse;
+            }
+            ).collect(Collectors.toList());
 
             dias.put(dia.toString(), diasDaSemana);
 
@@ -73,8 +78,8 @@ public class RetornarMesService {
 
             atualSemana = (ArrayList<DiaResponse>) dias.get(dia.toString());
 
-            DiaResponse diaAtualP = atualSemana.get(0).getDiaValue() != null ? atualSemana.get(0) : atualSemana.get(1);
-            DiaResponse diaAtualU = atualSemana.get(atualSemana.size() - 1).getDiaValue() != null ? atualSemana.get(atualSemana.size() - 1) : atualSemana.get(atualSemana.size() - 2);
+            DiaResponse diaAtualP = atualSemana.get(0).getDiaValor() != null ? atualSemana.get(0) : atualSemana.get(1);
+            DiaResponse diaAtualU = atualSemana.get(atualSemana.size() - 1).getDiaValor() != null ? atualSemana.get(atualSemana.size() - 1) : atualSemana.get(atualSemana.size() - 2);
 
             Boolean diaMaiorPDireita = false;
             Boolean diaMenorUEsquerda = false;
@@ -84,9 +89,9 @@ public class RetornarMesService {
                 DiasDaSemana diaVerificado = DiasDaSemana.values()[i];
                 ArrayList<DiaResponse> semanaVerificada = (ArrayList<DiaResponse>) dias.get(diaVerificado.toString());
 
-                DiaResponse diaDaSemana = semanaVerificada.get(0).getDiaValue() != null ? semanaVerificada.get(0) : semanaVerificada.get(1);
+                DiaResponse diaDaSemana = semanaVerificada.get(0).getDiaValor() != null ? semanaVerificada.get(0) : semanaVerificada.get(1);
 
-                if (diaDaSemana.getDiaValue() < diaAtualP.getDiaValue()) {
+                if (diaDaSemana.getDiaValor() < diaAtualP.getDiaValor()) {
                     diaMaiorPDireita = true;
                     break;
                 }
@@ -97,9 +102,9 @@ public class RetornarMesService {
                 DiasDaSemana diaVerificado = DiasDaSemana.values()[i];
                 ArrayList<DiaResponse> semanaVerificada = (ArrayList<DiaResponse>) dias.get(diaVerificado.toString());
 
-                DiaResponse diaDaSemana = semanaVerificada.get(semanaVerificada.size() - 1).getDiaValue() != null ? semanaVerificada.get(semanaVerificada.size() - 1) : semanaVerificada.get(semanaVerificada.size() - 2);
+                DiaResponse diaDaSemana = semanaVerificada.get(semanaVerificada.size() - 1).getDiaValor() != null ? semanaVerificada.get(semanaVerificada.size() - 1) : semanaVerificada.get(semanaVerificada.size() - 2);
 
-                if  (diaDaSemana.getDiaValue() > diaAtualU.getDiaValue()) {
+                if  (diaDaSemana.getDiaValor() > diaAtualU.getDiaValor()) {
                     diaMenorUEsquerda = true;
                     break;
                 }

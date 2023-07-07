@@ -1,25 +1,50 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useGlobalModal } from "../../globalState/globalState";
 import "./notification.style.css";
 
 export const Notification = () => {
-  const [timer, setTimer] = useState(0);
-  const [timePassed, setTimePassed] = useState(0);
+  const [timer, setTimer] = useState(false)
+  const [timePassed, setTimePassed] = useState(false);
+  const [stop, setStop] = useState(false)
   const [globalModal, setGlobalModal] = useGlobalModal();
 
   useEffect(() => {
-    setTimer(globalModal.length * 1);
-  }, [globalModal]);
 
-  useEffect(() => {
-    setTimeout(() => {
-      setTimePassed(timePassed + 1);
-    }, 2000);
+    if (!stop) {
+
+      setTimeout(() => {
+        setTimePassed(!timePassed);
+        console.log("deletou")
+      }, 2000);
+    }
+    
   }, [timer]);
 
   useEffect(() => {
+   
     setGlobalModal([...globalModal.slice(1, globalModal.length)]);
+
+    verifyStop()
+    
   }, [timePassed]);
+
+  useEffect(() => {
+
+    verifyStop()
+
+    setTimer(!timer)
+
+  }, [globalModal])
+
+  const verifyStop = () => {
+
+    if (globalModal.length == 0) {
+      setStop(true)
+    } else {
+      setStop(false)
+    }
+
+  }
 
   return (
     <>

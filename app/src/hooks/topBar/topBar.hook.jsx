@@ -7,7 +7,7 @@ import { Chat, Solicitations } from "../hooks";
 import { useUsersApi } from "../../api/api";
 import { useNavigate } from "react-router-dom";
 import { useGlobalModal, useGlobalState, useGoogleCredentials } from "../../globalState/globalState";
-import { clientId } from "../../api/consts/googleAccountSecrets";
+import { clientId } from "../../consts/googleAccountSecrets";
 import jwt_decode from "jwt-decode"
 
 export const ToPBar = () => {
@@ -16,8 +16,8 @@ export const ToPBar = () => {
   const { detailUser } = useUsersApi();
   const [userGlobalState, setUserGlobalState] = useGlobalState();
   const [isUserLoaded, setIsUserLoaded] = useState(false)
-  const [modalGlobal, setModalGlobal] = useGlobalModal()
-  const [googleCredentials, setGoogleCredentials] = useGoogleCredentials()
+  const [globalModal, setGlobalModal] = useGlobalModal()
+  const [, setGoogleCredentials] = useGoogleCredentials()
 
   const navigate = useNavigate();
 
@@ -45,8 +45,9 @@ export const ToPBar = () => {
   }, []);
 
   const handleCallBackResponse = (response) => {
-    console.log(response)
+    setGlobalModal([...globalModal, {message: "Login com o google concluido! Serviços adicionais liberados!"}])
     const decodeCredentials = jwt_decode(response.credential);
+    console.log(decodeCredentials)
     setGoogleCredentials(decodeCredentials)
   }
 
@@ -64,7 +65,8 @@ export const ToPBar = () => {
       });
       setIsUserLoaded(true)
     } catch (response) {
-      setModalGlobal([...modalGlobal, { message: "Sua sessão expirou!"}])
+      localStorage.removeItem("user")
+      setGlobalModal([...globalModal, { message: "Sua sessão expirou!"}])
       setTimeout(() => navigate("/"), 1000);
     }
   };
