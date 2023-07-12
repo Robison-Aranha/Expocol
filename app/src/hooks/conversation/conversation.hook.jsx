@@ -187,7 +187,7 @@ export const Conversation = (props) => {
             </div>
           )}
           <div className="Chat-friend-exit">
-            <button className="button-black button-clear" onClick={props.return}>voltar...</button>
+            <button className="button-clear" onClick={props.return}>voltar...</button>
           </div>
         </>
       );

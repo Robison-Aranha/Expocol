@@ -11,14 +11,13 @@ export const Home = () => {
 
     const handleIndexModal = (event) => {
 
-        const indexSection = document.getElementById("index")
+        const indexContainer = document.getElementById("index")
         const fileSection = document.getElementById("file-index-section")
         const fileContainer = document.getElementById("file-index-container")
         const eventSection = document.getElementById("event")
 
-        if (!indexSection.contains(event.target) && indexGlobalStateModal && !fileSection.contains(event.target) && !eventSection.contains(event.target)) {
+        if (!indexContainer.contains(event.target) && indexGlobalStateModal && !fileSection.contains(event.target) && !eventSection.contains(event.target)) {
             
-            indexSection.style.transform = "translatex(100%)"
             setGlobalCalendar(null)
             setIndexGlobalIndexModal(false)
         }

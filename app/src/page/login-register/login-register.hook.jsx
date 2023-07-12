@@ -92,7 +92,7 @@ export const LoginRegister = () => {
 
   const registerService = async () => {
     try {
-      const response = await register(
+      await register(
         userData.gmail,
         userData.username,
         userData.password
@@ -113,16 +113,20 @@ export const LoginRegister = () => {
           <div className="LoginRegister-Credentials">
             <input
               name="gmail"
+              type="email"
               value={userData.gmail}
               onChange={handlerValue}
               placeholder="Digite seu gmail"
+              autoComplete="off"
             />
             {userState == true ? (
               <input
                 name="username"
+                type="text"
                 value={userData.username}
                 onChange={handlerValue}
                 placeholder="Digite seu nome de usuario"
+                autoComplete="off"
               />
             ) : null}
             <input
@@ -131,6 +135,7 @@ export const LoginRegister = () => {
               value={userData.password}
               onChange={handlerValue}
               placeholder="Digite sua senha"
+              autoComplete="off"
             />
             {userState == true ? (
               <input
@@ -139,6 +144,7 @@ export const LoginRegister = () => {
                 value={userData.passwordConfirm}
                 onChange={handlerValue}
                 placeholder="Confirme Sua Senha"
+                autoComplete="off"
               />
             ) : null}
           </div>

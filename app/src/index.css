@@ -9,7 +9,48 @@ html, body, #root {
     justify-content: space-between;
     align-items: center;
     scroll-behavior: smooth;
+    background-color: var(--main-secundary-color);
+    color: var(--main-text-color)
 }
+
+:root {
+  --main-primary-color: #1C2128;
+  --main-secundary-color: #22272e;
+  --main-terciary-color: #2d333b;
+  --main-quaternary-color: #9b4dca;
+  --main-notification-index: #347D39;
+  --main-notification-event: #E34C26;
+  --main-text-color: #AEB6BA;
+  --main-primary-border-decoration: #444c56;
+}
+
+button, select, input, input[type='number'], input[type='text'], input[type='time'], input[type='email'], input[type='password'], input[type='datetime-local'], .button {
+  background-color: var(--main-terciary-color);
+  color: var(--main-text-color);
+  border: var(--main-terciary-color);
+  border: 2px solid var(--main-primary-border-decoration);
+  outline: 0;
+}
+
+input:-webkit-autofill { 
+  
+  -webkit-box-shadow:0 0 0 50px var(--main-terciary-color) inset; 
+  -webkit-text-fill-color: var(--main-text-color); 
+} 
+  
+input:-webkit-autofill:focus { 
+  -webkit-box-shadow: 0 0 0 50px var(--main-terciary-color) inset; 
+  -webkit-text-fill-color: var(--main-text-color); 
+} 
+
+p {
+  color: var(--main-text-color);
+}
+
+blockquote {
+  border-left: 0.3rem solid var(--main-quaternary-color);
+}
+
 
 .button-black {
     background-color: black;
@@ -40,8 +81,6 @@ html, body, #root {
 
 input[type='time'] {
   -webkit-appearance: none;
-  background-color: transparent;
-  border: 0.1rem solid #d1d1d1;
   border-radius: 0.4rem;
   box-shadow: none;
   box-sizing: inherit;
@@ -50,22 +89,26 @@ input[type='time'] {
   width: 100%;
 }
 
+input[type='time']:focus {
+  border: 1px solid var(--main-quaternary-color);
+}
+
 
 *::-webkit-scrollbar-track
 {
 	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
-	background-color: #F5F5F5;
+	background-color: var(--main-secundary-color);
 }
 
 *::-webkit-scrollbar
 {
 	width: 6px;
-	background-color: #F5F5F5;
+	background-color: var(--main-terciary-color);
 }
 
 *::-webkit-scrollbar-thumb
 {
-	background-color: #9B4DCA;
+	background-color: var(--main-quaternary-color);
 }
 
 p {

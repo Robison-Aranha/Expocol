@@ -29,6 +29,6 @@ public class BuscarUsuarioSecurityAuthService {
 
         jwtService.saveToken(usuarioAutenticado, newToken);
 
-        return toResponse(newToken);
+        return toResponse(newToken,  usuarioAutenticado.getId());
     }
 }

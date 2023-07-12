@@ -20,4 +20,6 @@ public class DiaResponse {
 
     private Boolean index;
 
+    private Boolean event;
+
 }

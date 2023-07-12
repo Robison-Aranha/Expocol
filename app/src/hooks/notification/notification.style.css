@@ -11,7 +11,7 @@
     animation-duration: 0.5s;
     animation-name: slidein;
     animation-iteration-count: 1;
-    background-color: #d1d1d1;
+    background-color: var(--main-terciary-color);
     border-radius: 10px;
     z-index: 400;
 }

@@ -19,12 +19,19 @@ export const [useGlobalIndex, IndexProvider] = createGlobalState()
 
 export const [useGlobalLoading, LoadinProvider] = createGlobalState(false)
 
-export const [useGoogleCredentials, GoogleProvider] = createGlobalState(localStorage.getItem("google"))
+export const [useGoogleCredentials, GoogleProvider] = createGlobalState()
+
+export const [useClassroomToken, ClassroomTokenProvider] = createGlobalState()
+
+export const [useClassroomWorks, ClassroomWorkProvider] = createGlobalState()
+
+export const [useLoadCalendar, LoadCalendarProvider] = createGlobalState()
 
 export const [useGlobalEvent, EventProvider] = createGlobalState({
     visualization: false,
     sent: false,
-    event : null
+    event : null,
+    mode: 0
 })
 
 export const [useGlobalCalendar, CalendarProvider] = createGlobalState()

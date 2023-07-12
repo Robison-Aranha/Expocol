@@ -50,10 +50,16 @@ public class RetornarMesService {
 
                 DiaResponse diaResponse = RetornarDiasMapper.toResponse(d);
 
-                if (d.getIndexes().size() > 1) {
+                if (d.getIndexes().size() > 0) {
                     diaResponse.setIndex(true);
                 } else {
                     diaResponse.setIndex(false);
+                }
+
+                if (d.getEventos().size() > 0) {
+                    diaResponse.setEvent(true);
+                } else {
+                    diaResponse.setEvent(false);
                 }
 
                 return diaResponse;

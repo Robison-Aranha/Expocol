@@ -6,7 +6,8 @@ import {
   useGlobalIndexModal,
   useGlobalIndex,
   useGlobalEvent,
-  useGlobalCalendar
+  useGlobalCalendar,
+  useLoadCalendar
 } from "../../globalState/globalState";
 
 export const Indexes = () => {
@@ -16,32 +17,24 @@ export const Indexes = () => {
   const [globalModal, setGlobalModal] = useGlobalModal();
   const [globalIndex, setGlobalIndex] = useGlobalIndex();
   const [globalEvent, setGlobalEvent] = useGlobalEvent()
+  const [, setLoadCalendar] = useLoadCalendar()
   const [globalCalendar, ] = useGlobalCalendar()
 
   const { returnIndexesEvents, addIndex } = useCalendarApi();
-
-  useEffect(() => {
-    if (indexGlobalState) {
-      const indexSection = document.getElementById("index");
-
-      indexSection.style.transform = "translatex(0)";
-
-    }
-  }, [indexGlobalState]);
 
   useEffect(() => {
 
     if (globalCalendar) {
 
       returnIndexesEventsService()
-      setIndexGlobalState(true)
+      
     }
 
   }, [globalCalendar])
 
   useEffect(() => {
 
-    if (globalIndex ||  globalEvent.sent) {
+    if (!globalIndex ||  globalEvent.sent) {
       returnIndexesEventsService();
       setGlobalEvent({...globalEvent, sent: false})
     }
@@ -53,6 +46,7 @@ export const Indexes = () => {
 
       setFiles([...response.indexes]);
       setEvents([...response.eventos]);
+      setIndexGlobalState(true)
     } catch (response) {}
   };
 
@@ -66,6 +60,8 @@ export const Indexes = () => {
 
       event.target.value = "";
 
+
+      setLoadCalendar(true)
       returnIndexesEventsService();
       setGlobalModal([
         ...globalModal,
@@ -83,60 +79,62 @@ export const Indexes = () => {
   }
 
   return (
-    <div className="Indexes-section" id="index">
-      <div className="Indexes-files">
-        <h1> Arquivos </h1>
-        <p>
-          {" "}
-          Os arquivos devem ter um maximo de 25 caracteres em seus titulos!
-        </p>
-        <div className="Indexes-files-content">
-          {files.length > 0 ? (
-            files.map((file, index) => (
-              <div
-                className="Indexes-file button button-outline"
-                onClick={() => setGlobalIndex(file.id)}
-                key={index}
-              >
-                <p>{file.indexName}</p>
-              </div>
-            ))
-          ) : (
-            <p> Não há arquivos anexados ainda... </p>
-          )}
-        </div>
-      </div>
-      <div className="Indexes-events">
-        <h1> Eventos </h1>
-        <div className="Indexes-events-content">
-          {events.length > 0 ? (
-              events.map((event, index) => (
+    <div className={ "Indexes-section" + (indexGlobalState ? " modal" : "") } >
+      <div className="Indexes-container" id="index">
+        <div className="Indexes-files">
+          <h1> Arquivos </h1>
+          <p>
+            {" "}
+            Os arquivos devem ter um maximo de 25 caracteres em seus titulos!
+          </p>
+          <div className="Indexes-files-content">
+            {files.length > 0 ? (
+              files.map((file, index) => (
                 <div
-                  className="Indexes-event button button-clear"
-                  onClick={() => setGlobalEvent({...globalEvent, visualization: true, event: event.id})}
+                  className="Indexes-file button button-outline"
+                  onClick={() => setGlobalIndex(file.id)}
                   key={index}
                 >
-                  <p>{event.titulo + (event.tempo ? " : " + event.tempo : "" )}</p>
+                  <p>{file.indexName}</p>
                 </div>
               ))
             ) : (
-              <p> Não há eventos marcados ainda... </p>
+              <p> Não há arquivos anexados ainda... </p>
             )}
+          </div>
         </div>
-        <div></div>
-      </div>
-      <div className="Indexes-choice">
-        <input
-          type="file"
-          name="file"
-          id="file"
-          className="Indexes-input-file"
-          onChange={addIndexService}
-        />
-        <label className="button" htmlFor="file">
-          Choose a file
-        </label>
-        <button onClick={() => setGlobalEvent({...globalEvent, visualization: true})}> Adicionar evento </button>
+        <div className="Indexes-events">
+          <h1> Eventos </h1>
+          <div className="Indexes-events-content">
+            {events.length > 0 ? (
+                events.map((event, index) => (
+                  <div
+                    className="Indexes-event button button-clear"
+                    onClick={() => setGlobalEvent({...globalEvent, visualization: true, event: event.id, mode: 1})}
+                    key={index}
+                  >
+                    <p>{event.titulo + (event.tempo ? " : " + event.tempo : "" )}</p>
+                  </div>
+                ))
+              ) : (
+                <p> Não há eventos marcados ainda... </p>
+              )}
+          </div>
+          <div></div>
+        </div>
+        <div className="Indexes-choice">
+          <input
+            type="file"
+            name="file"
+            id="file"
+            className="Indexes-input-file"
+            onChange={addIndexService}
+          />
+          <label className="button" htmlFor="file">
+            Choose a file
+          </label>
+          <button onClick={() => setGlobalEvent({...globalEvent, visualization: true, mode: 0})}> Adicionar evento </button>
+        </div>
       </div>
     </div>
   );

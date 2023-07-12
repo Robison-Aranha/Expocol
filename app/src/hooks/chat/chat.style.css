@@ -11,14 +11,14 @@
     align-items: center;
     justify-content: center;
     display: none;
-
+    z-index: 2;
 }
 
 .Chat-container {
 
     width: 60%;
     height: 60%;
-    background-color: #f4f5f6;
+    background-color: var(--main-secundary-color);
     border-radius: 10px;
     opacity: 1;
     display: flex;
@@ -34,12 +34,12 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    padding: 1%;
 }
 
 .Chat-exit-button {
     cursor: pointer;
     margin: 0;
-    margin-right: 10px;
     max-height: 100%;
 }
 
@@ -54,14 +54,14 @@
     justify-content: center;
     width: 100%;
     height: 90%;
-    border-top: 1px solid #d1d1d1;
+    border-top: 1px solid var(--main-terciary-color);
 }
 
 .Chat-conversation {
     width: 70%;
     height: 100%;
     max-height: fit-content;
-    border-left: 1px solid #d1d1d1;
+    border-left: 1px solid var(--main-terciary-color);
 }
 
 .Chat-friends {
@@ -75,7 +75,7 @@
     align-items: center;
     justify-content: center;
     height: 10%;
-    background-color: #d1d1d1;
+    background-color: var(--main-terciary-color);
 }
 
 .Chat-friends-title > h4 {
@@ -114,7 +114,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    border-bottom: 1px solid #d1d1d1;
+    border-bottom: 1px solid var(--main-terciary-color);
 }
 
 .Chat-search-box {
@@ -150,7 +150,7 @@
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    border: 1px solid #d1d1d1;
+    border: 1px solid var(--main-terciary-color);
 
 }
 

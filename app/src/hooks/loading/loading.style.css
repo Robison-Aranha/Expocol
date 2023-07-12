@@ -13,9 +13,9 @@
 
 .Loading-loader {
     animation: is-rotating 1s infinite;
-    border: 6px solid #e5e5e5;
+    border: 6px solid var(--main-primary-color);
     border-radius: 50%;
-    border-top-color: #9B4DCA;
+    border-top-color: var(--main-quaternary-color);
     height: 50px;
     width: 50px;
 }

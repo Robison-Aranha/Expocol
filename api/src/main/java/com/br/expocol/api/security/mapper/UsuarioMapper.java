@@ -19,9 +19,10 @@ public class UsuarioMapper {
         return entity;
     }
 
-    public static TokenResponse toResponse(String entity) {
+    public static TokenResponse toResponse(String token, Long id) {
         return TokenResponse.builder()
-                .token(entity)
+                .token(token)
+                .id(id)
                 .build();
     }
 

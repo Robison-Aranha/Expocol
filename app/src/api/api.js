@@ -1,3 +1,4 @@
+export { useClassroomApi } from "./googleApi/classroomApi"
 export { useMessageApi } from "./messages/messagesApi"
 export { useFriendsApi } from "./friends/friendsApi"
 export { useLoginRegister } from "./loginRegister/loginRegister"

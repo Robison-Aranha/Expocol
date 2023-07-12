@@ -127,6 +127,7 @@ export const Chat = (props) => {
               <img src={searchImage} className="Chat-search-box-img" />
               <input
                 name="search"
+                type="text"
                 value={userData.search}
                 className="Chat-search-input"
                 onChange={handlerValue}

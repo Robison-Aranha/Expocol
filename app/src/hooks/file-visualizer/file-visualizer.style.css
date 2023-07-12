@@ -17,7 +17,7 @@
     width: 30%;
     height: fit-content;
     max-height: 90vh;
-    background-color: #f4f5f6;
+    background-color: var(--main-primary-color);
     border-radius: 10px;
     opacity: 1;
     display: flex;
@@ -41,7 +41,7 @@
     display: flex;
     align-items: center;
     justify-content: space-around;
-    background-color: #e4daed;
+    background-color: var(--main-secundary-color);
     width: 100%;
     padding: 5%;
 }

@@ -1,10 +1,11 @@
-import { useGlobalIndex, useGlobalModal } from "../../globalState/globalState";
+import { useGlobalIndex, useGlobalModal, useLoadCalendar } from "../../globalState/globalState";
 import { useIndexApi } from "../../api/api";
 import { useEffect, useState } from "react";
 import "./file-visualizer.style.css";
 
 export const FileVisualizer = () => {
   const [globalIndex, setGlobalIndex] = useGlobalIndex();
+  const [,setLoadCalendar] = useLoadCalendar()
   const [file, setFile] = useState();
   const { returnIndex, deleteIndex } = useIndexApi();
   const [globalModal, setGlobalModal] = useGlobalModal();
@@ -34,6 +35,7 @@ export const FileVisualizer = () => {
         ...globalModal,
         { message: "Arquivo excluido com sucesso!" },
       ]);
+      setLoadCalendar(true)
       setGlobalIndex(false);
     } catch (response) {}
   };
