@@ -139,7 +139,7 @@ export const Calendar = () => {
   };
 
   const returnClassroomWorkDay = (diaValor) => {
-
+    console.log(classroomWorks)
     if (classroomWorks) {
 
       if (classroomWorks[`${diaValor}`]) {
