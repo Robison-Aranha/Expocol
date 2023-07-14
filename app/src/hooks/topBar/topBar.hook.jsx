@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import { Chat, Solicitations } from "../hooks";
 import { useUsersApi } from "../../api/api";
 import { useNavigate } from "react-router-dom";
-import { useGlobalModal, useGlobalState, useGoogleCredentials, useClassroomToken, useClassroomWorks } from "../../globalState/globalState";
+import { useGlobalModal, useGlobalState, useGoogleCredentials, useClassroomToken } from "../../globalState/globalState";
 import { clientId } from "../../consts/googleAccountSecrets";
 import { scopes } from "../../consts/scopes";
 import jwt_decode from "jwt-decode"
@@ -22,7 +22,6 @@ export const ToPBar = () => {
   const [globalModal, setGlobalModal] = useGlobalModal()
   const [googleCredentials, setGoogleCredentials] = useGoogleCredentials()
   const [classroomToken, setClassroomToken] = useClassroomToken()
-  const [, setClassroomWorks] = useClassroomWorks()
   const [tokenClient, setTokenClient] = useState({})
 
   const navigate = useNavigate();
@@ -86,7 +85,6 @@ export const ToPBar = () => {
 
   const handleLogOutClassroom = () => {
     setClassroomToken(null)
-    setClassroomWorks(null)
     setGlobalModal([...globalModal, { message: "Log out com classroom concluido!" }])
   }
 
@@ -119,7 +117,6 @@ export const ToPBar = () => {
 
     setGoogleCredentials(null)
     setClassroomToken(null)
-    setClassroomWorks(null)
     setGlobalModal([...globalModal, { message: "Log out concluido! "} ])
   }
 

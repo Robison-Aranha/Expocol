@@ -13,9 +13,7 @@ export const useClassroomApi = () => {
 
     const returnCourses = async () => {
 
-      console.log(classroomToken)
       const response = await http.get("/courses?courseStates=ACTIVE", { headers: { Authorization: "Bearer " + classroomToken } })
-
 
       return response.data
 

@@ -25,19 +25,17 @@ root.render(
         <ClassroomTokenProvider>
           <CalendarProvider>
             <IndexModalProvider>
-              <ClassroomWorkProvider>
-                <IndexProvider>
-                  <LoadinProvider>
-                    <EventProvider>
-                      <LoadCalendarProvider>
-                        <BrowserRouter>
-                          <App />
-                        </BrowserRouter>
-                      </LoadCalendarProvider>
-                    </EventProvider>
-                  </LoadinProvider>
-                </IndexProvider>
-              </ClassroomWorkProvider>
+              <IndexProvider>
+                <LoadinProvider>
+                  <EventProvider>
+                    <LoadCalendarProvider>
+                      <BrowserRouter>
+                        <App />
+                      </BrowserRouter>
+                    </LoadCalendarProvider>
+                  </EventProvider>
+                </LoadinProvider>
+              </IndexProvider>
             </IndexModalProvider>
           </CalendarProvider>
         </ClassroomTokenProvider>

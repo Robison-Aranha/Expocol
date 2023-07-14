@@ -14,7 +14,6 @@ export const Notification = () => {
 
       setTimeout(() => {
         setTimePassed(!timePassed);
-        console.log("deletou")
       }, 2000);
     }
     

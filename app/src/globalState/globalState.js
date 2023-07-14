@@ -23,8 +23,6 @@ export const [useGoogleCredentials, GoogleProvider] = createGlobalState()
 
 export const [useClassroomToken, ClassroomTokenProvider] = createGlobalState()
 
-export const [useClassroomWorks, ClassroomWorkProvider] = createGlobalState()
-
 export const [useLoadCalendar, LoadCalendarProvider] = createGlobalState()
 
 export const [useGlobalEvent, EventProvider] = createGlobalState({
