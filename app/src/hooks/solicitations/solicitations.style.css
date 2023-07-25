@@ -25,12 +25,11 @@
     height: 60%;
     background-color: var(--main-primary-color);
     border-radius: 10px;
-
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
-
+    min-width: 250px;
 
 }
 
@@ -41,7 +40,8 @@
     align-items: center;
     border: 1px solid var(--main-secundary-color);
     height: 15%;
-
+    width: 100%;
+    height: 15%;
 }
 
 .Friends-exit {
@@ -64,10 +64,13 @@
 }
 
 .Friends-solicitations-content {
-    display: flexd;
+    width: 65%;
+    height: 100%;
+    display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
+    padding: 3%;
 }
 
 .Friends-solicitations-content > p {
@@ -75,20 +78,36 @@
 }
 
 .Friends-solicitations-img {
-    width: 10%;
-    margin-right: 10px;
+    width: 15%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 80%;
+    border-radius: 50%;
+    overflow: hidden;
+    max-width: 60px;
+    min-width: 60px;
+}
+
+.Friends-solicitations-img > img {
+    width: 100%;
+    height: 100%;
 }
 
 .Friends-exit-button {
-
     cursor: pointer;
     margin: 0;
     max-height: 100%;
 
 }
 
-.Friends-solicitation-actions > button {
-    margin-right: 5px;
+.Friends-solicitation-actions {
+    width: 20%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
 }
 
 .Friends-title {

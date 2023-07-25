@@ -6,15 +6,18 @@ import "./index.css";
 import {
   Provider,
   ModalProvider,
-  IndexModalProvider,
+  IndexesModalProvider,
   IndexProvider,
-  LoadinProvider,
+  LoadingProvider,
   GoogleProvider,
   EventProvider,
   CalendarProvider,
   LoadCalendarProvider,
   ClassroomTokenProvider,
-  ClassroomWorkProvider,
+  ClassroomUtilsProvider,
+  ClassroomSelectedWorkProvider,
+  ChangeProfileProvider,
+  AnexoProvider
 } from "./globalState/globalState";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
@@ -23,21 +26,29 @@ root.render(
     <ModalProvider>
       <Provider>
         <ClassroomTokenProvider>
-          <CalendarProvider>
-            <IndexModalProvider>
-              <IndexProvider>
-                <LoadinProvider>
-                  <EventProvider>
-                    <LoadCalendarProvider>
-                      <BrowserRouter>
-                        <App />
-                      </BrowserRouter>
-                    </LoadCalendarProvider>
-                  </EventProvider>
-                </LoadinProvider>
-              </IndexProvider>
-            </IndexModalProvider>
-          </CalendarProvider>
+          <ClassroomUtilsProvider>
+            <ClassroomSelectedWorkProvider>
+              <CalendarProvider>
+                <IndexesModalProvider>
+                  <ChangeProfileProvider>
+                    <AnexoProvider>
+                      <IndexProvider>
+                        <LoadingProvider>
+                          <EventProvider>
+                            <LoadCalendarProvider>
+                              <BrowserRouter>
+                                <App />
+                              </BrowserRouter>
+                            </LoadCalendarProvider>
+                          </EventProvider>
+                        </LoadingProvider>
+                      </IndexProvider>
+                    </AnexoProvider>
+                  </ChangeProfileProvider>
+                </IndexesModalProvider>
+              </CalendarProvider>
+            </ClassroomSelectedWorkProvider>
+          </ClassroomUtilsProvider>
         </ClassroomTokenProvider>
       </Provider>
     </ModalProvider>

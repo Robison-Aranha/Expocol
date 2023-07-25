@@ -1,5 +1,6 @@
 package com.br.expocol.api.service.amizade;
 
+import com.br.expocol.api.controller.response.Usuario.UsuarioListaComplResponse;
 import com.br.expocol.api.controller.response.Usuario.UsuarioListaResponse;
 import com.br.expocol.api.domain.Usuario.Usuario;
 import com.br.expocol.api.mapper.Usuario.ListarUsuarioMapper;
@@ -23,11 +24,11 @@ public class ListarAmigosService {
     UsuarioAutenticadoService usuarioAutenticadoService;
 
 
-    public Page<UsuarioListaResponse> listar() {
+    public Page<UsuarioListaComplResponse> listar() {
 
         Usuario usuario = usuarioAutenticadoService.get();
 
-        List<UsuarioListaResponse> lista = usuario.getAmigos().stream().map(ListarUsuarioMapper::toResponse).collect(Collectors.toList());
+        List<UsuarioListaComplResponse> lista = usuario.getAmigos().stream().map(ListarUsuarioMapper::toResponseCompl).collect(Collectors.toList());
 
         return new PageImpl<>(lista);
 

@@ -1,9 +1,9 @@
 package com.br.expocol.api.domain.Calendario;
 
 
+import com.br.expocol.api.domain.Calendario.Dia;
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
 

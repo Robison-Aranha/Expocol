@@ -7,4 +7,7 @@ export { Indexes } from "./indexes/indexes.hook";
 export { FileVisualizer } from "./file-visualizer/file-visualizer.hook";
 export { Notification } from "./notification/notification.hook";
 export { Loading } from "./loading/loading.hook";
-export { EventVisualizerCreator } from "./event-visualizer-creator/event-visualizer-creator.hook";
+export { EventVisualizerCreator } from "./indexes/event-visualizer-creator/event-visualizer-creator.hook";
+export { ClassroomWorkVisualizer } from "./indexes/classroom-work-visualizer/classroom-work-visualizer.hook";
+export { ChangeProfile } from "./change-profile/change-profile.hook";
+export { AnexoFile } from "./conversation/anexo-file/anexo-file.hook";

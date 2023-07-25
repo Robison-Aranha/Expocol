@@ -1,24 +1,36 @@
 
 .Modal-section {
     position: fixed;
-    width: fit-content;
-    height: min-content;
-    padding: 1%;
+    display: flex;
+    flex-direction: column ;
+    align-items: center;
+    justify-content: flex-start;
+    width: max-content;
+    height: max-content;
+    z-index: 400;
+    max-height: 20vh;
+    overflow: hidden;
+    padding: 5px;
+}
+
+
+.Modal-container {
+    padding: 10px;
+    width: max-content;
+    display: flex;
     align-items: center;
     justify-content: center;
-    min-height: 5%;
-    z-index: 2;
     animation-duration: 0.5s;
     animation-name: slidein;
     animation-iteration-count: 1;
     background-color: var(--main-terciary-color);
     border-radius: 10px;
-    z-index: 400;
 }
 
-.Modal-section > p {
+.Modal-container > p {
     margin: 0;
 }
+
 
 @keyframes slidein {
     from {

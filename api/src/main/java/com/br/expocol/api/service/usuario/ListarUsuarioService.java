@@ -1,5 +1,6 @@
 package com.br.expocol.api.service.usuario;
 
+import com.br.expocol.api.controller.response.Usuario.UsuarioListaComplResponse;
 import com.br.expocol.api.controller.response.Usuario.UsuarioListaResponse;
 import com.br.expocol.api.mapper.Usuario.ListarUsuarioMapper;
 import com.br.expocol.api.security.controller.response.UsuarioResponse;
@@ -24,14 +25,12 @@ public class ListarUsuarioService {
     @Autowired
     VerificarParametroService verificarParametroUsuarioService;
 
-    public Page<UsuarioListaResponse> listar(String nome, Pageable pageable) {
+    public Page<UsuarioListaComplResponse> listar(String nome, Pageable pageable) {
 
         Long usuarioId = usuarioAutenticadoService.getId();
 
-        verificarParametroUsuarioService.verificar(nome);
-
         return usuarioRepository.findUsuarios(usuarioId, nome, pageable)
-                .map(ListarUsuarioMapper::toResponse);
+                .map(ListarUsuarioMapper::toResponseCompl);
 
     }
 }

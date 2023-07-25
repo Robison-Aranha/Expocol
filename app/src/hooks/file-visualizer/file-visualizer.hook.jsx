@@ -1,4 +1,4 @@
-import { useGlobalIndex, useGlobalModal, useLoadCalendar } from "../../globalState/globalState";
+import { useGlobalIndex, useGlobalModal, useLoadCalendar, useGlobalLoading } from "../../globalState/globalState";
 import { useIndexApi } from "../../api/api";
 import { useEffect, useState } from "react";
 import "./file-visualizer.style.css";
@@ -9,6 +9,7 @@ export const FileVisualizer = () => {
   const [file, setFile] = useState();
   const { returnIndex, deleteIndex } = useIndexApi();
   const [globalModal, setGlobalModal] = useGlobalModal();
+  const [, setLoading] = useGlobalLoading()
 
   useEffect(() => {
     if (globalIndex) {
@@ -19,12 +20,15 @@ export const FileVisualizer = () => {
   }, [globalIndex]);
 
   const returnIndexService = async () => {
+    setLoading(true)
     try {
       const response = await returnIndex(globalIndex);
 
-      console.log(response);
+      console.log(response)
+     
       setFile(response);
     } catch (response) {}
+    setLoading(false)
   };
 
   const deleteIndexService = async () => {
@@ -65,7 +69,7 @@ export const FileVisualizer = () => {
       <div className="File-container" id="file-index-container">
         {returnRenderIndex()}
         <div className="File-choice">
-          <a href={file?.index} download className="button">
+          <a href={file?.index} download={file?.indexName} className="button">
             Baixar
           </a>
           <button className="button-black" onClick={deleteIndexService}>

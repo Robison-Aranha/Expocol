@@ -26,4 +26,10 @@ public class BuscarUsuarioService {
 
 
     }
+
+    public Usuario porEmail(String email) {
+
+        return usuarioRepository.findByEmail(email)
+                .orElseThrow(() -> new UserNotFound());
+    }
 }

@@ -1,6 +1,6 @@
 import { over } from "stompjs";
 import SockJS from "sockjs-client";
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState } from "react";
 import { useUsersApi } from "../../api/api";
 import defaultImgAccount from "../../assets/account/default.png";
 import "./chat.style.css";
@@ -8,23 +8,25 @@ import { Conversation } from "../hooks";
 import { useFriendsApi } from "../../api/api";
 import { useGlobalState } from "../../globalState/globalState";
 import { useVerifyScrollBottom } from "../../scripts/verifyScrollBottom";
-import searchImage from "../../assets/friends/search.png"
+import searchImage from "../../assets/chat/search.png";
 
 export const Chat = (props) => {
   const [userState, setUserState] = useState(false);
   const [userGlobalState] = useGlobalState();
+  const [notificationMessage, setNotificationMessage] = useState([]);
   const [useSearch, setUseSearch] = useState([]);
   const [useFriends, setUserFriends] = useState([]);
-  const [useSock, setUseSock] = useState();
+  const [useSockNotification, setUseSockNotification] = useState();
+  const [useSockChat, setUseSockChat] = useState();
   const [useIsSocket, setUseIsSocket] = useState();
   const [useStomp, setUseStomp] = useState({});
   const [loadMore, setLoadMore] = useState(false);
 
   const [userData, setUserData] = useState({
-    to: "",
+    to: {},
     search: "",
     page: 0,
-    username: userGlobalState.nome,
+    email: userGlobalState.email,
   });
 
   const { listUser } = useUsersApi();
@@ -39,39 +41,71 @@ export const Chat = (props) => {
   useEffect(() => {
     setUserData({ ...userData, page: 0 });
     listUsersService();
-  }, [useMemo(() => userData.search)]);
+  }, [userData.search]);
 
   useEffect(() => {
-    setUseSock(new SockJS("http://localhost:8080/ws"));
+    setUseSockNotification(new SockJS("http://localhost:8080/ws"));
+    setUseSockChat(new SockJS("http://localhost:8080/ws"))
     setUseIsSocket(1);
     listFriendsService();
   }, []);
+
+  useEffect(() => {
+    listFriendsService();
+  }, [props.modal]);
+
+  useEffect(() => {
+    
+    const lastNotification = notificationMessage[notificationMessage.length - 1];
+
+    if (notificationMessage.length > 0) {
+      if (notificationMessage.filter(n => n == lastNotification).length > 1 || userData.to.email == lastNotification) {
+        notificationMessage.pop(notificationMessage.indexOf(lastNotification))
+        setNotificationMessage([...notificationMessage])
+      }
+    }
+
+  }, [notificationMessage])
 
   useEffect(() => {
     if (!userState) {
       verifyScrollBottom(() => {
         setLoadMore(true);
       }, "scroll-user");
+
+      setUserData({ ...userData, to: {}})
     }
-  }, [userState])
+  }, [userState]);
 
   useEffect(() => {
     if (useIsSocket == 1) {
-      setUseStomp({ ...useStomp, notification: over(useSock) });
+      setUseStomp({
+        ...useStomp,
+        notification: over(useSockNotification),
+        chat: over(useSockChat),
+      });
       setUseIsSocket(2);
     } else if (useIsSocket == 2) {
       connectNotification();
-    }
+      connectChat()
+    } 
   }, [useIsSocket]);
 
   useEffect(() => {
+    listUsersService();
+    setLoadMore(false);
+  }, [userData.page]);
+
+  useEffect(() => {
     if (loadMore) {
-      userData.page++;
       setUserData({ ...userData, page: userData.page + 1 });
-      listUsersService();
-      setLoadMore(false);
     }
   }, [loadMore]);
+
+  const connectChat = () => {
+    useStomp.chat.debug = null;
+    useStomp.chat.connect({}, onConnectedMessage, onError);
+  };
 
   const connectNotification = () => {
     useStomp.notification.debug = null;
@@ -79,14 +113,28 @@ export const Chat = (props) => {
   };
 
   const onConnectedNotification = () => {
+    
     useStomp.notification.subscribe(
-      "/private/" + userData.username + "/notification/friends",
+      "/private/" + userData.email + "/notification/friends",
       onMessageNotification
     );
   };
 
-  const onMessageNotification = (payload) => {
-    listFriendsService();
+  const onConnectedMessage = () => {
+    useStomp.chat.subscribe(
+      "/private/" + userData.email + "/chat",
+      onMessageChat
+    );
+  };
+
+  const onMessageChat = (payload) => {
+    let payloadData = JSON.parse(payload.body);
+
+    setNotificationMessage((prev) => [...prev, payloadData.from]);
+  };
+
+  const onMessageNotification = () => {
+    listFriendsService()
   };
 
   const onError = (error) => {
@@ -96,7 +144,7 @@ export const Chat = (props) => {
   const listUsersService = async () => {
     try {
       const response = await listUser(userData.search, userData.page);
-
+      
       if (userData.page == 0) {
         setUseSearch([...response.content]);
       } else {
@@ -116,6 +164,23 @@ export const Chat = (props) => {
     } catch (response) {
       console.log(response);
     }
+  };
+
+  const returnNotificationMessage = (friendEmail) => {
+    
+    if (notificationMessage.indexOf(friendEmail) != -1) {
+      
+     
+      return (
+        <div className="notification"></div>
+      )
+    }
+
+  };
+
+  const handlerRemoverNotification = (friendEmail) => {
+    notificationMessage.pop(notificationMessage.indexOf(friendEmail));
+    setNotificationMessage([...notificationMessage])
   };
 
   const returnUserInteration = () => {
@@ -142,20 +207,20 @@ export const Chat = (props) => {
                     key={index}
                     onClick={() => {
                       setUserState(true);
-                      setUserData({ ...userData, to: user });
+                      setUserData({ ...userData, to: { ...user } });
                     }}
                   >
-                    <img
-                      src={
-                        user.imagemPerfil
-                          ? user.imagemPerfil
-                          : defaultImgAccount
-                      }
-                      className="Chat-search-users-img"
-                    />
+                    <div className="Chat-search-users-img">
+                      <img
+                        src={
+                          user.imagemPerfil
+                            ? user.imagemPerfil
+                            : defaultImgAccount
+                        }
+                      />
+                    </div>
                     <div className="Chat-search-users-content">
                       <p> {user.nome} </p>
-                      <p> {user.email} </p>
                     </div>
                   </div>
                 ))
@@ -174,8 +239,13 @@ export const Chat = (props) => {
     <div className={"Chat-section" + (props.modal == false ? "" : " modal")}>
       <div className="Chat-container">
         <div className="Chat-exit">
-          <h2 className="Chat-title"><strong>Chat</strong></h2>
-          <button className="Chat-exit-button button-black button-small" onClick={props.setModal}>
+          <h2 className="Chat-title">
+            <strong>Chat</strong>
+          </h2>
+          <button
+            className="Chat-exit-button button-black button-small"
+            onClick={props.setModal}
+          >
             {" "}
             X{" "}
           </button>
@@ -184,7 +254,9 @@ export const Chat = (props) => {
         <div className="Chat-content">
           <div className="Chat-friends">
             <div className="Chat-friends-title">
-              <h4><strong> Amigos </strong></h4>
+              <h4>
+                <strong> Amigos </strong>
+              </h4>
             </div>
             <div className="Chat-friends-list">
               {useFriends.length > 0
@@ -193,26 +265,32 @@ export const Chat = (props) => {
                       className="Chat-friends-users"
                       key={index}
                       onClick={() => {
-                        setUserState(!userState);
-                        setUserData({ ...userData, to: friend });
+                        setUserState(userState == true ? true : !userState);
+                        handlerRemoverNotification(friend.email);
+                        setUserData({ ...userData, to: { ...friend } });
                       }}
                     >
-                      <img
-                        className="Chat-friends-img"
-                        src={
-                          friend.imagemPerfil
-                            ? friend.imagemPerfil
-                            : defaultImgAccount
-                        }
-                      />
+                      {returnNotificationMessage(friend.email)}
+                      <div className="Chat-friends-img">
+                        <img
+                          src={
+                            friend.imagemPerfil
+                              ? friend.imagemPerfil
+                              : defaultImgAccount
+                          }
+                        />
+                      </div>
                       <div className="Chat-friends-content">
-                        <p> {friend.nome} </p>
+                        <p>
+                          {" "}
+                          <strong> {friend.nome} </strong>{" "}
+                        </p>
                         <p> {friend.email} </p>
                       </div>
                     </div>
                   ))
                 : null}
-              </div>
+            </div>
           </div>
           <div className="Chat-conversation">{returnUserInteration()}</div>
         </div>

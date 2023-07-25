@@ -2,7 +2,6 @@ package com.br.expocol.api.domain.Calendario;
 
 
 import com.br.expocol.api.enumerator.DiasDaSemana;
-import com.fasterxml.jackson.annotation.JacksonInject;
 import io.hypersistence.utils.hibernate.type.basic.PostgreSQLEnumType;
 import jakarta.persistence.*;
 import lombok.*;

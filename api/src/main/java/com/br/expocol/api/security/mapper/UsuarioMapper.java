@@ -3,7 +3,6 @@ package com.br.expocol.api.security.mapper;
 import com.br.expocol.api.domain.Usuario.Usuario;
 import com.br.expocol.api.security.controller.request.UsuarioRequest;
 import com.br.expocol.api.security.controller.response.TokenResponse;
-import com.br.expocol.api.security.controller.response.UsuarioResponse;
 import com.br.expocol.api.security.domain.Permissao;
 
 import java.util.List;

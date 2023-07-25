@@ -5,6 +5,8 @@ const http = axios.create({
   withCredentials: true,
 });
 
+const FINAL_SIZE = 8;
+
 export const useIndexApi = () => {
   const returnIndex = async (id) => {
     const response = await http.get("/" + id);
@@ -17,6 +19,8 @@ export const useIndexApi = () => {
 
     return response.data;
   };
+
+
 
   return { returnIndex, deleteIndex };
 };

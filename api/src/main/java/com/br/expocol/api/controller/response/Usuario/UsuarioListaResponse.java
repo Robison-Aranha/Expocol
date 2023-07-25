@@ -13,6 +13,5 @@ public class UsuarioListaResponse {
 
     private Long id;
     private String nome;
-    private String email;
     private String imagemPerfil;
 }

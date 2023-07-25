@@ -10,8 +10,10 @@ public class MensagemMapper {
     public static Message toResponse(Mensagem entity) {
 
         return Message.builder()
-                .to(entity.getDestinatario().getNome())
+                .to(entity.getDestinatario().getEmail())
                 .index(entity.getIndex())
+                .anexoName(entity.getAnexo() != null ? entity.getAnexo().getAnexoName() : null)
+                .anexoId(entity.getAnexo() != null ? entity.getAnexo().getId() : null)
                 .message(entity.getMensagem())
                 .build();
     }

@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState } from "react";
 import { useCalendarApi, useClassroomApi } from "../../api/api";
 import "./calendar.style.css";
 import { months } from "../../consts/months";
@@ -7,7 +7,8 @@ import {
   useGlobalLoading,
   useGlobalCalendar,
   useLoadCalendar,
-  useClassroomToken
+  useClassroomToken,
+  useClassroomUtils,
 } from "../../globalState/globalState";
 import ClassroomIcon from "../../assets/tools/classroom.png";
 
@@ -24,14 +25,14 @@ export const Calendar = () => {
   const { returnCourses, returnCourseWork } = useClassroomApi();
   const [globalCalendar, setGlobalCalendar] = useGlobalCalendar();
   const [classroomToken] = useClassroomToken();
-  const [classroomWorks, setClassroomWorks] = useState()
-  const [classroomCourses, setClassroomCourses] = useState()
-  const [selectedCourse, setSelectedCourse] = useState()
+  const [classroomUtils, setClassroomUtils] = useClassroomUtils();
+  const [selectedCourse, setSelectedCourse] = useState();
   const [loadCalendar, setLoadCalendar] = useLoadCalendar();
-  const [, setLoading] = useGlobalLoading();
+  const [loading, setLoading] = useGlobalLoading();
 
   useEffect(() => {
     returnMonthService();
+
   }, [calendar.year, calendar.month]);
 
   useEffect(() => {
@@ -42,27 +43,20 @@ export const Calendar = () => {
   }, [loadCalendar]);
 
   useEffect(() => {
-
     if (classroomToken) {
-      handleClasses()
+      handleClasses();
     } else {
-      setClassroomCourses(null)
-      setClassroomWorks(null)
-      setSelectedCourse(null)
+      setClassroomUtils({ courses: null, monthWorks: null });
+      setSelectedCourse(null);
     }
-
-  }, [classroomToken])
+  }, [classroomToken]);
 
   useEffect(() => {
 
-    setClassroomWorks(null)
-
     if (selectedCourse) {
-      handleClassroomWorks()
+      handleClassroomWorks();
     }
-
-    
-  }, [selectedCourse, calendar])
+  }, [selectedCourse]);
 
   const returnMonthService = async () => {
     try {
@@ -74,6 +68,11 @@ export const Calendar = () => {
       console.log(response);
 
       setCalendar({ ...calendar, days: { ...response.days } });
+
+      if (classroomToken && selectedCourse) {
+        handleClassroomWorks()
+      }
+
     } catch (response) {
       if (response.response.status == 404) {
         createCalendarService();
@@ -84,52 +83,48 @@ export const Calendar = () => {
   };
 
   const handleClasses = async () => {
-
-    setLoading(true)
+    setLoading(true);
 
     try {
+      const courses = await returnCourses();
 
-      const courses = await returnCourses()
-      
-      setClassroomCourses([...courses.courses])
+      setClassroomUtils({ ...classroomUtils, courses: [...courses.courses] });
+    } catch (error) {}
 
-    } catch(error) {}
-
-    setLoading(false)
-
-  }
+    setLoading(false);
+  };
 
   const handleClassroomWorks = async () => {
-
-    setLoading(true)
+    setLoading(true);
 
     const actualMonth = months.findIndex((item) => item == calendar.month) + 1;
 
     try {
-      
       const coursesWorks = await returnCourseWork(selectedCourse);
-      const monthWorks = []
+      const monthWorks = [];
 
       if (coursesWorks.courseWork) {
-
         for (let i = 0; i < coursesWorks.courseWork.length; i++) {
-
-          const work = coursesWorks.courseWork[i]
+          const work = coursesWorks.courseWork[i];
 
           if (work.dueDate) {
-
-            if (work.dueDate.year == calendar.year && work.dueDate.month == actualMonth) {
-              
-                monthWorks[`${work.dueDate.day}`] = work
+            if (
+              work.dueDate.year == calendar.year &&
+              work.dueDate.month == actualMonth
+            ) {
+              if (monthWorks[`${work.dueDate.day}`]) {
+                monthWorks[`${work.dueDate.day}`].push(work);
+              } else {
+                monthWorks[`${work.dueDate.day}`] = [work];
               }
+            }
           }
-
         }
       }
 
-      setClassroomWorks(monthWorks)
+      setClassroomUtils({ ...classroomUtils, monthWorks: { ...monthWorks } });
 
-      setLoading(false)
+      setLoading(false);
     } catch (response) {
       console.log(response);
     }
@@ -150,6 +145,21 @@ export const Calendar = () => {
     setCalendar({ ...calendar, [name]: value });
   };
 
+  const handlerYear = (event) => {
+    
+    try {
+
+      const ano = parseInt(event.target.value)
+
+      if (ano > 0 && event.target.value.length == 4) {
+        event.target.value = ano
+        handlerValue(event)
+      } 
+
+    } catch  {}
+    
+  }
+
   const handleIndexGlobalState = (diaValue) => {
     if (diaValue) {
       setGlobalCalendar({
@@ -162,39 +172,30 @@ export const Calendar = () => {
   };
 
   const returnClassesSelections = () => {
-  
-    if (classroomCourses) {
-
+    if (classroomUtils.courses) {
       return (
-
-        <select
-          onChange={(event) => setSelectedCourse(event.target.value)}
-        >
-          <option selected disabled> Selecione um dos cursos</option>
-          { classroomCourses.map((course, key) => (
+        <select onChange={(event) => setSelectedCourse(event.target.value)}>
+          <option selected disabled>
+            {" "}
+            Selecione um dos cursos
+          </option>
+          {classroomUtils.courses.map((course, key) => (
             <option key={key} value={course.id}>
-              { course.name }
+              {course.name}
             </option>
-          )) }
-
+          ))}
         </select>
-      )
+      );
     }
-  }
+  };
 
   const returnClassroomWorkDay = (diaValor) => {
-  
-    if (classroomWorks) {
-
-      if (classroomWorks[`${diaValor}`]) {
-
-        return (
-          <img  src={ClassroomIcon} />
-        )
-
+    if (classroomUtils.monthWorks && !loading) {
+      if (classroomUtils.monthWorks[`${diaValor}`]) {
+        return <img src={ClassroomIcon} />;
       }
     }
-  }
+  };
 
   return (
     <>
@@ -217,9 +218,9 @@ export const Calendar = () => {
               type="number"
               name="year"
               value={calendar.year}
-              onChange={handlerValue}
+              onChange={handlerYear}
             />
-            { returnClassesSelections()}
+            {returnClassesSelections()}
           </div>
           <div className="Calendar-info">
             <div className="Calendar-info-index">

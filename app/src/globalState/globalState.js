@@ -13,21 +13,29 @@ export const [useGlobalState, Provider] = createGlobalState(localStorage.getItem
 
 export const [useGlobalModal, ModalProvider] = createGlobalState([]);
 
-export const [useGlobalIndexModal, IndexModalProvider] = createGlobalState(false);
+export const [useGlobalIndexesModal, IndexesModalProvider] = createGlobalState(false);
 
 export const [useGlobalIndex, IndexProvider] = createGlobalState()
 
-export const [useGlobalLoading, LoadinProvider] = createGlobalState(false)
+export const [useGlobalChangeProfile, ChangeProfileProvider] = createGlobalState()
+
+export const [useGlobalLoading, LoadingProvider] = createGlobalState(false)
 
 export const [useGoogleCredentials, GoogleProvider] = createGlobalState()
 
 export const [useClassroomToken, ClassroomTokenProvider] = createGlobalState()
 
+export const [useClassroomUtils, ClassroomUtilsProvider] = createGlobalState({ courses: null, monthWorks: null})
+
+export const [useClassroomSelectedWork, ClassroomSelectedWorkProvider] = createGlobalState()
+
+export const [useAnexoModal, AnexoProvider] = createGlobalState()
+
 export const [useLoadCalendar, LoadCalendarProvider] = createGlobalState()
 
 export const [useGlobalEvent, EventProvider] = createGlobalState({
     visualization: false,
-    sent: false,
+    load: false,
     event : null,
     mode: 0
 })

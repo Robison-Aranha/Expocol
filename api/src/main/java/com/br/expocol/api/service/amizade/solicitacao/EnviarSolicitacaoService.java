@@ -44,7 +44,7 @@ public class EnviarSolicitacaoService {
         usuarioRepository.save(solicitado);
 
         Notification notification = new Notification();
-        notification.setTo(solicitado.getNome());
+        notification.setTo(solicitado.getEmail());
         notification.setNotification(usuario.getNome() + " enviou uma solicitação de amizade!");
 
         mandarNotificaçãoService.mandar(notification, "/notification/solicitacoes");

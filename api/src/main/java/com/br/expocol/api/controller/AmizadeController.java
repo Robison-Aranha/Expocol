@@ -1,6 +1,7 @@
 package com.br.expocol.api.controller;
 
 
+import com.br.expocol.api.controller.response.Usuario.UsuarioListaComplResponse;
 import com.br.expocol.api.controller.response.Usuario.UsuarioListaResponse;
 import com.br.expocol.api.service.amizade.DesfazerAmizadeService;
 import com.br.expocol.api.service.amizade.ListarAmigosService;
@@ -64,7 +65,7 @@ public class AmizadeController {
     }
 
     @GetMapping()
-    public Page<UsuarioListaResponse> listarAmigos(){
+    public Page<UsuarioListaComplResponse> listarAmigos(){
         return listarAmigosService.listar();
     }
 

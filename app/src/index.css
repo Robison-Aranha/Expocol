@@ -65,6 +65,11 @@ blockquote {
     border-color: transparent;
   }
 
+.button-classroom {
+  color: #0078FD;
+  border-color: #0078FD;
+}
+
 .button-small {
     font-size: .8rem;
     height: 2.8rem;

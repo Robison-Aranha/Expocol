@@ -47,19 +47,18 @@ export const Notification = () => {
 
   return (
     <>
-      {globalModal.length > 0
-        ? globalModal.map((notification, index) => (
-            <div
-              className="Modal-section column"
-              style={{
-                display: globalModal.length > 0 ? "flex" : "none"
-              }}
-              key={index}
-            >
-              <p><strong> {notification.message} </strong></p>
-            </div>
-          ))
-        : null}
+      <div className="Modal-section" style={{ display: globalModal.length > 0 ? "flex" : "none"}}>
+        {globalModal.length > 0
+          ? globalModal.map((notification, index) => (
+              <div
+                className="Modal-container"
+                key={index}
+              >
+                <p><strong> {notification.message} </strong></p>
+              </div>
+            ))
+          : null}
+        </div>
     </>
   );
 };

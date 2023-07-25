@@ -21,7 +21,7 @@
     flex-direction: column;
     align-items: center;
     background-color: var(--main-secundary-color);
-    justify-content: space-around;
+    justify-content: flex-start;
     box-shadow: 10px 1px 14px 2px rgb(0 0 0 / 50%);
     right: 0;
     flex-wrap: initial;
@@ -38,7 +38,7 @@
     bottom: 0;
 }
 
-.Indexes-files {
+.Indexes-content {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -47,15 +47,20 @@
     height: 30%;
     min-height: 40vh;
     max-width: 100%;
+    margin-bottom: 30px;
 }
 
-.Indexes-files > p {
+.Indexes-content > h1 {
+    text-align: center;
+}
+
+.Indexes-content > p {
     text-align: center;
     font-size: 13px;
     width: 70%;
 }
 
-.Indexes-files-content {
+.Indexes-details {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -69,9 +74,6 @@
     overflow-x: hidden;
 }
 
-.Indexes-files-content > p {
-    margin-top: 10px;
-} 
 
 .Indexes-input-file {
 
@@ -84,31 +86,24 @@
 
 }
 
-.Indexes-events {
 
+.Indexes-item {
+    width: fit-content;
+    max-width: 95%;
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
-    width: 80%;
-    height: 30%;
-    min-height: 40vh;
-    max-width: 100%;
 }
 
-.Indexes-events-content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    background-color: var(--main-terciary-color);
-    border-radius: 10px;
-    padding: 5%;
-    width: 80%;
-    height: 100%;
-    overflow: auto;
-    overflow-x: hidden;
+.Indexes-item > p {
+    max-width: 100%;
+    text-align: center;
+    overflow: hidden;
 }
+
+
+
+
 
 
 

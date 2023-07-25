@@ -14,7 +14,7 @@ export const Solicitations = (props) => {
   const [useIsSocket, setUseIsSocket] = useState();
   const [useStomp, setUseStomp] = useState({});
   const [userData] = useState({
-    username : userGlobalState.nome
+    email : userGlobalState.email
   })
 
   const {
@@ -46,7 +46,7 @@ export const Solicitations = (props) => {
   const onConnectedNotification = () => {
     console.log(userData)
     useStomp.notification.subscribe(
-      "/private/" + userData.username + "/notification/solicitacoes",
+      "/private/" + userData.email + "/notification/solicitacoes",
       onMessageNotification
     );
   };
@@ -56,7 +56,7 @@ export const Solicitations = (props) => {
 
     let payloadData = JSON.parse(payload.body);
 
-    setGlobalModal([...globalModal, { message: payloadData.notification, color : "green"}])
+    setGlobalModal(prev => [...prev, { message: payloadData.notification}])
   };
 
   const onError = (error) => {
@@ -66,7 +66,7 @@ export const Solicitations = (props) => {
   const listFriendsSolicitationsService = async () => {
     try {
       const response = await listFriendSolicitations();
-      console.log(response.content);
+    
       setUseFriendsSolicitation([...response.content]);
     } catch (response) {
       console.log(response);
@@ -118,17 +118,17 @@ export const Solicitations = (props) => {
           {useFriendsSolicitation.length > 0
             ? useFriendsSolicitation.map((solicitation, index) => (
                 <div className="Friends-solicitations" key={index}>
-                  <img
-                    src={
-                      solicitation.imagemPerfil
-                        ? solicitation.imagemPerfil
-                        : defaultImgAccount
-                    }
-                    className="Friends-solicitations-img"
-                  />
+                  <div className="Friends-solicitations-img">
+                    <img
+                      src={
+                        solicitation.imagemPerfil
+                          ? solicitation.imagemPerfil
+                          : defaultImgAccount
+                      }
+                    />
+                  </div>
                   <div className="Friends-solicitations-content">
                     <p><strong> {solicitation.nome} </strong></p>
-                    <p> {solicitation.email} </p>
                   </div>
                   <div className="Friends-solicitation-actions">
                     <button 

@@ -9,6 +9,7 @@ import com.br.expocol.api.enumerator.DiasDaSemana;
 import com.br.expocol.api.mapper.Calendario.RetornarDiasMapper;
 import com.br.expocol.api.repository.Calendario.DiaRepository;
 import com.br.expocol.api.security.service.UsuarioAutenticadoService;
+import com.br.expocol.api.service.VerificarParametroService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +25,9 @@ public class RetornarMesService {
 
     @Autowired
     UsuarioAutenticadoService usuarioAutenticadoService;
+
+    @Autowired
+    VerificarParametroService verificarParametroService;
 
     @Autowired
     DiaRepository diaRepository;

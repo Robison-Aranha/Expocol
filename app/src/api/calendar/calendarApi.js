@@ -54,6 +54,11 @@ export const useCalendarApi = () => {
     return response.data;
   };
 
+  const deleteEvent = async (id) => {
+
+    await http.delete("/evento/" + id)
+  }
+
   const returnEvent = async (id) => {
     const response = await http.get("/evento/" + id);
 
@@ -75,5 +80,6 @@ export const useCalendarApi = () => {
     returnIndexesEvents,
     addEvent,
     returnEvent,
+    deleteEvent
   };
 };

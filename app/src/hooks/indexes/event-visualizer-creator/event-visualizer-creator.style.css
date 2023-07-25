@@ -18,7 +18,7 @@
 .Event-container {
 
     width: 40%;
-    height: 65%;
+    height: 75%;
     background-color: var(--main-primary-color);
     border-radius: 10px;
     opacity: 1;
@@ -50,6 +50,16 @@
     padding: 5%;
 }
 
+.overflow-event {
+    width: 100%;
+    max-height: 100%;
+    overflow: auto;
+    overflow-x: hidden;
+    word-wrap: break-word;
+    margin: 0;
+    margin-top: 16px;
+    margin-bottom: 16px;
+}
 
 .Event-item {
     display: flex;
@@ -57,6 +67,16 @@
     align-items: flex-start;
     justify-content: center;
     width: 100%;
+    height: 25%;
+}
+
+.Event-item-choice {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 25%;
 }
 
 .Event-item-email {

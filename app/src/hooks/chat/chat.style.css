@@ -16,7 +16,7 @@
 
 .Chat-container {
 
-    width: 60%;
+    width: 80%;
     height: 60%;
     background-color: var(--main-secundary-color);
     border-radius: 10px;
@@ -151,7 +151,11 @@
     justify-content: flex-start;
     align-items: center;
     border: 1px solid var(--main-terciary-color);
-
+    width: 100%;
+    height: 13%;
+    min-height: 60px;
+    padding: 1%;
+    cursor: pointer;
 }
 
 
@@ -159,7 +163,22 @@
 .Chat-search-users-img {
 
     width: 10%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     margin-right: 10px;
+    border-radius: 50%;
+    border: 1px solid var(--main-primary-border-decoration);
+    overflow: hidden;
+    min-width: 50px;
+    max-width: 50px;
+    min-height: 50px;
+}
+
+.Chat-search-users-img > img {
+    width: 100%;
+    height: 100%;
 }
 
 .Chat-search-result {
@@ -173,8 +192,13 @@
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    border: 1px solid #d1d1d1;
-    padding: 5%;
+    border: 1px solid var(--main-primary-border-decoration);
+    padding: 1%;
+    overflow: hidden;
+    width: 100%;
+    height: 15%;
+    cursor: pointer;
+    position: relative;
 }
 
 .Chat-friends-content > p {
@@ -183,7 +207,55 @@
 
 .Chat-friends-img {
     width: 20%;
+    height: 100%;
     margin-right: 10px;
+    border-radius: 50%;
+    border: 3px solid var(--main-primary-border-decoration);
+    overflow: hidden;
+    min-width: 50px;
+    max-width: 60px;
+    max-height: 50px;
+}
+
+@keyframes blob {
+    from {
+        transform: translateX(0) scale(0.6);
+    }
+  
+    to {
+        transform: translate(0, 0px) scale(1.2)
+    }
+  }
+
+
+.notification {
+    
+    animation: blob 0.3s;
+    animation-timing-function: ease-in-out;
+    position: absolute;
+    display: flex;
+    width: 15px;
+    height: 15px;
+    background-color: red;
+    border-radius: 50%;
+    margin: 20px;
+    top: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.notification::after {
+    position: absolute;
+    background-color: white;
+    width: 7px;
+    height: 7px;
+}
+
+.Chat-friends-img > img {
+    width: 100%;
+    height: 100%;
 }
 
 .modal {

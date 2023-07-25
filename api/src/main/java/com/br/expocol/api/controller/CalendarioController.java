@@ -66,11 +66,16 @@ public class CalendarioController {
     @GetMapping("/index/{ano}")
     public IndexesEventosResponse retornarIndexes(@PathVariable Integer ano, @RequestParam("mes") String mes, @RequestParam("dia") Integer dia) {
 
+        verificarParametroService.verificar(mes);
+
         return retornarIndexesService.retornar(ano, mes, dia);
     }
 
     @PostMapping("/evento/{ano}")
     public void adicionarEvento(@PathVariable Integer ano, @RequestParam("mes") String mes, @RequestParam("dia") Integer dia, @RequestBody EventoRequest request) {
+
+        verificarParametroService.verificar(mes);
+
         adicionarEventoDia.adicionar(ano, mes, dia, request);
     }
 

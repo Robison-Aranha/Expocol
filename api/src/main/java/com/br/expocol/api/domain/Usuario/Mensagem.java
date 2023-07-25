@@ -34,4 +34,8 @@ public class Mensagem {
 
     private String Mensagem;
 
+    @OneToOne
+    @JoinColumn(name = "id_anexo")
+    private Anexo anexo;
+
 }

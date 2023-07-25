@@ -38,7 +38,6 @@ public class Usuario {
     @OneToOne(mappedBy = "usuarioToken")
     private Token token;
 
-
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Permissao> permissoes = new ArrayList<>();
 

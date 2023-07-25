@@ -86,6 +86,7 @@ export const LoginRegister = () => {
 
       navigate("/home");
     } catch (response) {
+     
       setGlobalModal([ ...globalModal, { message: "Login falhou!"}])
     }
   };
@@ -100,8 +101,10 @@ export const LoginRegister = () => {
 
       setUserState(false);
       setGlobalModal([...globalModal, { message: "Conta criada com sucesso!", error : false }])
-    } catch (response) {
-      console.log(response.data);
+    } catch (error) {
+      if (error.response.status == 409) {
+        setGlobalModal([...globalModal, { message: error.response.data.message }])
+      }
     }
   };
 
@@ -120,6 +123,7 @@ export const LoginRegister = () => {
               autoComplete="off"
             />
             {userState == true ? (
+              <>
               <input
                 name="username"
                 type="text"
@@ -128,6 +132,8 @@ export const LoginRegister = () => {
                 placeholder="Digite seu nome de usuario"
                 autoComplete="off"
               />
+              <blockquote> O nome de usuário deve ter de 6 a 12 de comprimento sem caracteres especiais! </blockquote>
+              </>
             ) : null}
             <input
               name="password"
@@ -138,6 +144,7 @@ export const LoginRegister = () => {
               autoComplete="off"
             />
             {userState == true ? (
+              <>
               <input
                 name="passwordConfirm"
                 type="password"
@@ -146,16 +153,17 @@ export const LoginRegister = () => {
                 placeholder="Confirme Sua Senha"
                 autoComplete="off"
               />
+              <blockquote> A senha deve ter no mínimo 4 e no máximo 12 de comprimento contendo pelo menos 1 maiúscula, 1 minúscula, 1 caractere especial e 1 dígito! </blockquote>
+              </>
             ) : null}
           </div>
           <div className="LoginRegister-switch">
-            <p>
+
+            <a onClick={handleChangeState}>
               {" "}
               {userState == false
                 ? "Não possui uma Conta ainda?"
                 : "Ja possui uma conta?"}{" "}
-            </p>
-            <a onClick={handleChangeState}>
               {" "}
               {userState == false ? "Registrar" : "Logar"}{" "}
             </a>

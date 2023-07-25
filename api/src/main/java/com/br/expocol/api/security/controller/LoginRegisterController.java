@@ -3,17 +3,17 @@ package com.br.expocol.api.security.controller;
 
 import com.br.expocol.api.security.controller.request.UsuarioRequest;
 import com.br.expocol.api.security.controller.response.TokenResponse;
-import com.br.expocol.api.security.controller.response.UsuarioResponse;
+import com.br.expocol.api.security.repository.UsuarioRepository;
 import com.br.expocol.api.security.service.BuscarUsuarioSecurityAuthService;
 import com.br.expocol.api.security.service.IncluirUsuarioService;
-import com.br.expocol.api.security.service.VerificarCredenciais;
 import com.br.expocol.api.service.Calendario.CreateCalendarService;
+import com.br.expocol.api.service.VerificarCredenciais;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-
-import java.time.LocalDate;
+import org.springframework.web.server.ResponseStatusException;
 
 
 @RestController
@@ -30,7 +30,10 @@ public class LoginRegisterController {
     private CreateCalendarService createCalendarService;
 
     @Autowired
-    private VerificarCredenciais verificarCredenciais;
+    VerificarCredenciais verificarCredenciais;
+
+    @Autowired
+    UsuarioRepository usuarioRepository;
 
     @PostMapping("/login")
     public TokenResponse login() {
@@ -40,7 +43,9 @@ public class LoginRegisterController {
     @PostMapping("/register")
     public void incluir(@Valid @RequestBody UsuarioRequest request, HttpServletResponse response) {
 
-        verificarCredenciais.verificar(request);
+        if (usuarioRepository.findByEmail(request.getEmail()).isPresent()) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Email ja esta sendo usado!!");
+        }
 
         incluirUsuarioService.incluir(request, response);
     }

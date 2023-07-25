@@ -8,6 +8,7 @@ import com.br.expocol.api.domain.Calendario.Mes;
 import com.br.expocol.api.domain.Usuario.Usuario;
 import com.br.expocol.api.repository.Calendario.IndexesRepository;
 import com.br.expocol.api.security.service.UsuarioAutenticadoService;
+import com.br.expocol.api.service.Index.RetornarArquivoConvertidoService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,7 +17,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
-import java.util.Base64;
 import java.util.stream.Collectors;
 
 @Service
@@ -30,6 +30,9 @@ public class AdicionarAnexoCalendarioService {
 
     @Autowired
     UsuarioAutenticadoService usuarioAutenticadoService;
+
+    @Autowired
+    RetornarArquivoConvertidoService retornarArquivoConvertidoService;
 
     @Autowired
     IndexesRepository indexesRepository;
@@ -49,18 +52,13 @@ public class AdicionarAnexoCalendarioService {
 
         Dia dia = mes.getDias().stream().filter(d -> d.getDiaValor().equals(diaRequest)).collect(Collectors.toList()).get(0);
 
-        String fileEncoded = Base64.getEncoder().encodeToString(arquivo.getBytes());
-
-        StringBuilder sb = new StringBuilder();
-
-        sb.append("data:" + arquivo.getContentType() + ";base64,");
-        sb.append(fileEncoded);
+        String arquivoConvertido = retornarArquivoConvertidoService.converter(arquivo);
 
         Index index = new Index();
 
         index.setDiaIndex(dia);
         index.setIndexName(arquivo.getOriginalFilename());
-        index.setIndex(sb.toString());
+        index.setIndex(arquivoConvertido);
         index.setIndexContent(arquivo.getContentType());
 
         indexesRepository.save(index);
