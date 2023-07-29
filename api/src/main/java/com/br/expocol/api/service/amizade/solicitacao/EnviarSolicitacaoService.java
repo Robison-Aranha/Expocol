@@ -31,22 +31,25 @@ public class EnviarSolicitacaoService {
 
         Usuario solicitado = buscarUsuarioService.porId(id);
 
-        if (solicitado.getSolicitacoes().indexOf(usuario) != -1){
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Voce ja enviou uma solicitacao para este usuario!");
+        if (solicitado.getUsuarioBloqueados().indexOf(usuario) == -1) {
+
+            if (solicitado.getSolicitacoes().indexOf(usuario) != -1) {
+                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Voce ja enviou uma solicitacao para este usuario!");
+            }
+
+            if (solicitado.getAmigos().indexOf(usuario) != -1) {
+                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Voce ja é amigo deste usuario!");
+            }
+
+            solicitado.adicionarSolicitacao(usuario);
+
+            usuarioRepository.save(solicitado);
+
+            Notification notification = new Notification();
+            notification.setTo(solicitado.getEmail());
+            notification.setNotification(usuario.getNome() + " enviou uma solicitação de amizade!");
+
+            mandarNotificaçãoService.mandar(notification, "/notification/solicitacoes");
         }
-
-        if (solicitado.getAmigos().indexOf(usuario) != -1){
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Voce ja é amigo deste usuario!");
-        }
-
-        solicitado.adicionarSolicitacao(usuario);
-
-        usuarioRepository.save(solicitado);
-
-        Notification notification = new Notification();
-        notification.setTo(solicitado.getEmail());
-        notification.setNotification(usuario.getNome() + " enviou uma solicitação de amizade!");
-
-        mandarNotificaçãoService.mandar(notification, "/notification/solicitacoes");
     }
 }

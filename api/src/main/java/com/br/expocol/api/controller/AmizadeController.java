@@ -3,9 +3,7 @@ package com.br.expocol.api.controller;
 
 import com.br.expocol.api.controller.response.Usuario.UsuarioListaComplResponse;
 import com.br.expocol.api.controller.response.Usuario.UsuarioListaResponse;
-import com.br.expocol.api.service.amizade.DesfazerAmizadeService;
-import com.br.expocol.api.service.amizade.ListarAmigosService;
-import com.br.expocol.api.service.amizade.VerificarAmizadeSolicitacaoService;
+import com.br.expocol.api.service.amizade.*;
 import com.br.expocol.api.service.amizade.solicitacao.AceitarSolicitacaoService;
 import com.br.expocol.api.service.amizade.solicitacao.EnviarSolicitacaoService;
 import com.br.expocol.api.service.amizade.solicitacao.IgnorarSolicitacaoService;
@@ -35,6 +33,13 @@ public class AmizadeController {
 
     @Autowired
     IgnorarSolicitacaoService ignorarSolicitacaoService;
+
+
+    @Autowired
+    BloquearUsuariosService bloquearUsuariosService;
+
+    @Autowired
+    DesbloquearUsuarioService desbloquearUsuarioService;
 
     @Autowired
     VerificarAmizadeSolicitacaoService verificarAmizadeSolicitacaoService;
@@ -73,5 +78,11 @@ public class AmizadeController {
     public void desfazerAmizade(@PathVariable Long id){
         desfazerAmizadeService.desfazer(id);
     }
+
+    @PutMapping("/bloquear/{id}")
+    public void bloquearUsuario(@PathVariable Long id) { bloquearUsuariosService.bloquearUsuario(id); }
+
+    @PutMapping("/desbloquear/{id}")
+    public void desbloquearUsuario(@PathVariable Long id) { desbloquearUsuarioService.desbloquearUsuario(id); }
 
 }

@@ -11,6 +11,7 @@ import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
 
@@ -35,6 +36,9 @@ public class Usuario {
     @OneToOne(mappedBy = "usuario")
     private PerfilUsuario perfilUsuario;
 
+    @OneToMany(mappedBy = "usuarioChat")
+    private List<Chat> chats = new ArrayList<>();
+
     @OneToOne(mappedBy = "usuarioToken")
     private Token token;
 
@@ -57,6 +61,15 @@ public class Usuario {
     )
     private List<Usuario> solicitacoes = new ArrayList<>();
 
+
+    @ManyToMany
+    @JoinTable(
+            name = "amigos_bloqueados",
+            joinColumns = @JoinColumn(name = "id_usuario1"),
+            inverseJoinColumns = @JoinColumn(name = "id_usuario2")
+    )
+    private List<Usuario> usuarioBloqueados = new ArrayList<>();
+
     public void adicionarPermissao(Permissao permissao) {
         this.permissoes.add(permissao);
         permissao.setUsuario(this);
@@ -75,9 +88,22 @@ public class Usuario {
         this.getSolicitacoes().remove(amigo);
     }
 
-    public void desfazerAmizade(Usuario amigo) {
+    public List<Chat> desfazerAmizade(Usuario amigo) {
+
+        Chat usuarioChat = amigo.getChats().stream().filter(chat -> chat.getDestinatario().getId() == this.getId()).findAny().get();
+        Chat amigoChat = this.getChats().stream().filter(chat -> chat.getDestinatario().getId() == amigo.getId()).findAny().get();
+
+        amigo.getChats().remove(usuarioChat);
+        this.getChats().remove(amigoChat);
+
         this.getAmigos().remove(amigo);
         amigo.getAmigos().remove(this);
+
+        List<Chat> listaChat = new ArrayList<>();
+        listaChat.add(usuarioChat);
+        listaChat.add(amigoChat);
+
+        return listaChat;
     }
 
     public void desfazerSolicitacao(Usuario amigo) {

@@ -24,13 +24,13 @@ public class Chat {
 
     @OneToOne
     @JoinColumn(name = "id_usuario")
-    private Usuario usuario;
+    private Usuario usuarioChat;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "id_destinatario")
     private Usuario destinatario;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "chat", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "chat")
     @MapKey(name = "index")
     private Map<Integer , Mensagem> usuarioMensagens = new HashMap();
 

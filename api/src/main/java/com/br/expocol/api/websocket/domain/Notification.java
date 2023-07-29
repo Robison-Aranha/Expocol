@@ -11,6 +11,8 @@ import lombok.NoArgsConstructor;
 @Data
 public class Notification {
 
+    private String from;
+
     private String to;
 
     private String notification;

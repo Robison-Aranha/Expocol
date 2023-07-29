@@ -11,3 +11,4 @@ export { EventVisualizerCreator } from "./indexes/event-visualizer-creator/event
 export { ClassroomWorkVisualizer } from "./indexes/classroom-work-visualizer/classroom-work-visualizer.hook";
 export { ChangeProfile } from "./change-profile/change-profile.hook";
 export { AnexoFile } from "./conversation/anexo-file/anexo-file.hook";
+export { ImageTextAnaliser } from "./image-text-analiser/image-text-analiser.hook";

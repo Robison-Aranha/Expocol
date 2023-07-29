@@ -17,7 +17,8 @@ import {
   ClassroomUtilsProvider,
   ClassroomSelectedWorkProvider,
   ChangeProfileProvider,
-  AnexoProvider
+  AnexoProvider,
+  ImageTextAnaliserProvider
 } from "./globalState/globalState";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
@@ -36,9 +37,11 @@ root.render(
                         <LoadingProvider>
                           <EventProvider>
                             <LoadCalendarProvider>
-                              <BrowserRouter>
-                                <App />
-                              </BrowserRouter>
+                              <ImageTextAnaliserProvider>
+                                <BrowserRouter>
+                                  <App />
+                                </BrowserRouter>
+                              </ImageTextAnaliserProvider>
                             </LoadCalendarProvider>
                           </EventProvider>
                         </LoadingProvider>

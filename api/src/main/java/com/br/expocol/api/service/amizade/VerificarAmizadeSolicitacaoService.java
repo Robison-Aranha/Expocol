@@ -23,6 +23,14 @@ public class VerificarAmizadeSolicitacaoService {
 
         Usuario verificado = buscarUsuarioService.porId(id);
 
+        if (usuario.getUsuarioBloqueados().indexOf(verificado) != -1) {
+            return 4;
+        }
+
+        if (verificado.getUsuarioBloqueados().indexOf(usuario) != -1) {
+            return 5;
+        }
+
         if (usuario.getSolicitacoes().indexOf(verificado) != -1) {
             return 3;
         }

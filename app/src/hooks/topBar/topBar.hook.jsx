@@ -2,6 +2,7 @@ import "./topBar.style.css";
 import MensageImg from "../../assets/TopBar/02-6.png";
 import FriendsImg from "../../assets/solicitations/friends.png";
 import ClassroomIcon from "../../assets/tools/classroom.png";
+import OcrIcon from "../../assets/tools/ocr.png"
 import defaultImgAccount from "../../assets/account/default.png";
 import { useEffect, useState } from "react";
 import { Chat, Solicitations } from "../hooks";
@@ -13,7 +14,8 @@ import {
   useGoogleCredentials,
   useClassroomToken,
   useGlobalChangeProfile,
-  useGlobalLoading
+  useGlobalLoading,
+  useImageTextAnaliserModal
 } from "../../globalState/globalState";
 import { clientId } from "../../consts/googleAccountSecrets";
 import { scopes } from "../../consts/scopes";
@@ -23,7 +25,6 @@ export const ToPBar = () => {
 
   const [modalChat, setModalChat] = useState(false);
   const [modalFriends, setModalFriends] = useState(false);
-  const { detailUser } = useUsersApi();
   const [userGlobalState, setUserGlobalState] = useGlobalState();
   const [isUserLoaded, setIsUserLoaded] = useState(false);
   const [globalModal, setGlobalModal] = useGlobalModal();
@@ -31,8 +32,11 @@ export const ToPBar = () => {
   const [, setGlobalChangeProfile] = useGlobalChangeProfile()
   const [googleCredentials, setGoogleCredentials] = useGoogleCredentials();
   const [classroomToken, setClassroomToken] = useClassroomToken();
+  const [, setImageTextAnaliser] = useImageTextAnaliserModal()
   const [tokenClient, setTokenClient] = useState({});
 
+
+  const { detailUser } = useUsersApi();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -185,7 +189,10 @@ export const ToPBar = () => {
             {returnGoogleIcon()}
             <p> <strong> {googleCredentials ? "Logado" : "Login"} </strong> </p>
           </div>
-        <div className="TopBar-tools">{returnGoogleTools()}</div>
+        <div className="TopBar-tools">
+          {returnGoogleTools()}
+          <img src={OcrIcon} onClick={() => setImageTextAnaliser(true)} />
+        </div>
         { isUserLoaded ? 
           <div className="TopBar-user-intereration">
             <img

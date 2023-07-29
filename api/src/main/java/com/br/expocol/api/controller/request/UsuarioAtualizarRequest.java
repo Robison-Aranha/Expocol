@@ -17,11 +17,9 @@ import org.springframework.web.multipart.MultipartFile;
 @Data
 public class UsuarioAtualizarRequest {
 
-    @Pattern(regexp = "^[a-zA-Z0-9]{6,12}$",
-            message = "username must be of 6 to 12 length with no special characters")
+
     private String nome;
 
-    @Pattern(regexp = "^[A-Za-z0-9+_.-]+@(.+)$", message = "Email Invalido!!")
-    @Email
+
     private String email;
 }

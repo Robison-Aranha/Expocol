@@ -18,6 +18,7 @@
     height: fit-content;
     max-height: 90vh;
     background-color: var(--main-primary-color);
+    border: 2px dashed var(--main-quaternary-color);
     border-radius: 10px;
     opacity: 1;
     display: flex;

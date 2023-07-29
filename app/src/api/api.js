@@ -7,3 +7,4 @@ export { useCalendarApi } from "./calendar/calendarApi";
 export { useIndexApi } from "./file/fileApi";
 export { useSchedulerApi } from "./calendar/schedulerApi";
 export { useAttachmentApi } from "./attachment/attachmentApi";
+export { useToolsApi } from "./tools/toolsApi";

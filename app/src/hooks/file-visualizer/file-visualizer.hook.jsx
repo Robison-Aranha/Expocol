@@ -23,8 +23,6 @@ export const FileVisualizer = () => {
     setLoading(true)
     try {
       const response = await returnIndex(globalIndex);
-
-      console.log(response)
      
       setFile(response);
     } catch (response) {}

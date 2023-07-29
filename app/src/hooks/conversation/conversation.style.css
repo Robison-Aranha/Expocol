@@ -111,7 +111,6 @@
 }
 
 
-
 .Chat-friend-exit {
     width: 100%;
     height: 10%;
@@ -120,7 +119,7 @@
     align-items: center;
 }
 
-.Chat-conversation-exit {
+.Chat-conversation-header {
     width: 100%;
     height: 10%;
     display: flex;
@@ -129,15 +128,20 @@
     border-bottom: 1px solid var(--main-quaternary-color);
 }
 
-.Chat-conversation-exit > button {
+.Chat-conversation-header > button {
     margin: 0;
     margin-left: 10px;
 }
 
-.Chat-conversation-exit > p {
+.Chat-conversation-header > p {
     margin: 0;
     margin-right: 10px;
 }
+
+.Chat-conversation-header-friendship > button {
+    margin-right: 10px;
+}
+
 
 .Chat-friend-image {
     width: 30%;

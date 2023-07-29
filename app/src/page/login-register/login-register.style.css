@@ -52,6 +52,6 @@
 }
 
 
-.LoginRegister-Credentials > p {
-    font-size: small;
+.LoginRegister-Credentials > blockquote {
+    font-size: 12px;
 }

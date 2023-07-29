@@ -2,7 +2,8 @@ import {
   useGlobalIndexesModal,
   useGlobalIndex,
   useGlobalCalendar,
-  useAnexoModal
+  useAnexoModal,
+  useImageTextAnaliserModal
 } from "../../globalState/globalState";
 import {
   FileVisualizer,
@@ -14,7 +15,8 @@ import {
   Indexes,
   ClassroomWorkVisualizer,
   ChangeProfile,
-  AnexoFile
+  AnexoFile,
+  ImageTextAnaliser
 } from "../../hooks/hooks";
 import "./home.style.css";
 
@@ -24,6 +26,7 @@ export const Home = () => {
   const [, setGlobalCalendar] = useGlobalCalendar();
   const [globalIndex, setGlobalIndex] = useGlobalIndex();
   const [anexoModal, setAnexoModal] = useAnexoModal()
+  const [imageTextAnaliserModal, setImageTextAnaliserModal] = useImageTextAnaliserModal()
 
   const handleIndexModal = (event) => {
     const indexContainer = document.getElementById("index");
@@ -55,7 +58,17 @@ export const Home = () => {
     const anexoContainer = document.getElementById("anexo")
 
     if (!anexoContainer.contains(event.target) && anexoModal) {
-      setAnexoModal(null)
+      setAnexoModal(false)
+    }
+
+  }
+
+  const handleImageTextAnaliserModal = (event) => {
+
+    const imageTextAnaliserContainer = document.getElementById("imageTextAnaliser")
+
+    if (!imageTextAnaliserContainer.contains(event.target) && imageTextAnaliserModal) {
+      setImageTextAnaliserModal(false)
     }
 
   }
@@ -64,6 +77,7 @@ export const Home = () => {
     <div className="Home-section" onClick={(event) => {
         handleIndexModal(event)
         handleAnexoModal(event)
+        handleImageTextAnaliserModal(event)
       }}>
       <Notification />
       <ToPBar />
@@ -71,6 +85,7 @@ export const Home = () => {
       <Indexes />
       <FileVisualizer />
       <AnexoFile />
+      <ImageTextAnaliser />
       <EventVisualizerCreator />
       <ClassroomWorkVisualizer />
       <ChangeProfile />

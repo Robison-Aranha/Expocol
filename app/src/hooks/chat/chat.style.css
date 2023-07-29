@@ -19,6 +19,7 @@
     width: 80%;
     height: 60%;
     background-color: var(--main-secundary-color);
+    border: 2px dashed var(--main-quaternary-color);
     border-radius: 10px;
     opacity: 1;
     display: flex;
@@ -162,8 +163,8 @@
 
 .Chat-search-users-img {
 
-    width: 10%;
-    height: 100%;
+    width: 50px;
+    height: 50px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -171,9 +172,6 @@
     border-radius: 50%;
     border: 1px solid var(--main-primary-border-decoration);
     overflow: hidden;
-    min-width: 50px;
-    max-width: 50px;
-    min-height: 50px;
 }
 
 .Chat-search-users-img > img {

@@ -24,6 +24,29 @@ export const useFriendsApi = () => {
     return response.data;
   };
 
+  const undoFriendship = async (id) => {
+
+    const response = await http.put("/desfazer/" + id);
+
+
+    return response.data
+
+  }
+
+  const blockFriendship = async (id) => {
+
+    const response = await http.put("/bloquear/" + id)
+
+    return response.data
+  }
+
+  const unblockFriendship = async (id) => {
+
+    const response = await http.put("/desbloquear/" + id)
+
+    return response.data
+  }
+
   const listFriendSolicitations = async () => {
     const response = await http.get("/solicitacoes");
 
@@ -34,7 +57,7 @@ export const useFriendsApi = () => {
     const response = await http.get();
 
     return response.data;
-  };
+  }
 
   const verifyRelationShip = async (id) => {
     const response = await http.get("/verificar/" + id);
@@ -48,6 +71,9 @@ export const useFriendsApi = () => {
     ignoreFriendSolicitation,
     listFriendSolicitations,
     listFriends,
+    undoFriendship,
+    blockFriendship,
+    unblockFriendship,
     verifyRelationShip,
   };
 };

@@ -30,21 +30,27 @@ export const LoginRegister = () => {
   };
 
   const verifyCredentials = () => {
-    if (
-      userState == true &&
-      (userData.username == "" || userData.username == null)
-    ) {
-      return false;
-    } else if (userData.password == "" || userData.password == null) {
-      return false;
-    } else if (
-      userState == true &&
-      (userData.passwordConfirm == "" || userData.passwordConfirm == null)
-    ) {
-      if (userData.password != userData.passwordConfirm) {
+    
+    if (userState) {
+
+      if (userData.username == "" || userData.username == null){
+        return false;
+      } else if (userData.passwordConfirm != "" && userData.passwordConfirm != null) {
+      
+        if (userData.password != userData.passwordConfirm) {
+          return 2;
+        }
+
+      } else {
         return false;
       }
-    } else if (userData.gmail == "" || userData.passwordConfirm == null) {
+
+    }
+    
+
+    if (userData.gmail == "" || userData.gmail == null) {
+      return false;
+    } else if (userData.password == "" || userData.password == null) {
       return false;
     }
 
@@ -52,14 +58,25 @@ export const LoginRegister = () => {
   };
 
   const handleCommit = () => {
-    if (verifyCredentials()) {
-      if (userState == false) {
-        loginService();
+
+    const value = verifyCredentials();
+    console.log(value)
+    if (value) {
+
+      if (value == 2) {
+
+        setGlobalModal([...globalModal, {message : "Senhas não são iguais!"}])
+
       } else {
-        registerService();
+        
+        if (userState == false) {
+          loginService();
+        } else {
+          registerService();
+        }
       }
     } else {
-      setGlobalModal([...globalModal, { message: "Credenciais Invalidas!", color: "red" }])
+      setGlobalModal([...globalModal, { message: "Credenciais Invalidas!" }])
     }
   };
 
@@ -100,11 +117,26 @@ export const LoginRegister = () => {
       );
 
       setUserState(false);
-      setGlobalModal([...globalModal, { message: "Conta criada com sucesso!", error : false }])
+      setGlobalModal([...globalModal, { message: "Conta criada com sucesso!" }])
     } catch (error) {
-      if (error.response.status == 409) {
-        setGlobalModal([...globalModal, { message: error.response.data.message }])
+      
+      if (error.response.data.fields) {
+        const decodedErros = JSON.parse(error.response.data.fields)
+
+        decodedErros.forEach(error => globalModal.push({ message: error}))
+      } else {
+
+        if (error.response.data.status == 409) {
+
+          globalModal.push({ message: error.response.data.message })
+
+        }
+
       }
+        
+      setGlobalModal([...globalModal])
+      
+      console.log(error)
     }
   };
 

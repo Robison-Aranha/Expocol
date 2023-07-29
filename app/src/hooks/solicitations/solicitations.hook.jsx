@@ -139,7 +139,7 @@ export const Solicitations = (props) => {
                       }
                     >
                       {" "}
-                      accept{" "}
+                      aceitar{" "}
                     </button>
                     <button 
                       className="button-small"
@@ -149,7 +149,7 @@ export const Solicitations = (props) => {
                       }
                     >
                       {" "}
-                      ignore{" "}
+                      ignorar{" "}
                     </button>
                   </div>
                 </div>

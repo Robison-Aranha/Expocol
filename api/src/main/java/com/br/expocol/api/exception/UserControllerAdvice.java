@@ -51,13 +51,15 @@ public class UserControllerAdvice {
 
        List<FieldError> listaDeErros = failedValidateCredentials.getFieldErrors();
 
-       StringBuilder expressaoFinal = new StringBuilder("{");
+       StringBuilder expressaoFinal = new StringBuilder();
+
+       expressaoFinal.append('[');
 
        int index = 1;
 
        for (FieldError erro : listaDeErros) {
 
-           expressaoFinal.append(erro.getField() + ":" + "'" + erro.getDefaultMessage() + "'");
+           expressaoFinal.append('"' + erro.getDefaultMessage() + '"');
 
            if (listaDeErros.size() != index){
 
@@ -68,7 +70,7 @@ public class UserControllerAdvice {
            index++;
         }
 
-       expressaoFinal.append("}");
+        expressaoFinal.append(']');
 
         ExceptionMessageHandler error = new ExceptionMessageHandler(
                 HttpStatus.CONFLICT.value(), "Credenciais invalidas!", expressaoFinal.toString()

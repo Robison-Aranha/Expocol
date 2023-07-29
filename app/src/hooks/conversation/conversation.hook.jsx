@@ -11,19 +11,22 @@ import defaultImgAccount from "../../assets/account/default.png"
 import attachmentImage from "../../assets/chat/attachment.png"
 import downloadImage from "../../assets/chat/download.png"
 import { MAX_FILE } from "../../consts/FileMax";
+import { DOMAIN_SOCK } from "../../consts/Sock";
 
 
 export const Conversation = (props) => {
   const [chat, setChat] = useState([]);
   const [userGlobalState] = useGlobalState();
   const [useRelationShip, setUseRelationShip] = useState();
-  const [useSock, setUseSock] = useState();
+  const [useSockChat, setUseSockChat] = useState();
+  const [useSockNotification, setUseSockNotification] = useState();
   const [useIsSocket, setUseIsSocket] = useState();
   const [useStomp, setUseStomp] = useState({});
   const [loadMore, setLoadMore] = useState(false);
   const [isNecessaryLoadMore, setIsNecessaryLoadMore] = useState(true)
   const [first, setFirst] = useState(true);
   const [payloadMessage, setPayloadMessage] = useState()
+  const [payloadNotification, setPayloadNotification] = useState()
   const [,setLoading] = useGlobalLoading()
   const [globalModal, setGlobalModal] = useGlobalModal();
   const [, setAnexoModal] = useAnexoModal()
@@ -34,38 +37,37 @@ export const Conversation = (props) => {
     anexo: null
   });
 
-  const { sendFriendSolicitation, verifyRelationShip } = useFriendsApi();
+  const { sendFriendSolicitation, verifyRelationShip, undoFriendship, blockFriendship, unblockFriendship } = useFriendsApi();
   const { listMessages } = useMessageApi();
   const { organizeScroll } = useReognizeScroll();
   const { verifyScrollTop } = useVerifyScrollTop();
   const { setScrollDown } = useSetScrollDown();
-  const { returnAttachment, addAttachment } = useAttachmentApi()
+  const { addAttachment } = useAttachmentApi()
 
   useEffect(() => {
+    setUseSockChat(new SockJS(DOMAIN_SOCK));
+    setUseSockNotification(new SockJS(DOMAIN_SOCK));
+
+    setUseIsSocket(1);
+
     verifyRelationShipService();
   }, []);
 
   useEffect(() => {
-    setUseSock(new SockJS("http://localhost:8080/ws"));
 
     if (useRelationShip == 0) {
       verifyScrollTop(() => setLoadMore(true), "scroll-chat");
-      setUseIsSocket(1);
-    } else if (useRelationShip == 2) {
-      setUseIsSocket(3);
-    }
+      setFirst(true)
+      listMessagesService(null)
+    } 
   }, [useRelationShip]);
 
   useEffect(() => {
     if (useIsSocket == 1) {
-      setUseStomp({ ...useStomp, chat: over(useSock) });
+      setUseStomp({ ...useStomp, chat: over(useSockChat), notification: over(useSockNotification) });
       setUseIsSocket(2);
-    } else if (useIsSocket == 3) {
-      setUseStomp({ ...useStomp, notification: over(useSock) });
-      setUseIsSocket(6);
     } else if (useIsSocket == 2) {
       connectChat();
-    } else if (useIsSocket == 6) {
       connectNotification();
     }
   }, [useIsSocket]);
@@ -83,10 +85,10 @@ export const Conversation = (props) => {
 
   useEffect(() => {
     
+    verifyRelationShipService();
     setFirst(true)
     setUserData({...userData, to: props.to.email})
     listMessagesService(null)
-
   }, [useMemo(() => props.to)])
 
   useEffect(() => {
@@ -101,6 +103,27 @@ export const Conversation = (props) => {
     }
 
   }, [payloadMessage])
+
+  useEffect(() => {
+
+    if (payloadNotification) {
+
+      
+      if (props.to.email == payloadNotification.from ) {
+
+        if (payloadNotification.notification) {
+        
+          setGlobalModal([...globalModal, { message: payloadNotification.notification}])
+        }
+
+        
+        verifyRelationShipService();
+      } 
+
+      setPayloadNotification(false)
+    }
+
+  }, [payloadNotification])
 
 
   useEffect(() => {
@@ -137,14 +160,14 @@ export const Conversation = (props) => {
 
       if (!index) {
         setChat([...response.reverse()]);
+      } else {
 
         if (response.length == 0) {
           setIsNecessaryLoadMore(false)
         } else {
           setIsNecessaryLoadMore(true)
+          setChat([...response.reverse(), ...chat]);
         }
-      } else {
-        setChat([...response.reverse(), ...chat]);
       }
     } catch (response) {
       console.log(response);
@@ -155,6 +178,10 @@ export const Conversation = (props) => {
   const verifyRelationShipService = async () => {
     try {
       const response = await verifyRelationShip(props.to.id);
+
+      if (useRelationShip == 0 && response == 1) {
+        props.return()
+      }
 
       setUseRelationShip(response);
     } catch (response) {
@@ -183,14 +210,10 @@ export const Conversation = (props) => {
   };
 
   const onMessageNotification = (payload) => {
-    verifyRelationShipService();
-
+  
     let payloadData = JSON.parse(payload.body);
 
-    setGlobalModal((prev) => [
-      ...prev,
-      { message: payloadData.notification },
-    ]);
+    setPayloadNotification(payloadData)
   };
 
   const onMessageChat = (payload) => {
@@ -218,6 +241,40 @@ export const Conversation = (props) => {
     }
   };
 
+  const undoFriendshipService = async () => {
+    setLoading(true)
+    try {
+
+      await undoFriendship(props.to.id)
+
+      props.return()
+
+    } catch {}
+    setLoading(false)
+  }
+
+  const blockFriendshipService = async () => {
+    setLoading(true)
+    try {
+
+      await blockFriendship(props.to.id)
+
+      verifyRelationShipService()
+    } catch {}
+    setLoading(false)
+  }
+
+  const unblockFriendshipService = async () => {
+    setLoading(true)
+    try {
+
+      await unblockFriendship(props.to.id)
+
+      verifyRelationShipService()
+    } catch {}
+    setLoading(false)
+  }
+
   const sendAttachment = async (event) => {
 
     if (event.target.files[0].size <= MAX_FILE) {
@@ -244,6 +301,7 @@ export const Conversation = (props) => {
   }
 
   const sendSolicitation = async () => {
+    setLoading(true)
     try {
       await sendFriendSolicitation(props.to.id);
 
@@ -251,6 +309,7 @@ export const Conversation = (props) => {
     } catch (response) {
       console.log(response);
     }
+    setLoading(false)
   };
 
   const onError = (error) => {
@@ -265,7 +324,7 @@ export const Conversation = (props) => {
       return (
         <>
           <p> Você e o usuario não são amigos ainda!! </p>
-          <button onClick={sendSolicitation}> mandar solicitação</button>
+          <button onClick={sendSolicitation}> Mandar solicitação</button>
         </>
       )
     }
@@ -277,15 +336,24 @@ export const Conversation = (props) => {
       return (
         <p> O usuario enviou uma solicitação para você!! </p>
       )
+    } else if (useRelationShip == 4) {
+      return (
+        <>
+          <p> Você bloqueou o usuario!!</p>
+          <button onClick={unblockFriendshipService}> Desbloquear usuario</button>
+        </>
+      )
+    } else if (useRelationShip == 5) {
+      return (
+        <p> O usuario te bloqueou!! </p>
+      )
     }
-
-
 
   }
 
 
   const returnNotification = () => {
-    if (useRelationShip == 1 || useRelationShip == 2 || useRelationShip == 3) {
+    if (useRelationShip && useRelationShip != 0) {
       return (
         <>
           <div className="Chat-friend-notification">
@@ -308,13 +376,21 @@ export const Conversation = (props) => {
     if (useRelationShip == 0) {
       return (
         <div className="Chat-conversation-section">
-          <div className="Chat-conversation-exit">
+          <div className="Chat-conversation-header">
             <button
               className="button-small button-outline"
               onClick={props.return}
             >
               voltar
             </button>
+            <div className="Chat-conversation-header-friendship">
+              <button className="button-small button-black" onClick={undoFriendshipService}>
+                Desfazer amizade
+              </button>
+              <button className="button-small button-black" onClick={blockFriendshipService}>
+                Bloquear usuario
+              </button>
+            </div>
             <p>
               {" "}
               <strong> {props.to.nome} </strong>
@@ -322,22 +398,22 @@ export const Conversation = (props) => {
           </div>
           <div className="Chat-conversation-content" id="scroll-chat">
             {chat.length > 0
-              ? chat.map((menssage, index) => (
+              ? chat.map((message, index) => (
                   <div
                     className="Chat-conversation-content-messages"
                     key={index}
                     style={{
                       justifyContent:
-                        menssage.to == userData.email
+                        message.to == userData.email
                           ? "flex-start"
                           : "flex-end",
                     }}
                   >
                     <div className="Chat-conversation-message">
-                      { !menssage.anexoName ? <p> {menssage.message} </p> : 
+                      { !message.anexoName ? <p> {message.message} </p> : 
                       <>
-                        <img src={downloadImage} onClick={() => setAnexoModal(menssage.anexoId)} />
-                        <p> <strong> {menssage.anexoName} </strong> </p>
+                        <img src={downloadImage} onClick={() => setAnexoModal(message.anexoId)} />
+                        <p> <strong> {message.anexoName} </strong> </p>
                       </> 
                       }
                     </div>
@@ -369,7 +445,7 @@ export const Conversation = (props) => {
               onClick={sendMessageChat}
             >
               {" "}
-              send{" "}
+              enviar{" "}
             </button>
           </div>
         </div>

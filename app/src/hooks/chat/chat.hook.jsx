@@ -9,6 +9,7 @@ import { useFriendsApi } from "../../api/api";
 import { useGlobalState } from "../../globalState/globalState";
 import { useVerifyScrollBottom } from "../../scripts/verifyScrollBottom";
 import searchImage from "../../assets/chat/search.png";
+import { DOMAIN_SOCK } from "../../consts/Sock";
 
 export const Chat = (props) => {
   const [userState, setUserState] = useState(false);
@@ -44,8 +45,8 @@ export const Chat = (props) => {
   }, [userData.search]);
 
   useEffect(() => {
-    setUseSockNotification(new SockJS("http://localhost:8080/ws"));
-    setUseSockChat(new SockJS("http://localhost:8080/ws"))
+    setUseSockNotification(new SockJS(DOMAIN_SOCK));
+    setUseSockChat(new SockJS(DOMAIN_SOCK))
     setUseIsSocket(1);
     listFriendsService();
   }, []);
@@ -60,7 +61,7 @@ export const Chat = (props) => {
 
     if (notificationMessage.length > 0) {
       if (notificationMessage.filter(n => n == lastNotification).length > 1 || userData.to.email == lastNotification) {
-        notificationMessage.pop(notificationMessage.indexOf(lastNotification))
+        notificationMessage.splice(notificationMessage.indexOf(lastNotification), 1)
         setNotificationMessage([...notificationMessage])
       }
     }
@@ -179,8 +180,13 @@ export const Chat = (props) => {
   };
 
   const handlerRemoverNotification = (friendEmail) => {
-    notificationMessage.pop(notificationMessage.indexOf(friendEmail));
-    setNotificationMessage([...notificationMessage])
+
+    const indexFriend = notificationMessage.indexOf(friendEmail);
+
+    if (indexFriend != -1) {
+      notificationMessage.splice(indexFriend, 1);
+      setNotificationMessage([...notificationMessage])
+    }
   };
 
   const returnUserInteration = () => {

@@ -7,13 +7,15 @@ export const useReognizeScroll = () => {
         if (objDiv.childElementCount > 0) {
 
             
-        const value = objDiv.scrollTop + objDiv.clientHeight + objDiv.children[objDiv.childElementCount - 1].clientHeight + 10
+            
+            const value = objDiv.scrollTop + objDiv.clientHeight + objDiv.children[objDiv.childElementCount - 1].clientHeight + 15
 
-            if (Math.round(value) >= objDiv.scrollHeight - 10) {
-       
-                objDiv.scrollTop = objDiv.scrollHeight;
-                    
-            }
+
+                if (Math.round(value) >= Math.round(objDiv.scrollHeight)) {
+        
+                    objDiv.scrollTop = objDiv.scrollHeight;
+                        
+                }
         }
         
     }

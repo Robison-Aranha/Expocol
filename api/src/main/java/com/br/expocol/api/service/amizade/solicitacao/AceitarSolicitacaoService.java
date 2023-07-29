@@ -47,9 +47,9 @@ public class AceitarSolicitacaoService {
         Chat chatUsuario = new Chat();
         Chat chatAmigo = new Chat();
 
-        chatUsuario.setUsuario(usuario);
+        chatUsuario.setUsuarioChat(usuario);
         chatUsuario.setDestinatario(amigo);
-        chatAmigo.setUsuario(amigo);
+        chatAmigo.setUsuarioChat(amigo);
         chatAmigo.setDestinatario(usuario);
 
         chatRepository.save(chatUsuario);
@@ -59,10 +59,12 @@ public class AceitarSolicitacaoService {
 
         Notification notificationUsuario = new Notification();
         notificationUsuario.setTo(usuario.getEmail());
+        notificationUsuario.setFrom(amigo.getEmail());
         notificationUsuario.setNotification(amigo.getNome() + " foi aceito como amigo!");
 
         Notification notificationAmigo = new Notification();
         notificationAmigo.setTo(amigo.getEmail());
+        notificationAmigo.setFrom(usuario.getEmail());
         notificationAmigo.setNotification(usuario.getNome() + " aceitou sua solicitação!");
 
         mandarNotificaçãoService.mandar(notificationUsuario, "/notification/friends");

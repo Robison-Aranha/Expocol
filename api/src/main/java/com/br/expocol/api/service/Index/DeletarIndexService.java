@@ -12,12 +12,7 @@ public class DeletarIndexService {
     @Autowired
     IndexesRepository indexesRepository;
 
-    @Autowired
-    UsuarioAutenticadoService usuarioAutenticadoService;
-
     public void deletar(Long id) {
-
-        usuarioAutenticadoService.getId();
 
         indexesRepository.deleteById(id);
     }

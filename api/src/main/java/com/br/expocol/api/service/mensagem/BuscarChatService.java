@@ -17,7 +17,7 @@ public class BuscarChatService {
 
     public Chat buscar(Usuario usuario, Usuario amigo) {
 
-        return chatRepository.findByUsuarioAndDestinatario(usuario, amigo)
+        return chatRepository.findByUsuarioChatAndDestinatario(usuario, amigo)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Nenhuma conversa para este usuario!"));
 
     }

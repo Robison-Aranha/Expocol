@@ -22,8 +22,6 @@ public class RetornarIndexContentService {
 
     public IndexContentResponse retornar(Long id) throws IOException {
 
-        usuarioAutenticadoService.getId();
-
         Index index = buscarIndexService.buscar(id);
 
         IndexContentResponse indexContentResponse = new IndexContentResponse();

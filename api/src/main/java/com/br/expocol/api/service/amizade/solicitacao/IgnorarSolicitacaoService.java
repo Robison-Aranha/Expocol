@@ -39,6 +39,7 @@ public class IgnorarSolicitacaoService {
 
         Notification notification = new Notification();
         notification.setTo(solicitador.getEmail());
+        notification.setFrom(usuario.getEmail());
         notification.setNotification(usuario.getNome() + " negou sua solicitação!");
 
         mandarNotificaçãoService.mandar(notification, "/notification/friends");
