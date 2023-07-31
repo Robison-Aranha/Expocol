@@ -30,7 +30,7 @@ export const useLoginRegister = () => {
 
   const refreshToken = async () => {
 
-    const response = http.get("/refresh")
+    const response = await http.get("/refresh")
 
     return response.data
   }

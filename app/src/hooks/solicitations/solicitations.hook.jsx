@@ -2,26 +2,29 @@ import { over } from "stompjs";
 import SockJS from "sockjs-client";
 import { useEffect, useState } from "react";
 import { useFriendsApi } from "../../api/api";
+import { useVerifySession } from "../../api/verifySessions";
 import defaultImgAccount from "../../assets/account/default.png";
 import "./solicitations.style.css";
 import { useGlobalModal, useGlobalState } from "../../globalState/globalState";
 
 export const Solicitations = (props) => {
   const [useFriendsSolicitation, setUseFriendsSolicitation] = useState([]);
-  const [globalModal, setGlobalModal] = useGlobalModal()
-  const [userGlobalState] = useGlobalState()
+  const [globalModal, setGlobalModal] = useGlobalModal();
+  const [userGlobalState] = useGlobalState();
   const [useSock, setUseSock] = useState();
   const [useIsSocket, setUseIsSocket] = useState();
   const [useStomp, setUseStomp] = useState({});
   const [userData] = useState({
-    email : userGlobalState.email
-  })
+    email: userGlobalState.email,
+  });
 
   const {
     acceptFriendSolicitation,
     ignoreFriendSolicitation,
     listFriendSolicitations,
   } = useFriendsApi();
+
+  const { verifySessionUser } = useVerifySession();
 
   useEffect(() => {
     setUseSock(new SockJS("http://localhost:8080/ws"));
@@ -44,7 +47,7 @@ export const Solicitations = (props) => {
   };
 
   const onConnectedNotification = () => {
-    console.log(userData)
+    console.log(userData);
     useStomp.notification.subscribe(
       "/private/" + userData.email + "/notification/solicitacoes",
       onMessageNotification
@@ -56,7 +59,7 @@ export const Solicitations = (props) => {
 
     let payloadData = JSON.parse(payload.body);
 
-    setGlobalModal(prev => [...prev, { message: payloadData.notification}])
+    setGlobalModal((prev) => [...prev, { message: payloadData.notification }]);
   };
 
   const onError = (error) => {
@@ -66,26 +69,26 @@ export const Solicitations = (props) => {
   const listFriendsSolicitationsService = async () => {
     try {
       const response = await listFriendSolicitations();
-    
+
       setUseFriendsSolicitation([...response.content]);
-    } catch (response) {
-      console.log(response);
+    } catch (error) {
+      verifySessionUser(error);
     }
   };
 
   const acceptSolicictation = async (id) => {
     try {
       await acceptFriendSolicitation(id);
-    } catch (response) {
-      console.log(response);
+    } catch (error) {
+      verifySessionUser(error);
     }
   };
 
   const ignoreSolicitation = async (id) => {
     try {
       await ignoreFriendSolicitation(id);
-    } catch (response) {
-      console.log(response);
+    } catch (error) {
+      verifySessionUser(error);
     }
   };
 
@@ -107,8 +110,13 @@ export const Solicitations = (props) => {
     <div className={"Friends-section" + (props.modal == false ? "" : " modal")}>
       <div className="Friends-container">
         <div className="Friends-exit">
-          <h2 className="Friends-title"><strong>Solicitações</strong></h2>
-          <button className="Friends-exit-button button-black button-small" onClick={props.setModal}>
+          <h2 className="Friends-title">
+            <strong>Solicitações</strong>
+          </h2>
+          <button
+            className="Friends-exit-button button-black button-small"
+            onClick={props.setModal}
+          >
             {" "}
             X{" "}
           </button>
@@ -128,10 +136,12 @@ export const Solicitations = (props) => {
                     />
                   </div>
                   <div className="Friends-solicitations-content">
-                    <p><strong> {solicitation.nome} </strong></p>
+                    <p>
+                      <strong> {solicitation.nome} </strong>
+                    </p>
                   </div>
                   <div className="Friends-solicitation-actions">
-                    <button 
+                    <button
                       className="button-small"
                       name="accept"
                       onClick={(event) =>
@@ -141,7 +151,7 @@ export const Solicitations = (props) => {
                       {" "}
                       aceitar{" "}
                     </button>
-                    <button 
+                    <button
                       className="button-small"
                       name="ignore"
                       onClick={(event) =>

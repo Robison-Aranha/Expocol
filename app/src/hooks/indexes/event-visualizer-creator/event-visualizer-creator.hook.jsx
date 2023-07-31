@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
 import { months } from "../../../consts/months";
-import { useSchedulerApi, useCalendarApi } from "../../../api/api";
+import {
+  useSchedulerApi,
+  useCalendarApi,
+  useLoginRegister,
+} from "../../../api/api";
 import {
   useGoogleCredentials,
   useGlobalCalendar,
@@ -10,6 +14,7 @@ import {
   useGlobalState,
   useLoadCalendar,
 } from "../../../globalState/globalState";
+import { useVerifySession } from "../../../api/verifySessions";
 import "./event-visualizer-creator.style.css";
 import "@js-joda/locale_en-us";
 import {
@@ -33,20 +38,28 @@ export const EventVisualizerCreator = () => {
   const [, setLoading] = useGlobalLoading();
   const [globalModal, setGlobalModal] = useGlobalModal();
   const [globalEvent, setGlobalEvent] = useGlobalEvent();
-  const [userGlobalState] = useGlobalState();
+  const [userGlobalState, setUserGlobalState] = useGlobalState();
   const [, setLoadCalendar] = useLoadCalendar();
   const [globalCalendar] = useGlobalCalendar();
   const [verifyActualDate, setVerifyActualDate] = useState();
   const [event, setEvent] = useState();
 
   const { addEvent, returnEvent, deleteEvent } = useCalendarApi();
+  const { verifySessionUser } = useVerifySession();
   const { sendEmail } = useSchedulerApi();
+  const { refreshToken } = useLoginRegister();
 
   useEffect(() => {
     if (globalCalendar) {
       verifyActualDayToSelectedDay();
     }
   }, [globalCalendar]);
+
+  useEffect(() => {
+    if (globalEvent.visualization) {
+      createEventService();
+    }
+  }, [userGlobalState.schedulerKey]);
 
   useEffect(() => {
     if (globalEvent.visualization) {
@@ -92,32 +105,44 @@ export const EventVisualizerCreator = () => {
   }, [globalEvent.visualization]);
 
   const returnEventService = async () => {
-    setLoading(true)
+    setLoading(true);
     try {
       const response = await returnEvent(globalEvent.event);
 
       setEvent({ ...response });
-    } catch (response) {}
-    setLoading(false)
+    } catch (error) {
+      verifySessionUser(error);
+    }
+    setLoading(false);
   };
 
   const deleteEventService = async () => {
+    setLoading(true);
     try {
       await deleteEvent(globalEvent.event);
 
-      setGlobalEvent({...globalEvent, visualization: false, load: true})
+      setGlobalEvent({ ...globalEvent, visualization: false, load: true });
 
-      setGlobalModal([...globalModal,  { message: "Evento excluido com sucesso!" } ])
+      setGlobalModal([
+        ...globalModal,
+        { message: "Evento excluido com sucesso!" },
+      ]);
 
-      setLoadCalendar(true)
-    } catch {}
+      setLoadCalendar(true);
+    } catch (error) {
+      verifySessionUser(error);
+    }
+    setLoading(false);
   };
 
   const createEventService = async () => {
-    if (verifyInputsEmails()) {
+    setLoading(true);
+    if (
+      verifyInputsEmails() &&
+      verifyValueTime() &&
+      (googleCredentials && userData.sendEmail ? verifyValueDateEmail() : true)
+    ) {
       try {
-        setLoading(true);
-
         let response = {};
 
         if (googleCredentials && userData.sendEmail) {
@@ -169,17 +194,27 @@ export const EventVisualizerCreator = () => {
         verifyGoogleDayOption();
       } catch (error) {
         if (error.config.baseURL.includes("email")) {
+          if (error.response.status == 401) {
+            try {
+              const response = await refreshToken();
+
+              setUserGlobalState({
+                ...userGlobalState,
+                schedulerKey: response.token,
+              });
+            } catch (errorRefresh) {
+              verifySessionUser(errorRefresh);
+            }
+          }
+
           setGlobalModal([
             ...globalModal,
             { message: "Erro ao agendar email! Tente novamente mais tarde!! " },
           ]);
+        } else {
+          verifySessionUser(error);
         }
       }
-    } else {
-      setGlobalModal([
-        ...globalModal,
-        { message: "Valores invalidos! Tente novamente!" },
-      ]);
     }
 
     setLoading(false);
@@ -194,6 +229,10 @@ export const EventVisualizerCreator = () => {
       verificador = false;
     } else if (userData.tempo == "") {
       verificador = false;
+    }
+
+    if (!verificador) {
+      setGlobalModal([...globalModal, { message: "Valores invalidos!! " }]);
     }
 
     return verificador;
@@ -243,33 +282,28 @@ export const EventVisualizerCreator = () => {
   };
 
   const handlerTitle = (event) => {
-
     if (event.target.value.length <= 40) {
-
-      handlerValue(event)
-
+      handlerValue(event);
     }
+  };
 
-  }
-
-  const handleValueTime = (event) => {
+  const verifyValueTime = () => {
     if (
       LocalDate.now().dayOfMonth() == globalCalendar.dia &&
-      LocalTime.parse(event.target.value).isBefore(LocalTime.now())
+      LocalTime.parse(userData.tempo).isBefore(LocalTime.now())
     ) {
       setGlobalModal([
         ...globalModal,
         { message: "Horario invalido!! Tempo anterior ao atual!!" },
       ]);
-    } else {
-      handlerValue(event);
+      return false;
     }
+
+    return true;
   };
 
   const handleEmailCheckbox = () => {
-
     if (googleCredentials && verifyActualDate) {
-
       const element = document.getElementsByName("dateEmail")[0];
 
       if (!userData.sendEmail) {
@@ -285,43 +319,48 @@ export const EventVisualizerCreator = () => {
   };
 
   const handleValueDateEmail = (event) => {
-
     if (googleCredentials && verifyActualDate) {
-
-      const eventDate = LocalDate.of(
-        globalCalendar.ano,
-        months.findIndex((item) => item == globalCalendar.mes) + 1,
-        globalCalendar.dia
-      );
-      const selectedDate = LocalDateTime.parse(event.target.value).toLocalDate();
-      const selectedTime = LocalDateTime.parse(event.target.value).toLocalTime();
-
-      if (selectedDate.isAfter(eventDate)) {
-        setGlobalModal([
-          ...globalModal,
-          {
-            message: "Agendamento de envio invalido! Data posterior ao evento!!",
-          },
-        ]);
-      } else if (
-        eventDate.isEqual(selectedDate) &&
-        selectedTime.isAfter(LocalTime.parse(userData.tempo))
-      ) {
-        setGlobalModal([
-          ...globalModal,
-          {
-            message: "Agendamento de envio invalido! Tempo posterior ao evento!!",
-          },
-        ]);
-      } else if (selectedDate.isBefore(LocalDate.now())) {
-        setGlobalModal([
-          ...globalModal,
-          { message: "Agendamento de envio invalido! Data anterior a atual!!" },
-        ]);
-      } else {
-        handlerValue(event);
-      }
+      handlerValue(event);
     }
+  };
+
+  const verifyValueDateEmail = () => {
+    const eventDate = LocalDate.of(
+      globalCalendar.ano,
+      months.findIndex((item) => item == globalCalendar.mes) + 1,
+      globalCalendar.dia
+    );
+    const selectedDate = LocalDateTime.parse(userData.dateEmail).toLocalDate();
+    const selectedTime = LocalDateTime.parse(userData.dateEmail).toLocalTime();
+
+    if (selectedDate.isAfter(eventDate)) {
+      setGlobalModal([
+        ...globalModal,
+        {
+          message: "Agendamento de envio invalido! Data posterior ao evento!!",
+        },
+      ]);
+      return false;
+    } else if (
+      eventDate.isEqual(selectedDate) &&
+      selectedTime.isAfter(LocalTime.parse(userData.tempo))
+    ) {
+      setGlobalModal([
+        ...globalModal,
+        {
+          message: "Agendamento de envio invalido! Tempo posterior ao evento!!",
+        },
+      ]);
+      return false;
+    } else if (selectedDate.isBefore(LocalDate.now())) {
+      setGlobalModal([
+        ...globalModal,
+        { message: "Agendamento de envio invalido! Data anterior a atual!!" },
+      ]);
+      return false;
+    }
+
+    return true;
   };
 
   const returnEventContent = () => {
@@ -357,7 +396,7 @@ export const EventVisualizerCreator = () => {
               type="time"
               name="tempo"
               placeholder="Digite uma data"
-              onChange={handleValueTime}
+              onChange={handlerValue}
               value={userData.tempo}
             />
           </div>
@@ -397,14 +436,17 @@ export const EventVisualizerCreator = () => {
           </div>
           <div className="Event-item">
             <label> Descrição: </label>
-            <blockquote className="overflow-event"> {event.descricao} </blockquote>
+            <blockquote className="overflow-event">
+              {" "}
+              {event.descricao}{" "}
+            </blockquote>
           </div>
           <div className="Event-item">
             <label> Horario: </label>
             <blockquote>
               {" "}
               {LocalTime.parse(event.tempo).format(
-                DateTimeFormatter.ofPattern("hh:mm")
+                DateTimeFormatter.ofPattern("HH:mm")
               )}{" "}
             </blockquote>
           </div>
@@ -414,13 +456,15 @@ export const EventVisualizerCreator = () => {
               {" "}
               {event.dataNotificacao
                 ? LocalDateTime.parse(event.dataNotificacao).format(
-                    DateTimeFormatter.ofPattern("dd/MM/yyyy hh:mm")
+                    DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")
                   )
-                : "Envio de email não habilitado"}{" "}
+                : "Envio de email não habilitado..."}{" "}
             </blockquote>
           </div>
           <div className="Event-item-choice">
-            <button className="button-black" onClick={deleteEventService}>Deletar</button>
+            <button className="button-black" onClick={deleteEventService}>
+              Deletar
+            </button>
           </div>
         </>
       );

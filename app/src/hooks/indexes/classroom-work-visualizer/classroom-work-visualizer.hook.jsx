@@ -33,16 +33,16 @@ export const ClassroomWorkVisualizer = () => {
         <div className="Classroom-content">
           <div className="Classroom-item">
             <label> Titulo: </label>
-            <blockquote className="overflow-classroom" id="classroom-tit">{selectedClassroomWork?.title}</blockquote>
+            <blockquote  id="classroom-tit">{selectedClassroomWork?.title}</blockquote>
           </div>
           <div className="Classroom-item">
             <label> Descrição: </label>
-            <blockquote className="overflow-classroom" id="classroom-desc">{selectedClassroomWork?.description ? selectedClassroomWork.description : "Não há descrição para esta atividade..."}</blockquote>
+            <blockquote  id="classroom-desc">{selectedClassroomWork?.description ? selectedClassroomWork.description : "Não há descrição para esta atividade..."}</blockquote>
           </div>
           <div className="Classroom-item">
             <label> Link: </label>
             <blockquote className="link">
-              <a> {selectedClassroomWork?.alternateLink} </a>
+              <a href={selectedClassroomWork?.alternateLink}> {selectedClassroomWork?.alternateLink} </a>
             </blockquote>
           </div>
         </div>

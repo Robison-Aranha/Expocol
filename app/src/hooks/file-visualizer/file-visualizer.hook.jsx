@@ -1,15 +1,18 @@
 import { useGlobalIndex, useGlobalModal, useLoadCalendar, useGlobalLoading } from "../../globalState/globalState";
 import { useIndexApi } from "../../api/api";
 import { useEffect, useState } from "react";
+import { useVerifySession } from "../../api/verifySessions";
 import "./file-visualizer.style.css";
 
 export const FileVisualizer = () => {
   const [globalIndex, setGlobalIndex] = useGlobalIndex();
   const [,setLoadCalendar] = useLoadCalendar()
   const [file, setFile] = useState();
-  const { returnIndex, deleteIndex } = useIndexApi();
   const [globalModal, setGlobalModal] = useGlobalModal();
   const [, setLoading] = useGlobalLoading()
+
+  const { returnIndex, deleteIndex } = useIndexApi();
+  const { verifySessionUser } = useVerifySession()
 
   useEffect(() => {
     if (globalIndex) {
@@ -25,7 +28,9 @@ export const FileVisualizer = () => {
       const response = await returnIndex(globalIndex);
      
       setFile(response);
-    } catch (response) {}
+    } catch (error) {
+      verifySessionUser(error)
+    }
     setLoading(false)
   };
 
@@ -39,7 +44,9 @@ export const FileVisualizer = () => {
       ]);
       setLoadCalendar(true)
       setGlobalIndex(false);
-    } catch (response) {}
+    } catch (error) {
+      verifySessionUser(error)
+    }
   };
 
   const returnRenderIndex = () => {

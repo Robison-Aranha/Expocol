@@ -23,6 +23,7 @@
     background-color: var(--main-secundary-color);
     justify-content: flex-start;
     box-shadow: 10px 1px 14px 2px rgb(0 0 0 / 50%);
+    border-left: 2px dashed var(--main-quaternary-color);
     right: 0;
     flex-wrap: initial;
     overflow: auto;

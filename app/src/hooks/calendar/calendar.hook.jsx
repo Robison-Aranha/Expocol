@@ -11,7 +11,7 @@ import {
   useClassroomUtils,
 } from "../../globalState/globalState";
 import ClassroomIcon from "../../assets/tools/classroom.png";
-
+import { useVerifySession } from "../../api/verifySessions";
 
 export const Calendar = () => {
   const dataAtual = new Date();
@@ -23,6 +23,8 @@ export const Calendar = () => {
 
   const { returnMonth, createCalendar } = useCalendarApi();
   const { returnCourses, returnCourseWork } = useClassroomApi();
+  const { verifySessionUser, verifySessionClassroom } = useVerifySession();
+
   const [globalCalendar, setGlobalCalendar] = useGlobalCalendar();
   const [classroomToken] = useClassroomToken();
   const [classroomUtils, setClassroomUtils] = useClassroomUtils();
@@ -32,7 +34,6 @@ export const Calendar = () => {
 
   useEffect(() => {
     returnMonthService();
-
   }, [calendar.year, calendar.month]);
 
   useEffect(() => {
@@ -52,7 +53,6 @@ export const Calendar = () => {
   }, [classroomToken]);
 
   useEffect(() => {
-
     if (selectedCourse) {
       handleClassroomWorks();
     }
@@ -70,14 +70,12 @@ export const Calendar = () => {
       setCalendar({ ...calendar, days: { ...response.days } });
 
       if (classroomToken && selectedCourse) {
-        handleClassroomWorks()
+        handleClassroomWorks();
       }
-
-    } catch (response) {
-      if (response.response.status == 404) {
+    } catch (error) {
+      verifySessionUser(error);
+      if (error.response.status == 404) {
         createCalendarService();
-      } else {
-        console.log(response);
       }
     }
   };
@@ -89,7 +87,9 @@ export const Calendar = () => {
       const courses = await returnCourses();
 
       setClassroomUtils({ ...classroomUtils, courses: [...courses.courses] });
-    } catch (error) {}
+    } catch (error) {
+      verifySessionClassroom(error);
+    }
 
     setLoading(false);
   };
@@ -124,10 +124,12 @@ export const Calendar = () => {
 
       setClassroomUtils({ ...classroomUtils, monthWorks: { ...monthWorks } });
 
-      setLoading(false);
-    } catch (response) {
-      console.log(response);
+  
+    } catch (error) {
+      verifySessionClassroom(error);
     }
+
+    setLoading(false)
   };
 
   const createCalendarService = async () => {
@@ -135,8 +137,8 @@ export const Calendar = () => {
       await createCalendar(calendar.year);
 
       returnMonthService();
-    } catch (response) {
-      console.log(response);
+    } catch (error) {
+      verifySessionUser(error);
     }
   };
 
@@ -146,19 +148,15 @@ export const Calendar = () => {
   };
 
   const handlerYear = (event) => {
-    
     try {
-
-      const ano = parseInt(event.target.value)
+      const ano = parseInt(event.target.value);
 
       if (ano > 0 && event.target.value.length == 4) {
-        event.target.value = ano
-        handlerValue(event)
-      } 
-
-    } catch  {}
-    
-  }
+        event.target.value = ano;
+        handlerValue(event);
+      }
+    } catch {}
+  };
 
   const handleIndexGlobalState = (diaValue) => {
     if (diaValue) {
@@ -237,7 +235,10 @@ export const Calendar = () => {
           {weekDays.map((day, key) => (
             <div className="Calendar-table-column" key={key}>
               <div className="Calendar-table-title">
-                <p>{day}</p>
+                <p>
+                  {" "}
+                  <strong> {day} </strong>{" "}
+                </p>
               </div>
               <div className="Calendar-table-content">
                 {calendar.days[day]?.map((dia, key) => (
@@ -263,7 +264,7 @@ export const Calendar = () => {
                         <div className="Calendar-table-day-events"> </div>
                       ) : null}
                     </div>
-                    {dia.diaValor ? dia.diaValor : ""}
+                    {dia.diaValor ? <strong> {dia.diaValor} </strong> : ""}
                     {returnClassroomWorkDay(dia.diaValor)}
                   </div>
                 ))}

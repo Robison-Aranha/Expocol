@@ -93,8 +93,6 @@
 }
 
 .ImageTextAnaliser-result-content > blockquote {
-    overflow: auto;
-    overflow-x: hidden;
     max-height: 65vh;
 }
 

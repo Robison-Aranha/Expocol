@@ -13,6 +13,7 @@ import {
   useGlobalLoading
 } from "../../globalState/globalState";
 import { MAX_FILE } from "../../consts/FileMax";
+import { useVerifySession } from "../../api/verifySessions";
 import { useSetScrollTop } from "../../scripts/setScrollTop";
 
 export const Indexes = () => {
@@ -29,6 +30,7 @@ export const Indexes = () => {
   const [globalCalendar] = useGlobalCalendar();
 
   const { returnIndexesEvents, addIndex } = useCalendarApi();
+  const { verifySessionUser } = useVerifySession()
   const { setScrollTop } = useSetScrollTop();
 
   useEffect(() => {
@@ -64,7 +66,9 @@ export const Indexes = () => {
       setFiles([...response.indexes]);
       setEvents([...response.eventos]);
       setIndexesGlobalState(true);
-    } catch (response) {}
+    } catch (error) {
+      verifySessionUser(error)
+    }
 
     setLoading(false)
   };
@@ -95,6 +99,8 @@ export const Indexes = () => {
           { message: "Arquivo adicionado com sucesso!" },
         ]);
       } catch (error) {
+
+        verifySessionUser(error)
         
         if (error.response.data.status == 411) {
           setGlobalModal([...globalModal, { message: "Arquivo excedeu o limite de caracteres no nome!! "}])
@@ -190,7 +196,7 @@ export const Indexes = () => {
             onChange={addIndexService}
           />
           <label className="button" htmlFor="file-index">
-            Choose a file
+            Escolher arquivo
           </label>
           <button
             onClick={() =>

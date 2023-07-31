@@ -12,3 +12,5 @@ export { ClassroomWorkVisualizer } from "./indexes/classroom-work-visualizer/cla
 export { ChangeProfile } from "./change-profile/change-profile.hook";
 export { AnexoFile } from "./conversation/anexo-file/anexo-file.hook";
 export { ImageTextAnaliser } from "./image-text-analiser/image-text-analiser.hook";
+export { GradeCorrector } from "./grade-corrector/grade-corrector.hook";
+export { Dictionary } from "./dictionary/dictionary.hook";

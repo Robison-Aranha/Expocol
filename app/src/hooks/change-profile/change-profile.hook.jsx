@@ -5,9 +5,11 @@ import {
 } from "../../globalState/globalState";
 import dafaultImgAccount from "../../assets/account/default.png";
 import { useUsersApi } from "../../api/api";
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 import "./change-profile.style.css";
 import { MAX_FILE } from "../../consts/FileMax.js";
+import { verifyFile } from "../../scripts/verifyImage";
+import { useVerifySession } from "../../api/verifySessions";
 
 export const ChangeProfile = () => {
   const [userData, setUserData] = useState({
@@ -18,8 +20,12 @@ export const ChangeProfile = () => {
   const [imagePreview, setImagePreview] = useState();
   const [userGlobalState, setUserGlobalState] = useGlobalState();
   const [globalModal, setGlobalModal] = useGlobalModal()
-  const { detailUser, updateCredentialsUser, updateImageUser } = useUsersApi();
   const [globalChangeProfile, setGlobalChangeProfile] = useGlobalChangeProfile();
+
+  const { updateCredentialsUser, updateImageUser } = useUsersApi();
+  const { verifySessionUser } = useVerifySession()
+  const { isImg } = verifyFile()
+
 
   const updateUserService = async () => {
 
@@ -43,6 +49,7 @@ export const ChangeProfile = () => {
           globalModal.push({ message: "Crendenciais atualizadas com sucesso!!" })
         }
       } catch (error) {
+        verifySessionUser(error)
         if (error.response.status == 406 || error.response.status == 409 || error.response.status == 302) {
           globalModal.push({ message: error.response.data.message })
         }
@@ -56,7 +63,7 @@ export const ChangeProfile = () => {
           setUserGlobalState({...userGlobalState, imagem: URL.createObjectURL(imagePreview)})
         }
       } catch (error){
-        console.log(error)
+        verifySessionUser(error)
       }
       setGlobalModal([...globalModal])
     }
@@ -77,17 +84,24 @@ export const ChangeProfile = () => {
 
   const handlerFile = (event) => {
 
-    if (event.target.files[0].size <= MAX_FILE) {
+    const file = event.target.files[0]
 
-      const formData = new FormData();
+    if (isImg(file)) {
 
-      formData.append("file", event.target.files[0]);
+      if (file.size <= MAX_FILE) {
 
-      setImagePreview(event.target.files[0])
+        const formData = new FormData();
 
-      setUserData({...userData, file: formData})
+        formData.append("file", file);
+
+        setImagePreview(file)
+
+        setUserData({...userData, file: formData})
+      } else {
+        setGlobalModal([...globalModal, { message: "Arquivo excedeu o limite de donwload!!" }])
+      }
     } else {
-      setGlobalModal([...globalModal, { message: "Arquivo excedeu o limite de donwload!! " }])
+      setGlobalModal([...globalModal,  { message: "O arquivo selecionado não é uma imagem!!" }])
     }
   };
 

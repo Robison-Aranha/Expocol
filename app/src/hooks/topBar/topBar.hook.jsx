@@ -2,12 +2,13 @@ import "./topBar.style.css";
 import MensageImg from "../../assets/TopBar/02-6.png";
 import FriendsImg from "../../assets/solicitations/friends.png";
 import ClassroomIcon from "../../assets/tools/classroom.png";
-import OcrIcon from "../../assets/tools/ocr.png"
+import OcrIcon from "../../assets/tools/ocr.png";
+import GradeIcon from "../../assets/tools/grade.png";
+import DictionaryIcon from "../../assets/tools/dictionary.png";
 import defaultImgAccount from "../../assets/account/default.png";
 import { useEffect, useState } from "react";
 import { Chat, Solicitations } from "../hooks";
 import { useUsersApi } from "../../api/api";
-import { useNavigate } from "react-router-dom";
 import {
   useGlobalModal,
   useGlobalState,
@@ -15,44 +16,44 @@ import {
   useClassroomToken,
   useGlobalChangeProfile,
   useGlobalLoading,
-  useImageTextAnaliserModal
+  useImageTextAnaliserModal,
+  useGradeCorrectorModal,
+  useDicionaryModal,
 } from "../../globalState/globalState";
 import { clientId } from "../../consts/googleAccountSecrets";
 import { scopes } from "../../consts/scopes";
+import { useVerifySession } from "../../api/verifySessions";
 import jwt_decode from "jwt-decode";
 
 export const ToPBar = () => {
-
   const [modalChat, setModalChat] = useState(false);
   const [modalFriends, setModalFriends] = useState(false);
   const [userGlobalState, setUserGlobalState] = useGlobalState();
   const [isUserLoaded, setIsUserLoaded] = useState(false);
   const [globalModal, setGlobalModal] = useGlobalModal();
-  const [, setLoading] = useGlobalLoading()
-  const [, setGlobalChangeProfile] = useGlobalChangeProfile()
+  const [, setLoading] = useGlobalLoading();
+  const [, setGlobalChangeProfile] = useGlobalChangeProfile();
   const [googleCredentials, setGoogleCredentials] = useGoogleCredentials();
   const [classroomToken, setClassroomToken] = useClassroomToken();
-  const [, setImageTextAnaliser] = useImageTextAnaliserModal()
+  const [, setImageTextAnaliser] = useImageTextAnaliserModal();
+  const [, setGradeCorrector] = useGradeCorrectorModal();
+  const [, setDictionaryModal] = useDicionaryModal();
   const [tokenClient, setTokenClient] = useState({});
 
-
   const { detailUser } = useUsersApi();
-  const navigate = useNavigate();
+  const { verifySessionUser } = useVerifySession();
 
   useEffect(() => {
-
     if (!googleCredentials && isUserLoaded) {
-      handleGoogleEvents()
+      handleGoogleEvents();
     }
-
-  }, [googleCredentials, isUserLoaded])
+  }, [googleCredentials, isUserLoaded]);
 
   useEffect(() => {
-    detailProfile()
+    detailProfile();
   }, []);
 
   const handleGoogleEvents = () => {
-    
     /* global google */
 
     google.accounts.id.initialize({
@@ -63,7 +64,7 @@ export const ToPBar = () => {
     google.accounts.id.renderButton(document.getElementById("google-button"), {
       theme: "filled_black",
       type: "icon",
-      shape: "pill"
+      shape: "pill",
     });
 
     setTokenClient(
@@ -71,7 +72,6 @@ export const ToPBar = () => {
         client_id: clientId,
         scope: scopes,
         callback: (tokenResponse) => {
-      
           if (tokenResponse.access_token) {
             setClassroomToken(tokenResponse.access_token);
             setGlobalModal([
@@ -84,7 +84,6 @@ export const ToPBar = () => {
     );
 
     google.accounts.id.prompt();
-
   };
 
   const handleGetClassroomToken = () => {
@@ -107,17 +106,16 @@ export const ToPBar = () => {
       },
     ]);
     const decodeCredentials = jwt_decode(response.credential);
-   
+
     setGoogleCredentials(decodeCredentials);
   };
 
   const detailProfile = async () => {
-    setLoading(true)
-    
+    setLoading(true);
+
     try {
       const response = await detailUser();
 
-     
       setUserGlobalState({
         ...userGlobalState,
         nome: response.nome,
@@ -126,12 +124,10 @@ export const ToPBar = () => {
       });
 
       setIsUserLoaded(true);
-    } catch (response) {
-      localStorage.removeItem("user");
-      setGlobalModal([...globalModal, { message: "Sua sessão expirou!" }]);
-      setTimeout(() => navigate("/"), 1000);
+    } catch (error) {
+      verifySessionUser(error);
     }
-    setLoading(false)
+    setLoading(false);
   };
 
   const handleLogOutGoogle = () => {
@@ -157,9 +153,9 @@ export const ToPBar = () => {
   const returnGoogleIcon = () => {
     if (googleCredentials && isUserLoaded) {
       return (
-        <img src={googleCredentials.picture} onClick={handleLogOutGoogle}/>
+        <img src={googleCredentials.picture} onClick={handleLogOutGoogle} />
       );
-    } else if (!googleCredentials && isUserLoaded ) {
+    } else if (!googleCredentials && isUserLoaded) {
       return <div id="google-button"></div>;
     }
   };
@@ -185,15 +181,24 @@ export const ToPBar = () => {
             </div>
           </div>
         </div>
-          <div className="TopBar-google-auth"  onClick={handleLogOutGoogle} style={{ cursor : "pointer" }}>
-            {returnGoogleIcon()}
-            <p> <strong> {googleCredentials ? "Logado" : "Login"} </strong> </p>
-          </div>
+        <div
+          className="TopBar-google-auth"
+          onClick={handleLogOutGoogle}
+          style={{ cursor: "pointer" }}
+        >
+          {returnGoogleIcon()}
+          <p>
+            {" "}
+            <strong> {googleCredentials ? "Logado" : "Login"} </strong>{" "}
+          </p>
+        </div>
         <div className="TopBar-tools">
           {returnGoogleTools()}
           <img src={OcrIcon} onClick={() => setImageTextAnaliser(true)} />
+          <img src={GradeIcon} onClick={() => setGradeCorrector(true)} />
+          <img src={DictionaryIcon} onClick={() => setDictionaryModal(true)} />
         </div>
-        { isUserLoaded ? 
+        {isUserLoaded ? (
           <div className="TopBar-user-intereration">
             <img
               className="TopBar-icons"
@@ -214,8 +219,7 @@ export const ToPBar = () => {
               user={userGlobalState}
             />
           </div>
-          : null
-        }
+        ) : null}
       </section>
     );
   };

@@ -10,6 +10,7 @@ import { useGlobalState } from "../../globalState/globalState";
 import { useVerifyScrollBottom } from "../../scripts/verifyScrollBottom";
 import searchImage from "../../assets/chat/search.png";
 import { DOMAIN_SOCK } from "../../consts/Sock";
+import { useVerifySession } from "../../api/verifySessions";
 
 export const Chat = (props) => {
   const [userState, setUserState] = useState(false);
@@ -32,6 +33,7 @@ export const Chat = (props) => {
 
   const { listUser } = useUsersApi();
   const { listFriends } = useFriendsApi();
+  const { verifySessionUser } = useVerifySession();
   const { verifyScrollBottom } = useVerifyScrollBottom();
 
   const handlerValue = (event) => {
@@ -46,7 +48,7 @@ export const Chat = (props) => {
 
   useEffect(() => {
     setUseSockNotification(new SockJS(DOMAIN_SOCK));
-    setUseSockChat(new SockJS(DOMAIN_SOCK))
+    setUseSockChat(new SockJS(DOMAIN_SOCK));
     setUseIsSocket(1);
     listFriendsService();
   }, []);
@@ -56,17 +58,22 @@ export const Chat = (props) => {
   }, [props.modal]);
 
   useEffect(() => {
-    
-    const lastNotification = notificationMessage[notificationMessage.length - 1];
+    const lastNotification =
+      notificationMessage[notificationMessage.length - 1];
 
     if (notificationMessage.length > 0) {
-      if (notificationMessage.filter(n => n == lastNotification).length > 1 || userData.to.email == lastNotification) {
-        notificationMessage.splice(notificationMessage.indexOf(lastNotification), 1)
-        setNotificationMessage([...notificationMessage])
+      if (
+        notificationMessage.filter((n) => n == lastNotification).length > 1 ||
+        userData.to.email == lastNotification
+      ) {
+        notificationMessage.splice(
+          notificationMessage.indexOf(lastNotification),
+          1
+        );
+        setNotificationMessage([...notificationMessage]);
       }
     }
-
-  }, [notificationMessage])
+  }, [notificationMessage]);
 
   useEffect(() => {
     if (!userState) {
@@ -74,7 +81,7 @@ export const Chat = (props) => {
         setLoadMore(true);
       }, "scroll-user");
 
-      setUserData({ ...userData, to: {}})
+      setUserData({ ...userData, to: {} });
     }
   }, [userState]);
 
@@ -88,8 +95,8 @@ export const Chat = (props) => {
       setUseIsSocket(2);
     } else if (useIsSocket == 2) {
       connectNotification();
-      connectChat()
-    } 
+      connectChat();
+    }
   }, [useIsSocket]);
 
   useEffect(() => {
@@ -114,7 +121,6 @@ export const Chat = (props) => {
   };
 
   const onConnectedNotification = () => {
-    
     useStomp.notification.subscribe(
       "/private/" + userData.email + "/notification/friends",
       onMessageNotification
@@ -135,7 +141,7 @@ export const Chat = (props) => {
   };
 
   const onMessageNotification = () => {
-    listFriendsService()
+    listFriendsService();
   };
 
   const onError = (error) => {
@@ -145,15 +151,15 @@ export const Chat = (props) => {
   const listUsersService = async () => {
     try {
       const response = await listUser(userData.search, userData.page);
-      
+
       if (userData.page == 0) {
         setUseSearch([...response.content]);
       } else {
         setUseSearch([...useSearch, ...response.content]);
       }
-    } catch (response) {
+    } catch (error) {
       setUseSearch([]);
-      console.log(response);
+      verifySessionUser(error);
     }
   };
 
@@ -162,30 +168,23 @@ export const Chat = (props) => {
       const response = await listFriends();
 
       setUserFriends([...response.content]);
-    } catch (response) {
-      console.log(response);
+    } catch (error) {
+      verifySessionUser(error);
     }
   };
 
   const returnNotificationMessage = (friendEmail) => {
-    
     if (notificationMessage.indexOf(friendEmail) != -1) {
-      
-     
-      return (
-        <div className="notification"></div>
-      )
+      return <div className="notification"></div>;
     }
-
   };
 
   const handlerRemoverNotification = (friendEmail) => {
-
     const indexFriend = notificationMessage.indexOf(friendEmail);
 
     if (indexFriend != -1) {
       notificationMessage.splice(indexFriend, 1);
-      setNotificationMessage([...notificationMessage])
+      setNotificationMessage([...notificationMessage]);
     }
   };
 

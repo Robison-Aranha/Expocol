@@ -3,7 +3,8 @@ import {
   useGlobalIndex,
   useGlobalCalendar,
   useAnexoModal,
-  useImageTextAnaliserModal
+  useImageTextAnaliserModal,
+  useGradeCorrectorModal
 } from "../../globalState/globalState";
 import {
   FileVisualizer,
@@ -16,7 +17,9 @@ import {
   ClassroomWorkVisualizer,
   ChangeProfile,
   AnexoFile,
-  ImageTextAnaliser
+  ImageTextAnaliser,
+  GradeCorrector,
+  Dictionary
 } from "../../hooks/hooks";
 import "./home.style.css";
 
@@ -26,6 +29,7 @@ export const Home = () => {
   const [, setGlobalCalendar] = useGlobalCalendar();
   const [globalIndex, setGlobalIndex] = useGlobalIndex();
   const [anexoModal, setAnexoModal] = useAnexoModal()
+  const [gradeCorrectorModal, setGradeCorrectorModal] = useGradeCorrectorModal()
   const [imageTextAnaliserModal, setImageTextAnaliserModal] = useImageTextAnaliserModal()
 
   const handleIndexModal = (event) => {
@@ -73,11 +77,22 @@ export const Home = () => {
 
   }
 
+  const handleGradeCorrectorModal = (event) => {
+
+    const gradeCorrectorContainer = document.getElementById("gradeCorrector")
+
+
+    if (!gradeCorrectorContainer.contains(event.target) && gradeCorrectorModal) {
+      setGradeCorrectorModal(false)
+    }
+}
+
   return (
     <div className="Home-section" onClick={(event) => {
         handleIndexModal(event)
         handleAnexoModal(event)
         handleImageTextAnaliserModal(event)
+        handleGradeCorrectorModal(event)
       }}>
       <Notification />
       <ToPBar />
@@ -85,6 +100,8 @@ export const Home = () => {
       <Indexes />
       <FileVisualizer />
       <AnexoFile />
+      <Dictionary />
+      <GradeCorrector />
       <ImageTextAnaliser />
       <EventVisualizerCreator />
       <ClassroomWorkVisualizer />

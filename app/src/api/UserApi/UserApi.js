@@ -17,7 +17,9 @@ export const useUsersApi = () => {
   };
 
   const detailUser = async () => {
+    
     const response = await http.get();
+
 
     return response.data;
   };
