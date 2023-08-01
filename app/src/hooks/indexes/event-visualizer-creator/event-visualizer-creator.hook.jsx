@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { months } from "../../../consts/months";
+import { MONTHS } from "../../../consts/months";
 import {
   useSchedulerApi,
   useCalendarApi,
@@ -72,7 +72,7 @@ export const EventVisualizerCreator = () => {
           dateEmail: LocalDateTime.of(
             LocalDate.of(
               globalCalendar.ano,
-              months.findIndex((item) => item == globalCalendar.mes) + 1,
+              MONTHS.findIndex((item) => item == globalCalendar.mes) + 1,
               globalCalendar.dia
             ),
             LocalTime.now()
@@ -180,7 +180,7 @@ export const EventVisualizerCreator = () => {
           dateEmail: LocalDateTime.of(
             LocalDate.of(
               globalCalendar.ano,
-              months.findIndex((item) => item == globalCalendar.mes) + 1,
+              MONTHS.findIndex((item) => item == globalCalendar.mes) + 1,
               globalCalendar.dia
             ),
             LocalTime.now()
@@ -240,8 +240,8 @@ export const EventVisualizerCreator = () => {
 
   const verifyActualDayToSelectedDay = () => {
     const actualMes =
-      months.indexOf(
-        months.find((d) => d == globalCalendar.mes.toUpperCase())
+      MONTHS.indexOf(
+        MONTHS.find((d) => d == globalCalendar.mes.toUpperCase())
       ) + 1;
 
     const actualDate = LocalDate.of(
@@ -327,7 +327,7 @@ export const EventVisualizerCreator = () => {
   const verifyValueDateEmail = () => {
     const eventDate = LocalDate.of(
       globalCalendar.ano,
-      months.findIndex((item) => item == globalCalendar.mes) + 1,
+      MONTHS.findIndex((item) => item == globalCalendar.mes) + 1,
       globalCalendar.dia
     );
     const selectedDate = LocalDateTime.parse(userData.dateEmail).toLocalDate();

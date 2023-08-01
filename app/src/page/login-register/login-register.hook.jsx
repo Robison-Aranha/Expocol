@@ -6,6 +6,8 @@ import { useGlobalState, useGlobalModal, useGlobalLoading } from "../../globalSt
 import { Notification } from "../../hooks/notification/notification.hook";
 import { useLocation } from "react-router-dom";
 
+import MenuIcon from "../../assets/marca_da_agua.png"
+
 export const LoginRegister = () => {
   const [userGlobalState, setUserGlobalState] = useGlobalState();
   const [globalModal, setGlobalModal] = useGlobalModal();
@@ -146,8 +148,13 @@ export const LoginRegister = () => {
     <>
       <Notification />
       <section className="LoginRegister-Section">
+        <div className="Logo">
+          <h1> Grade <p> Mate </p> </h1>
+          <img src={MenuIcon} />
+        </div>
         <div className="LoginRegister">
           <div className="LoginRegister-Credentials">
+            <label> Email: </label>
             <input
               name="gmail"
               type="email"
@@ -158,6 +165,7 @@ export const LoginRegister = () => {
             />
             {userState == true ? (
               <>
+                <label> Nome: </label>
                 <input
                   name="username"
                   type="text"
@@ -173,6 +181,7 @@ export const LoginRegister = () => {
                 </blockquote>
               </>
             ) : null}
+            <label> Senha: </label>
             <input
               name="password"
               type="password"

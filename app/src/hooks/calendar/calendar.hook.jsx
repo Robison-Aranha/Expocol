@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useCalendarApi, useClassroomApi } from "../../api/api";
 import "./calendar.style.css";
-import { months } from "../../consts/months";
-import { weekDays } from "../../consts/weekDays";
+import { MONTHS } from "../../consts/months";
+import { WEEKDAYS } from "../../consts/weekDays";
 import {
   useGlobalLoading,
   useGlobalCalendar,
@@ -97,7 +97,7 @@ export const Calendar = () => {
   const handleClassroomWorks = async () => {
     setLoading(true);
 
-    const actualMonth = months.findIndex((item) => item == calendar.month) + 1;
+    const actualMonth = MONTHS.findIndex((item) => item == calendar.month) + 1;
 
     try {
       const coursesWorks = await returnCourseWork(selectedCourse);
@@ -205,7 +205,7 @@ export const Calendar = () => {
               name="month"
               onChange={handlerValue}
             >
-              {months.map((month, key) => (
+              {MONTHS.map((month, key) => (
                 <option value={month} key={key}>
                   {month}
                 </option>
@@ -232,7 +232,7 @@ export const Calendar = () => {
           </div>
         </div>
         <div className="Calendar-table">
-          {weekDays.map((day, key) => (
+          {WEEKDAYS.map((day, key) => (
             <div className="Calendar-table-column" key={key}>
               <div className="Calendar-table-title">
                 <p>

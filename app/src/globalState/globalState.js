@@ -37,7 +37,7 @@ export const [useClassroomUtils, ClassroomUtilsProvider] = createGlobalState({
   monthWorks: null,
 });
 
-export const [useGradeCorrectorModal, GradeCorrectorProvider] = createGlobalState()
+export const [useNewsPaperModal, NewsPaperProvider] = createGlobalState();
 
 export const [useDicionaryModal, DictionaryProvider] = createGlobalState()
 

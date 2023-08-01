@@ -19,7 +19,7 @@ import {
   ChangeProfileProvider,
   AnexoProvider,
   ImageTextAnaliserProvider,
-  GradeCorrectorProvider,
+  NewsPaperProvider,
   DictionaryProvider
 } from "./globalState/globalState";
 
@@ -39,7 +39,7 @@ root.render(
                         <LoadingProvider>
                           <EventProvider>
                             <LoadCalendarProvider>
-                              <GradeCorrectorProvider>
+                              <NewsPaperProvider>
                                 <ImageTextAnaliserProvider>
                                   <DictionaryProvider>
                                     <BrowserRouter>
@@ -47,7 +47,7 @@ root.render(
                                     </BrowserRouter>
                                   </DictionaryProvider>
                                 </ImageTextAnaliserProvider>
-                              </GradeCorrectorProvider>
+                              </NewsPaperProvider>
                             </LoadCalendarProvider>
                           </EventProvider>
                         </LoadingProvider>

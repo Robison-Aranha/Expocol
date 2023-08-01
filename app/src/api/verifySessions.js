@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { useGlobalModal, useClassroomToken, useClassroomSelectedWork, useClassroomUtils } from "../globalState/globalState";
+import { useGlobalModal, useClassroomToken, useClassroomSelectedWork, useClassroomUtils, useGlobalState } from "../globalState/globalState";
 
 
 export const useVerifySession = () => {
@@ -7,6 +7,7 @@ export const useVerifySession = () => {
     const [, setClassroomToken] = useClassroomToken()
     const [, setClassroomUtils] = useClassroomUtils()
     const [, setClassroomSelectedWork] = useClassroomSelectedWork()
+    const [, setUserGlobalState] = useGlobalState()
     const [globalModal, setGlobalModal] = useGlobalModal()
     const navigate = useNavigate()
 
@@ -15,6 +16,7 @@ export const useVerifySession = () => {
         
         if (data.response.status == 401) {
             localStorage.removeItem("user");
+            setUserGlobalState({})
             setTimeout(() => navigate("/", {state: "expired"}), 1000);
         }
     }

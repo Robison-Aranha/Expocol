@@ -41,6 +41,11 @@
     height: 80%;
 }
 
+.TopBar-perfil > img {
+    width: 10%;
+    margin-right: 20px;
+}
+
 
 .TopBar-input-file {
 
@@ -96,8 +101,6 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    overflow-x: auto;
-    overflow-y: hidden;
 }
 
 .TopBar-tools > img {

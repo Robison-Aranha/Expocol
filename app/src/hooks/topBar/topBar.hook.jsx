@@ -3,9 +3,10 @@ import MensageImg from "../../assets/TopBar/02-6.png";
 import FriendsImg from "../../assets/solicitations/friends.png";
 import ClassroomIcon from "../../assets/tools/classroom.png";
 import OcrIcon from "../../assets/tools/ocr.png";
-import GradeIcon from "../../assets/tools/grade.png";
+import NewsIcon from "../../assets/tools/news.png"
 import DictionaryIcon from "../../assets/tools/dictionary.png";
 import defaultImgAccount from "../../assets/account/default.png";
+import MenuIcon from "../../assets/marca_da_agua.png"
 import { useEffect, useState } from "react";
 import { Chat, Solicitations } from "../hooks";
 import { useUsersApi } from "../../api/api";
@@ -17,11 +18,11 @@ import {
   useGlobalChangeProfile,
   useGlobalLoading,
   useImageTextAnaliserModal,
-  useGradeCorrectorModal,
   useDicionaryModal,
+  useNewsPaperModal
 } from "../../globalState/globalState";
 import { clientId } from "../../consts/googleAccountSecrets";
-import { scopes } from "../../consts/scopes";
+import { SCOPES } from "../../consts/scopes";
 import { useVerifySession } from "../../api/verifySessions";
 import jwt_decode from "jwt-decode";
 
@@ -36,8 +37,8 @@ export const ToPBar = () => {
   const [googleCredentials, setGoogleCredentials] = useGoogleCredentials();
   const [classroomToken, setClassroomToken] = useClassroomToken();
   const [, setImageTextAnaliser] = useImageTextAnaliserModal();
-  const [, setGradeCorrector] = useGradeCorrectorModal();
   const [, setDictionaryModal] = useDicionaryModal();
+  const [, setNewsPaperModal] = useNewsPaperModal()
   const [tokenClient, setTokenClient] = useState({});
 
   const { detailUser } = useUsersApi();
@@ -70,7 +71,7 @@ export const ToPBar = () => {
     setTokenClient(
       google.accounts.oauth2.initTokenClient({
         client_id: clientId,
-        scope: scopes,
+        scope: SCOPES,
         callback: (tokenResponse) => {
           if (tokenResponse.access_token) {
             setClassroomToken(tokenResponse.access_token);
@@ -195,7 +196,7 @@ export const ToPBar = () => {
         <div className="TopBar-tools">
           {returnGoogleTools()}
           <img src={OcrIcon} onClick={() => setImageTextAnaliser(true)} />
-          <img src={GradeIcon} onClick={() => setGradeCorrector(true)} />
+          <img src={NewsIcon} onClick={() => setNewsPaperModal(true)} />
           <img src={DictionaryIcon} onClick={() => setDictionaryModal(true)} />
         </div>
         {isUserLoaded ? (
