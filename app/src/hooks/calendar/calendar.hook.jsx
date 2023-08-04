@@ -13,7 +13,6 @@ import {
 } from "../../globalState/globalState";
 import ClassroomIcon from "../../assets/tools/classroom.png";
 import { useVerifySession } from "../../api/verifySessions";
-import { useSetScrollTop } from "../../scripts/setScrollTop";
 
 export const Calendar = () => {
   const dataAtual = new Date();
@@ -26,7 +25,6 @@ export const Calendar = () => {
   const { returnMonth, returnMonthMobile, createCalendar } = useCalendarApi();
   const { returnCourses, returnCourseWork } = useClassroomApi();
   const { verifySessionUser, verifySessionClassroom } = useVerifySession();
-  const { setScrollTop } = useSetScrollTop()
 
   const [globalCalendar, setGlobalCalendar] = useGlobalCalendar();
   const [globalModal, setGlobalModal] = useGlobalModal()
@@ -40,6 +38,8 @@ export const Calendar = () => {
 
   useEffect(() => {
     
+    setCalendar({ ...calendar, days: ""})
+
     if (window.screen.width <= 850) {
 
       if (calendarState == false) {
@@ -72,7 +72,6 @@ export const Calendar = () => {
   }, [loadCalendar]);
 
   useEffect(() => {
-
 
     if (calendarState) {
       returnMonthService()
@@ -112,12 +111,11 @@ export const Calendar = () => {
   }, [isDaysLoaded])
 
   const returnMonthService = async () => {
-    setLoading(true);
+    
     try {
 
       const response = await returnMonth(calendar.year, calendar.month);
 
-      console.log(response)
       setCalendar({ ...calendar, days: { ...response.days } });
 
       setIsDaysLoaded(true)
@@ -128,11 +126,11 @@ export const Calendar = () => {
         createCalendarService();
       }
     }
-    setLoading(false);
+   
   };
 
   const returnMonthMobileService = async () => {
-    setLoading(true);
+ 
     try {
 
       const response = await returnMonthMobile(calendar.year, calendar.month);
@@ -147,7 +145,6 @@ export const Calendar = () => {
         createCalendarService();
       }
     }
-    setLoading(false);
 
 
   }
@@ -359,7 +356,7 @@ export const Calendar = () => {
             ))}
           </div>
           :
-        <div className="Calendar-table-mobile" id="calendar">
+        <div className="Calendar-table-mobile">
           {calendar.days.length > 0 ? calendar.days.map(dia => (
             <>
               <div className="Calendar-table-day-mobile" onClick={() => {

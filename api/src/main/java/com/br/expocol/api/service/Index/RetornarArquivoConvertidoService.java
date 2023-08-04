@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.util.Base64;
 
 @Service
-@Transactional
+
 public class RetornarArquivoConvertidoService {
 
 

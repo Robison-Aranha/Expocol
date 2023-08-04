@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { useGlobalModal, useClassroomToken, useClassroomSelectedWork, useClassroomUtils, useGlobalState } from "../globalState/globalState";
+import { useGlobalModal, useClassroomToken, useClassroomSelectedWork, useClassroomUtils } from "../globalState/globalState";
 
 
 export const useVerifySession = () => {

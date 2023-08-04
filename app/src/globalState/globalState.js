@@ -39,8 +39,6 @@ export const [useClassroomUtils, ClassroomUtilsProvider] = createGlobalState({
 
 export const [useNewsPaperModal, NewsPaperProvider] = createGlobalState();
 
-export const [useMobileChecked, MobileCheckedProvider] = createGlobalState()
-
 export const [useChatModal, ChatProvider] = createGlobalState()
 
 export const [useSolicitationsModal, SolicitationsProvider] = createGlobalState()

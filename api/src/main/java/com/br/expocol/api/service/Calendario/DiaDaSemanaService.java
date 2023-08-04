@@ -5,7 +5,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 @Service
-@Transactional
+
 public class DiaDaSemanaService {
 
     public DiasDaSemana retornar(Integer dia, Integer anoRequest, Integer mesRequest) {

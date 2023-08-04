@@ -15,7 +15,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.Objects;
 
 @Service
-@Transactional
+
 public class DetalharPerfilUsuarioService {
 
 

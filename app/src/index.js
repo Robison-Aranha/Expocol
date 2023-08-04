@@ -22,8 +22,7 @@ import {
   NewsPaperProvider,
   DictionaryProvider,
   ChatProvider,
-  SolicitationsProvider,
-  MobileCheckedProvider
+  SolicitationsProvider
 } from "./globalState/globalState";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
@@ -31,43 +30,41 @@ root.render(
   <GoogleProvider>
     <ModalProvider>
       <Provider>
-        <MobileCheckedProvider>
-          <ChatProvider>
-            <SolicitationsProvider>
-              <ClassroomTokenProvider>
-                <ClassroomUtilsProvider>
-                  <ClassroomSelectedWorkProvider>
-                    <CalendarProvider>
-                      <IndexesModalProvider>
-                        <ChangeProfileProvider>
-                          <AnexoProvider>
-                            <IndexProvider>
-                              <LoadingProvider>
-                                <EventProvider>
-                                  <LoadCalendarProvider>
-                                    <NewsPaperProvider>
-                                      <ImageTextAnaliserProvider>
-                                        <DictionaryProvider>
-                                          <BrowserRouter>
-                                            <App />
-                                          </BrowserRouter>
-                                        </DictionaryProvider>
-                                      </ImageTextAnaliserProvider>
-                                    </NewsPaperProvider>
-                                  </LoadCalendarProvider>
-                                </EventProvider>
-                              </LoadingProvider>
-                            </IndexProvider>
-                          </AnexoProvider>
-                        </ChangeProfileProvider>
-                      </IndexesModalProvider>
-                    </CalendarProvider>
-                  </ClassroomSelectedWorkProvider>
-                </ClassroomUtilsProvider>
-              </ClassroomTokenProvider>
-            </SolicitationsProvider>
-          </ChatProvider>
-        </MobileCheckedProvider>
+        <ChatProvider>
+          <SolicitationsProvider>
+            <ClassroomTokenProvider>
+              <ClassroomUtilsProvider>
+                <ClassroomSelectedWorkProvider>
+                  <CalendarProvider>
+                    <IndexesModalProvider>
+                      <ChangeProfileProvider>
+                        <AnexoProvider>
+                          <IndexProvider>
+                            <LoadingProvider>
+                              <EventProvider>
+                                <LoadCalendarProvider>
+                                  <NewsPaperProvider>
+                                    <ImageTextAnaliserProvider>
+                                      <DictionaryProvider>
+                                        <BrowserRouter>
+                                          <App />
+                                        </BrowserRouter>
+                                      </DictionaryProvider>
+                                    </ImageTextAnaliserProvider>
+                                  </NewsPaperProvider>
+                                </LoadCalendarProvider>
+                              </EventProvider>
+                            </LoadingProvider>
+                          </IndexProvider>
+                        </AnexoProvider>
+                      </ChangeProfileProvider>
+                    </IndexesModalProvider>
+                  </CalendarProvider>
+                </ClassroomSelectedWorkProvider>
+              </ClassroomUtilsProvider>
+            </ClassroomTokenProvider>
+          </SolicitationsProvider>
+        </ChatProvider>
       </Provider>
     </ModalProvider>
   </GoogleProvider>

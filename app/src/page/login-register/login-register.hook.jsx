@@ -3,7 +3,7 @@ import { useLoginRegister } from "../../api/api";
 import "./login-register.style.css";
 import { useNavigate } from "react-router-dom";
 import { useGlobalState, useGlobalModal, useGlobalLoading } from "../../globalState/globalState";
-import { Notification } from "../../hooks/notification/notification.hook";
+import { Notification, Loading } from "../../hooks/hooks";
 import { useLocation } from "react-router-dom";
 
 import MenuIcon from "../../assets/marca_da_agua.png"
@@ -12,6 +12,7 @@ export const LoginRegister = () => {
   const [userGlobalState, setUserGlobalState] = useGlobalState();
   const [globalModal, setGlobalModal] = useGlobalModal();
   const [, setLoading] = useGlobalLoading()
+  const [isFirst, setIsFirst] = useState(false)
 
   const [userData, setUserData] = useState({
     gmail: "",
@@ -113,7 +114,7 @@ export const LoginRegister = () => {
 
       localStorage.setItem("user", JSON.stringify({ ...userInfo }));
 
-      navigate("/home");
+      navigate("/home", {state: isFirst ? "first" : ""});
     } catch (response) {
       setGlobalModal([...globalModal, { message: "Login falhou!" }]);
     }
@@ -130,6 +131,7 @@ export const LoginRegister = () => {
         ...globalModal,
         { message: "Conta criada com sucesso!" },
       ]);
+      setIsFirst(true)
     } catch (error) {
       if (error.response.data.fields) {
         const decodedErros = JSON.parse(error.response.data.fields);
@@ -143,7 +145,6 @@ export const LoginRegister = () => {
 
       setGlobalModal([...globalModal]);
 
-      console.log(error);
     }
 
     setLoading(false)
@@ -152,6 +153,7 @@ export const LoginRegister = () => {
   return (
     <>
       <Notification />
+      <Loading />
       <section className="LoginRegister-Section">
         <div className="Logo">
           <h1> Grade <p> Mate </p> </h1>

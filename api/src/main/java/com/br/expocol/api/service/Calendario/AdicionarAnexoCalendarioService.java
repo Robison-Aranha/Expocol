@@ -20,7 +20,7 @@ import java.io.IOException;
 import java.util.stream.Collectors;
 
 @Service
-@Transactional
+
 public class AdicionarAnexoCalendarioService {
 
     private final Integer MAX_CARACTERS_INDEX_NAME = 25;

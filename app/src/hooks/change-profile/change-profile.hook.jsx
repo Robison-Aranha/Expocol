@@ -34,7 +34,7 @@ export const ChangeProfile = () => {
       try {
 
         if (userData.email != "" || userData.nome != "") {
-          console.log(userData)
+         
           await updateCredentialsUser(userData.nome, userData.email);
           
           if (userData.nome != "") {

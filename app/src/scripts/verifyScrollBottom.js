@@ -6,7 +6,7 @@ export const useVerifyScrollBottom = () => {
         
         document.querySelector("#" + id).addEventListener('scroll', function() { 
 
-            console.log(Math.round(this.scrollTop + this.offsetHeight), Math.round(this.scrollHeight))
+        
             
             if (Math.round(this.scrollTop + this.offsetHeight) >= Math.round(this.scrollHeight) - 2) {
                 

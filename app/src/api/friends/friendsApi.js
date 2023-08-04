@@ -1,7 +1,8 @@
 import axios from "axios";
+import { BaseUrl } from "../BaseUrl";
 
 const http = axios.create({
-  baseURL: "http://localhost:8080/amigos",
+  baseURL: BaseUrl + "/amigos",
   withCredentials: true,
 });
 

@@ -89,8 +89,8 @@
 }
 
 .Calendar-table-mobile {
-    width: 70%;
-    height: 40%;
+    width: 80%;
+    height: 50%;
     flex-direction: column;
     border: 2px dashed var(--main-quaternary-color);
     background-color: var(--main-terciary-color);

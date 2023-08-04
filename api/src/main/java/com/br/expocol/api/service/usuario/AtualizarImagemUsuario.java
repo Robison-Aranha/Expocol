@@ -17,7 +17,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.io.IOException;
 
 @Service
-@Transactional
+
 public class AtualizarImagemUsuario {
 
 

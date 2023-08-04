@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@Transactional
+
 public class ListarMensagensChatService {
 
     private final Integer MAX_MESSAGES_PER_REQUEST = 15;

@@ -14,3 +14,4 @@ export { AnexoFile } from "./conversation/anexo-file/anexo-file.hook";
 export { ImageTextAnaliser } from "./image-text-analiser/image-text-analiser.hook";
 export { Dictionary } from "./dictionary/dictionary.hook";
 export { NewsPaper } from "./news-paper/news-paper.hook";
+export { ModalWelcome } from "./modal-welcome/modal-welcome.hook";

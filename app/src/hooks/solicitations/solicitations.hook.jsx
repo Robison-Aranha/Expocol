@@ -58,7 +58,6 @@ export const Solicitations = () => {
   };
 
   const onConnectedNotification = () => {
-    console.log(userData);
     useStomp.notification.subscribe(
       "/private/" + userData.email + "/notification/solicitacoes",
       onMessageNotification

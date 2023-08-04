@@ -1,10 +1,10 @@
+import { useEffect, useState } from "react";
 import {
   useGlobalIndexesModal,
   useGlobalIndex,
   useGlobalCalendar,
   useAnexoModal,
-  useImageTextAnaliserModal,
-  useMobileChecked
+  useImageTextAnaliserModal
 } from "../../globalState/globalState";
 import {
   FileVisualizer,
@@ -22,7 +22,9 @@ import {
   NewsPaper,
   Chat,
   Solicitations,
+  ModalWelcome
 } from "../../hooks/hooks";
+import { useLocation } from "react-router-dom";
 import "./home.style.css";
 
 
@@ -32,8 +34,18 @@ export const Home = () => {
   const [, setGlobalCalendar] = useGlobalCalendar();
   const [globalIndex, setGlobalIndex] = useGlobalIndex();
   const [anexoModal, setAnexoModal] = useAnexoModal()
-  const [mobileChecked, setMobileChecked] = useMobileChecked()
   const [imageTextAnaliserModal, setImageTextAnaliserModal] = useImageTextAnaliserModal()
+  const [isFirst, setIsFirst] = useState(false)
+
+  const location = useLocation()
+
+  useEffect(() => {
+
+    if (location.state == "first") {
+      setIsFirst(true)
+    }
+
+  }, [])
 
   const handleIndexModal = (event) => {
     const indexContainer = document.getElementById("index");
@@ -105,6 +117,7 @@ export const Home = () => {
       <ClassroomWorkVisualizer />
       <ChangeProfile />
       <Loading />
+      <ModalWelcome modal={isFirst} setModal={() => setIsFirst(false)}/>
     </div>
   );
 };

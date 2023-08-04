@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 
 @Service
-@Transactional
+
 public class RetornarIndexContentService {
 
 

@@ -92,6 +92,8 @@
     align-items: center;
     justify-content: flex-start;
     height: 90%;
+    overflow: auto;
+    overflow-y: hidden;
 }
 
 .Chat-message {
