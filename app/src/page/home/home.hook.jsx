@@ -3,7 +3,8 @@ import {
   useGlobalIndex,
   useGlobalCalendar,
   useAnexoModal,
-  useImageTextAnaliserModal
+  useImageTextAnaliserModal,
+  useMobileChecked
 } from "../../globalState/globalState";
 import {
   FileVisualizer,
@@ -18,7 +19,9 @@ import {
   AnexoFile,
   ImageTextAnaliser,
   Dictionary,
-  NewsPaper
+  NewsPaper,
+  Chat,
+  Solicitations,
 } from "../../hooks/hooks";
 import "./home.style.css";
 
@@ -29,6 +32,7 @@ export const Home = () => {
   const [, setGlobalCalendar] = useGlobalCalendar();
   const [globalIndex, setGlobalIndex] = useGlobalIndex();
   const [anexoModal, setAnexoModal] = useAnexoModal()
+  const [mobileChecked, setMobileChecked] = useMobileChecked()
   const [imageTextAnaliserModal, setImageTextAnaliserModal] = useImageTextAnaliserModal()
 
   const handleIndexModal = (event) => {
@@ -37,6 +41,7 @@ export const Home = () => {
     const fileContainer = document.getElementById("file-index-container");
     const eventSection = document.getElementById("event");
     const classroomSection = document.getElementById("classroom")
+  
 
     if (
       !indexContainer.contains(event.target) &&
@@ -54,6 +59,7 @@ export const Home = () => {
     if (!fileContainer.contains(event.target) && globalIndex) {
       setGlobalIndex(false);
     }
+
   };
 
   const handleAnexoModal = (event) => {
@@ -77,6 +83,7 @@ export const Home = () => {
   }
 
 
+
   return (
     <div className="Home-section" onClick={(event) => {
         handleIndexModal(event)
@@ -86,6 +93,8 @@ export const Home = () => {
       <Notification />
       <ToPBar />
       <Calendar />
+      <Chat />
+      <Solicitations />
       <Indexes />
       <FileVisualizer />
       <AnexoFile />

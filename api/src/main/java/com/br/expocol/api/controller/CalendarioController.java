@@ -2,6 +2,7 @@ package com.br.expocol.api.controller;
 
 
 import com.br.expocol.api.controller.request.EventoRequest;
+import com.br.expocol.api.controller.response.Calendario.CalendarioMobileResponse;
 import com.br.expocol.api.controller.response.Calendario.CalendarioResponse;
 import com.br.expocol.api.controller.response.Calendario.EventoContentResponse;
 import com.br.expocol.api.controller.response.Calendario.IndexesEventosResponse;
@@ -20,6 +21,9 @@ public class CalendarioController {
 
     @Autowired
     RetornarMesService retornarMesService;
+
+    @Autowired
+    RetornarMobileMesService retornarMobileMesService;
 
     @Autowired
     CreateCalendarService createCalendarService;
@@ -49,6 +53,15 @@ public class CalendarioController {
 
         return retornarMesService.retornar(ano, mes);
     }
+
+    @GetMapping("/mobile/{ano}")
+    public CalendarioMobileResponse retornarAnoMobile(@RequestParam("mes") String mes, @PathVariable Integer ano) {
+
+        verificarParametroService.verificar(mes);
+
+        return retornarMobileMesService.retornar(ano, mes);
+    }
+
 
     @PostMapping("/{ano}")
     public void createCalendar(@PathVariable Integer ano) {

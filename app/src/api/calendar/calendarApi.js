@@ -12,6 +12,12 @@ export const useCalendarApi = () => {
     return response.data;
   };
 
+  const returnMonthMobile = async (year, month) => {
+    const response = await http.get("/mobile/" + year + "?mes=" + month);
+
+    return response.data;
+  };
+
   const createCalendar = async (year) => {
     const response = await http.post("/" + year);
 
@@ -75,6 +81,7 @@ export const useCalendarApi = () => {
 
   return {
     returnMonth,
+    returnMonthMobile,
     createCalendar,
     addIndex,
     returnIndexesEvents,

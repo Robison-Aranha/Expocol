@@ -30,7 +30,12 @@ export const LoginRegister = () => {
 
     if (location.state == "expired") {
       setGlobalModal([...globalModal, { message: "Sua sessão expirou!!" }])
+    } else if (location.state == "logout") {
+      setGlobalModal([...globalModal, { message: "Sessão encerrada!!" } ])
     }
+
+    localStorage.removeItem("user");
+    setUserGlobalState({})
   }, [])
 
   const handlerValue = (event) => {
@@ -152,63 +157,99 @@ export const LoginRegister = () => {
           <h1> Grade <p> Mate </p> </h1>
           <img src={MenuIcon} />
         </div>
+
         <div className="LoginRegister">
-          <div className="LoginRegister-Credentials">
-            <label> Email: </label>
-            <input
-              name="gmail"
-              type="email"
-              value={userData.gmail}
-              onChange={handlerValue}
-              placeholder="Digite seu gmail"
-              autoComplete="off"
-            />
-            {userState == true ? (
-              <>
-                <label> Nome: </label>
-                <input
-                  name="username"
-                  type="text"
-                  value={userData.username}
-                  onChange={handlerValue}
-                  placeholder="Digite seu nome de usuario"
-                  autoComplete="off"
+          
+        { userState ?
+          <div className="LoginRegister-credentials-register">
+            <div className="LoginRegister-credentials-item">
+              <label> Email: </label>
+              <input
+                name="gmail"
+                type="email"
+                value={userData.gmail}
+                onChange={handlerValue}
+                placeholder="Digite seu gmail"
+                autoComplete="off"
+              />
+            </div>
+            <div className="LoginRegister-credentials-item">
+              <label> Nome: </label>
+              <input
+                name="username"
+                type="text"
+                value={userData.username}
+                onChange={handlerValue}
+                placeholder="Digite seu nome de usuario"
+                autoComplete="off" 
                 />
-                <blockquote>
-                  {" "}
-                  O nome de usuário deve ter de 6 a 12 de comprimento sem
-                  caracteres especiais!{" "}
-                </blockquote>
-              </>
-            ) : null}
-            <label> Senha: </label>
-            <input
-              name="password"
-              type="password"
-              value={userData.password}
-              onChange={handlerValue}
-              placeholder="Digite sua senha"
-              autoComplete="off"
-            />
-            {userState == true ? (
-              <>
-                <input
-                  name="passwordConfirm"
-                  type="password"
-                  value={userData.passwordConfirm}
-                  onChange={handlerValue}
-                  placeholder="Confirme Sua Senha"
-                  autoComplete="off"
-                />
-                <blockquote>
-                  {" "}
-                  A senha deve ter no mínimo 4 e no máximo 12 de comprimento
-                  contendo pelo menos 1 maiúscula, 1 minúscula, 1 caractere
-                  especial e 1 dígito!{" "}
-                </blockquote>
-              </>
-            ) : null}
+            </div>
+            <div className="LoginRegister-credentials-item">
+              <blockquote>
+              {" "}
+              O nome de usuário deve ter de 6 a 12 de comprimento sem
+              caracteres especiais!{" "}
+              </blockquote>
+            </div>
+            <div className="LoginRegister-credentials-item">
+              <label> Senha: </label>
+              <input
+                name="password"
+                type="password"
+                value={userData.password}
+                onChange={handlerValue}
+                placeholder="Digite sua senha"
+                autoComplete="off"
+              />
+            </div>
+            <div className="LoginRegister-credentials-item">
+              <input
+                name="passwordConfirm"
+                type="password"
+                value={userData.passwordConfirm}
+                onChange={handlerValue}
+                placeholder="Confirme Sua Senha"
+                autoComplete="off"
+              />
+            </div>
+            <div className="LoginRegister-credentials-item">
+              <blockquote>
+                {" "}
+                A senha deve ter no mínimo 4 e no máximo 12 de comprimento
+                contendo pelo menos 1 maiúscula, 1 minúscula, 1 caractere
+                especial e 1 dígito!{" "}
+              </blockquote>
+            </div>
           </div>
+          
+        :
+          
+          <div className="LoginRegister-credentials-login">
+            <div className="LoginRegister-credentials-item">
+              <label> Email: </label>
+              <input
+                name="gmail"
+                type="email"
+                value={userData.gmail}
+                onChange={handlerValue}
+                placeholder="Digite seu gmail"
+                autoComplete="off"
+              />
+            </div>
+            <div className="LoginRegister-credentials-item">
+              <label> Senha: </label>
+              <input
+                name="password"
+                type="password"
+                value={userData.password}
+                onChange={handlerValue}
+                placeholder="Digite sua senha"
+                autoComplete="off"
+              />
+            </div>
+          </div>
+        
+        }
           <div className="LoginRegister-switch">
             <a onClick={handleChangeState}>
               {" "}

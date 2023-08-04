@@ -1,9 +1,11 @@
 package com.br.expocol.api.service.Calendario;
 
 import com.br.expocol.api.enumerator.DiasDaSemana;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 @Service
+@Transactional
 public class DiaDaSemanaService {
 
     public DiasDaSemana retornar(Integer dia, Integer anoRequest, Integer mesRequest) {

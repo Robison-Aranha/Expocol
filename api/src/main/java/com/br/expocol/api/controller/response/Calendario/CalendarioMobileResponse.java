@@ -7,15 +7,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
-import java.util.Map;
-
 
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class CalendarioResponse {
+public class CalendarioMobileResponse {
 
-    Map<String, ArrayList<DiaResponse>> days;
+    private ArrayList<DiaResponse> days;
 
 }

@@ -24,7 +24,6 @@ import java.util.concurrent.ExecutionException;
 
 
 @Service
-@Transactional
 public class CreateCalendarService {
 
     @Autowired

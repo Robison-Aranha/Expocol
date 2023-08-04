@@ -10,7 +10,7 @@
     align-items: center;
     justify-content: center;
     display: none;
-
+    z-index: 100;
 }
 
 .modal {
@@ -21,7 +21,7 @@
 .ImageTextAnaliser-container {
     width: 70%;
     height: fit-content;
-    max-height: 80vh;
+    max-height: 90vh;
     max-width: 80vh;
     background-color: var(--main-primary-color);
     border-radius: 10px;
@@ -32,7 +32,7 @@
     align-items: center;
     justify-content: space-between;
     overflow: hidden;
-    min-width: 200px;
+    min-width: 350px;
     animation-duration: 2s;
     animation-direction: alternate;
 }

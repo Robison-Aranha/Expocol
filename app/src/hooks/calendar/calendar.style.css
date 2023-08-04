@@ -1,14 +1,11 @@
 .Calendar-section {
 
     width: 100%;
-    height: 100%;
+    height: 90%;
     display: flex;
     align-items: center;
-    justify-content: center;
-    display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: space-around;
+    justify-content: space-evenly;
     padding: 2%;
 }
 
@@ -25,12 +22,14 @@
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    width: 50%;
+    width: 30%;
     height: 100%;
+    margin-bottom: 10px;
 }
 
 .Calendar-inputs > input, select {
-    width: 50%;
+    width: 80%;
+    margin-bottom: 5px;
 }
 
 
@@ -43,6 +42,7 @@
     height: 80%;
     border-radius: 10px;
     background-color: var(--main-terciary-color);
+    padding: 1%;
 }
 
 .Calendar-info-index {
@@ -59,8 +59,8 @@
 
 .Calendar-info-index > div {
     display: flex;
-    width:40px;
-    height: 40px;
+    width: 30px;
+    height: 30px;
     border-radius: 50%;
     background-color:var(--main-notification-index);
     border: 3px solid var(--main-secundary-color);
@@ -68,8 +68,8 @@
 }
 
 .Calendar-info-event > div {
-    width: 40px;
-    height: 40px;
+    width: 30px;
+    height: 30px;
     border-radius: 50%;
     background-color: var(--main-notification-event);
     border: 3px solid var(--main-secundary-color);
@@ -88,6 +88,20 @@
     padding: 1%;
 }
 
+.Calendar-table-mobile {
+    width: 70%;
+    height: 40%;
+    flex-direction: column;
+    border: 2px dashed var(--main-quaternary-color);
+    background-color: var(--main-terciary-color);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    overflow: auto;
+    overflow-x: hidden;
+}
+
 .Calendar-table-column {
     width: 100%;
     height: 100%;
@@ -97,7 +111,6 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    border-bottom: 2px solid var(--main-terciary-color);
     height: 10%;
     text-decoration: underline;
 }
@@ -110,6 +123,40 @@
     width: 100%;
     height: 90%;
 }
+
+.Calendar-table-day-mobile {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    min-height: 100%;
+    border: 1px dashed var(--main-primary-border-decoration);
+}
+
+.Calendar-table-day-mobile > p {
+    position: absolute;
+    top: 50%;
+}
+
+.Calendar-table-day-mobile-sticky-title {
+    display: flex;
+    position: sticky;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 20%;
+    top: 0;
+    left: 0;
+    background-color: var(--main-primary-border-decoration);
+    z-index: 2;
+}
+
+.Calendar-table-day-mobile-sticky-title > p {
+    color: var(--main-quaternary-color);
+}
+
 
 .Calendar-table-day {
     display: flex;
@@ -139,13 +186,13 @@
     align-items: center;
     justify-content: flex-start;
     position: absolute;
-    top: 0;
+    bottom: 0;
     left: 10px;
     height: 20%;
     width: 100%;
 }
 
-.Calendar-table-day > img {
+.Calendar-table-day > img, .Calendar-table-day-mobile > img {
 
     width: 30px;
     position: absolute;
@@ -159,6 +206,7 @@
     border-radius: 50%;
     background-color: var(--main-notification-index);
     margin-right: 5px;
+    margin-bottom: 5px;
 }
 
 .Calendar-table-day-events {
@@ -166,4 +214,32 @@
     height: 15px;
     border-radius: 50%;
     background-color: var(--main-notification-event);
+    margin-right: 5px;
+    margin-bottom: 5px;
+}
+
+@media (max-width : 800px) {
+
+    .Calendar-user-choice-info {
+        flex-direction: column;
+        height: 40%;
+    }
+
+    .Calendar-table {
+        height: 50%;
+     }
+
+    .Calendar-inputs {
+        width: 60%;
+    } 
+
+    .Calendar-info {
+        width: 60%;
+        margin-bottom: 10px;
+    }
+
+    .Calendar-section {
+        justify-content: space-around;
+    }
+
 }

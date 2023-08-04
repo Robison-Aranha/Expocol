@@ -9,39 +9,79 @@ import {
   useLoadCalendar,
   useClassroomToken,
   useClassroomUtils,
+  useGlobalModal,
 } from "../../globalState/globalState";
 import ClassroomIcon from "../../assets/tools/classroom.png";
 import { useVerifySession } from "../../api/verifySessions";
+import { useSetScrollTop } from "../../scripts/setScrollTop";
 
 export const Calendar = () => {
   const dataAtual = new Date();
   const [calendar, setCalendar] = useState({
     year: dataAtual.getFullYear(),
     month: "JANEIRO",
-    days: {},
+    days: "",
   });
 
-  const { returnMonth, createCalendar } = useCalendarApi();
+  const { returnMonth, returnMonthMobile, createCalendar } = useCalendarApi();
   const { returnCourses, returnCourseWork } = useClassroomApi();
   const { verifySessionUser, verifySessionClassroom } = useVerifySession();
+  const { setScrollTop } = useSetScrollTop()
 
   const [globalCalendar, setGlobalCalendar] = useGlobalCalendar();
-  const [classroomToken] = useClassroomToken();
+  const [globalModal, setGlobalModal] = useGlobalModal()
+  const [classroomToken, setClassroomToken] = useClassroomToken();
   const [classroomUtils, setClassroomUtils] = useClassroomUtils();
   const [selectedCourse, setSelectedCourse] = useState();
   const [loadCalendar, setLoadCalendar] = useLoadCalendar();
-  const [loading, setLoading] = useGlobalLoading();
+  const [, setLoading] = useGlobalLoading();
+  const [isDaysLoaded, setIsDaysLoaded] = useState()
+  const [calendarState, setCalendarState] = useState()
 
   useEffect(() => {
-    returnMonthService();
+    
+    if (window.screen.width <= 850) {
+
+      if (calendarState == false) {
+
+        returnMonthMobileService()
+      } else {
+        setCalendarState(false)
+      }
+
+    } else {
+
+        if (calendarState) {
+          returnMonthService()
+        } else {
+          setCalendarState(true)
+        }
+    }
   }, [calendar.year, calendar.month]);
+
 
   useEffect(() => {
     if (loadCalendar) {
-      returnMonthService();
+      if (calendarState) {
+        returnMonthService();
+      } else {
+        returnMonthMobileService()
+      }
       setLoadCalendar(false);
     }
   }, [loadCalendar]);
+
+  useEffect(() => {
+
+
+    if (calendarState) {
+      returnMonthService()
+    } else if (calendarState == false) {
+      returnMonthMobileService()
+    }
+
+
+  }, [calendarState])
 
   useEffect(() => {
     if (classroomToken) {
@@ -54,31 +94,63 @@ export const Calendar = () => {
 
   useEffect(() => {
     if (selectedCourse) {
+      setClassroomUtils({ ...classroomUtils, monthWorks: null });
       handleClassroomWorks();
     }
+
   }, [selectedCourse]);
 
+  useEffect(() => {
+
+    if (classroomToken && selectedCourse && isDaysLoaded) {
+      setClassroomUtils({ ...classroomUtils, monthWorks: null });
+      handleClassroomWorks();
+    }
+
+
+    setIsDaysLoaded(false)
+  }, [isDaysLoaded])
+
   const returnMonthService = async () => {
+    setLoading(true);
     try {
-      setLoading(true);
 
       const response = await returnMonth(calendar.year, calendar.month);
 
-      setLoading(false);
-      console.log(response);
-
+      console.log(response)
       setCalendar({ ...calendar, days: { ...response.days } });
 
-      if (classroomToken && selectedCourse) {
-        handleClassroomWorks();
-      }
+      setIsDaysLoaded(true)
+
     } catch (error) {
       verifySessionUser(error);
       if (error.response.status == 404) {
         createCalendarService();
       }
     }
+    setLoading(false);
   };
+
+  const returnMonthMobileService = async () => {
+    setLoading(true);
+    try {
+
+      const response = await returnMonthMobile(calendar.year, calendar.month);
+
+      setCalendar({ ...calendar, days: [ ...response.days ] });
+
+      setIsDaysLoaded(true)
+
+    } catch (error) {
+      verifySessionUser(error);
+      if (error.response.status == 404) {
+        createCalendarService();
+      }
+    }
+    setLoading(false);
+
+
+  }
 
   const handleClasses = async () => {
     setLoading(true);
@@ -86,8 +158,15 @@ export const Calendar = () => {
     try {
       const courses = await returnCourses();
 
-      setClassroomUtils({ ...classroomUtils, courses: [...courses.courses] });
+      if (Object.keys(courses).length > 0) {
+
+        setClassroomUtils({ ...classroomUtils, courses: [...courses.courses] });
+      } else {
+        setGlobalModal([...globalModal, { message: "Não há cursos para este usuario!" }])
+        setClassroomToken(null)
+      }
     } catch (error) {
+
       verifySessionClassroom(error);
     }
 
@@ -133,13 +212,19 @@ export const Calendar = () => {
   };
 
   const createCalendarService = async () => {
+    setLoading(true)
     try {
       await createCalendar(calendar.year);
 
-      returnMonthService();
+      if (calendarState) {
+        returnMonthService();
+      } else if (calendarState == false) {
+        returnMonthMobileService()
+      }
     } catch (error) {
       verifySessionUser(error);
     }
+    setLoading(false)
   };
 
   const handlerValue = (event) => {
@@ -188,7 +273,7 @@ export const Calendar = () => {
   };
 
   const returnClassroomWorkDay = (diaValor) => {
-    if (classroomUtils.monthWorks && !loading) {
+    if (classroomUtils.monthWorks) {
       if (classroomUtils.monthWorks[`${diaValor}`]) {
         return <img src={ClassroomIcon} />;
       }
@@ -231,47 +316,72 @@ export const Calendar = () => {
             </div>
           </div>
         </div>
-        <div className="Calendar-table">
-          {WEEKDAYS.map((day, key) => (
-            <div className="Calendar-table-column" key={key}>
-              <div className="Calendar-table-title">
-                <p>
-                  {" "}
-                  <strong> {day} </strong>{" "}
-                </p>
-              </div>
-              <div className="Calendar-table-content">
-                {calendar.days[day]?.map((dia, key) => (
-                  <div
-                    onClick={() => {
-                      if (!globalCalendar) {
-                        handleIndexGlobalState(dia.diaValor);
+        { calendarState ?
+          <div className="Calendar-table">
+            {WEEKDAYS.map((day, key) => (
+              <div className="Calendar-table-column" key={key}>
+                <div className="Calendar-table-title">
+                  <p>
+                    {" "}
+                    <strong> {day} </strong>{" "}
+                  </p>
+                </div>
+                <div className="Calendar-table-content">
+                  {calendar.days[day]?.map((dia, key) => (
+                    <div
+                      onClick={() => {
+                        if (!globalCalendar) {
+                          handleIndexGlobalState(dia.diaValor);
+                        }
+                      }}
+                      className={
+                        dia.diaValor
+                          ? "Calendar-table-day"
+                          : "Calendar-table-day-void"
                       }
-                    }}
-                    className={
-                      dia.diaValor
-                        ? "Calendar-table-day"
-                        : "Calendar-table-day-void"
-                    }
-                    style={{ cursor: dia.diaValor ? "pointer" : "" }}
-                    key={key}
-                  >
-                    <div className="Calendar-table-day-content">
-                      {dia.index ? (
-                        <div className="Calendar-table-day-indexes"></div>
-                      ) : null}
-                      {dia.event ? (
-                        <div className="Calendar-table-day-events"> </div>
-                      ) : null}
+                      style={{ cursor: dia.diaValor ? "pointer" : "" }}
+                      key={key}
+                    >
+                      <div className="Calendar-table-day-content">
+                        {dia.index ? (
+                          <div className="Calendar-table-day-indexes"></div>
+                        ) : null}
+                        {dia.event ? (
+                          <div className="Calendar-table-day-events"> </div>
+                        ) : null}
+                      </div>
+                      {dia.diaValor ? <strong> {dia.diaValor} </strong> : ""}
+                      {returnClassroomWorkDay(dia.diaValor)}
                     </div>
-                    {dia.diaValor ? <strong> {dia.diaValor} </strong> : ""}
-                    {returnClassroomWorkDay(dia.diaValor)}
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+          :
+        <div className="Calendar-table-mobile" id="calendar">
+          {calendar.days.length > 0 ? calendar.days.map(dia => (
+            <>
+              <div className="Calendar-table-day-mobile" onClick={() => {
+                if (!globalCalendar) {
+                  handleIndexGlobalState(dia.diaValor);
+                }
+              }}>
+                <div className="Calendar-table-day-mobile-sticky-title"> <p><strong> {dia.diaDaSemana} </strong> </p> </div>
+                <div className="Calendar-table-day-content">
+                  {dia.index ? (
+                    <div className="Calendar-table-day-indexes"></div>
+                  ) : null}
+                  {dia.event ? (
+                    <div className="Calendar-table-day-events"> </div>
+                  ) : null}
+                </div>
+                <p> {dia.diaValor ? <strong> {dia.diaValor} </strong> : ""} </p>
+                {returnClassroomWorkDay(dia.diaValor)}
+              </div>
+            </>
+          )) : null}
+        </div> }
       </div>
     </>
   );

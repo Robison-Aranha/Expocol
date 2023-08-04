@@ -6,14 +6,16 @@ import defaultImgAccount from "../../assets/account/default.png";
 import "./chat.style.css";
 import { Conversation } from "../hooks";
 import { useFriendsApi } from "../../api/api";
-import { useGlobalState } from "../../globalState/globalState";
+import { useGlobalState, useChatModal } from "../../globalState/globalState";
 import { useVerifyScrollBottom } from "../../scripts/verifyScrollBottom";
 import searchImage from "../../assets/chat/search.png";
+import switchChatIcon from "../../assets/chat/Seta.png"
 import { DOMAIN_SOCK } from "../../consts/Sock";
 import { useVerifySession } from "../../api/verifySessions";
 
-export const Chat = (props) => {
+export const Chat = () => {
   const [userState, setUserState] = useState(false);
+  const [chatModal, setChatModal] = useChatModal()
   const [userGlobalState] = useGlobalState();
   const [notificationMessage, setNotificationMessage] = useState([]);
   const [useSearch, setUseSearch] = useState([]);
@@ -23,13 +25,26 @@ export const Chat = (props) => {
   const [useIsSocket, setUseIsSocket] = useState();
   const [useStomp, setUseStomp] = useState({});
   const [loadMore, setLoadMore] = useState(false);
+  const [switchChat, setSwitchChat] = useState(false);
 
   const [userData, setUserData] = useState({
     to: {},
     search: "",
     page: 0,
-    email: userGlobalState.email,
+    email: "",
   });
+
+
+  useEffect(() => {
+
+    if (userGlobalState) {
+      setUserData({ ...userData, email: userGlobalState.email})
+      setUseIsSocket(1);
+    }
+
+
+  }, [userGlobalState])
+
 
   const { listUser } = useUsersApi();
   const { listFriends } = useFriendsApi();
@@ -42,6 +57,36 @@ export const Chat = (props) => {
   };
 
   useEffect(() => {
+
+    const friends = document.getElementById("friends")
+
+    const userInteration  = document.getElementById("userInteration")
+
+    const switchButton = document.getElementById("switch-button")
+
+    if (!switchChat) {
+
+      friends.style.width = "100%"
+      
+      userInteration.style.width = "0"
+
+      switchButton.style.transform = "rotate(0)"
+
+      setUserState(false)
+
+    } else {
+
+      friends.style.width = "0"
+      
+      userInteration.style.width = "100%"
+
+      switchButton.style.transform = "rotate(180deg)"
+    }
+    
+
+  }, [switchChat])
+
+  useEffect(() => {
     setUserData({ ...userData, page: 0 });
     listUsersService();
   }, [userData.search]);
@@ -49,13 +94,12 @@ export const Chat = (props) => {
   useEffect(() => {
     setUseSockNotification(new SockJS(DOMAIN_SOCK));
     setUseSockChat(new SockJS(DOMAIN_SOCK));
-    setUseIsSocket(1);
     listFriendsService();
   }, []);
 
   useEffect(() => {
     listFriendsService();
-  }, [props.modal]);
+  }, [chatModal]);
 
   useEffect(() => {
     const lastNotification =
@@ -63,9 +107,7 @@ export const Chat = (props) => {
 
     if (notificationMessage.length > 0) {
       if (
-        notificationMessage.filter((n) => n == lastNotification).length > 1 ||
-        userData.to.email == lastNotification
-      ) {
+        notificationMessage.filter((n) => n == lastNotification).length > 1 || userData.to.email == lastNotification) {
         notificationMessage.splice(
           notificationMessage.indexOf(lastNotification),
           1
@@ -109,6 +151,12 @@ export const Chat = (props) => {
       setUserData({ ...userData, page: userData.page + 1 });
     }
   }, [loadMore]);
+
+  const handleSwitch = () => {
+
+    setSwitchChat(!switchChat)
+
+  }
 
   const connectChat = () => {
     useStomp.chat.debug = null;
@@ -241,7 +289,7 @@ export const Chat = (props) => {
   };
 
   return (
-    <div className={"Chat-section" + (props.modal == false ? "" : " modal")}>
+    <div className={"Chat-section" + (chatModal ? " modal" : "")}>
       <div className="Chat-container">
         <div className="Chat-exit">
           <h2 className="Chat-title">
@@ -249,7 +297,7 @@ export const Chat = (props) => {
           </h2>
           <button
             className="Chat-exit-button button-black button-small"
-            onClick={props.setModal}
+            onClick={() => setChatModal(false)}
           >
             {" "}
             X{" "}
@@ -257,7 +305,8 @@ export const Chat = (props) => {
         </div>
 
         <div className="Chat-content">
-          <div className="Chat-friends">
+          <img src={switchChatIcon} className="Chat-search-box-img-switch" id="switch-button" onClick={handleSwitch}/>
+          <div className="Chat-friends" id="friends">
             <div className="Chat-friends-title">
               <h4>
                 <strong> Amigos </strong>
@@ -272,6 +321,7 @@ export const Chat = (props) => {
                       onClick={() => {
                         setUserState(userState == true ? true : !userState);
                         handlerRemoverNotification(friend.email);
+                        handleSwitch()
                         setUserData({ ...userData, to: { ...friend } });
                       }}
                     >
@@ -297,7 +347,7 @@ export const Chat = (props) => {
                 : null}
             </div>
           </div>
-          <div className="Chat-conversation">{returnUserInteration()}</div>
+          <div className="Chat-conversation" id="userInteration">{returnUserInteration()}</div>
         </div>
       </div>
     </div>

@@ -6,6 +6,7 @@ import com.br.expocol.api.security.repository.UsuarioRepository;
 import com.br.expocol.api.security.service.UsuarioAutenticadoService;
 import com.br.expocol.api.service.Calendario.RetornarEventoContentService;
 import com.br.expocol.api.service.Index.RetornarArquivoConvertidoService;
+import jakarta.transaction.Transactional;
 import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,6 +17,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.io.IOException;
 
 @Service
+@Transactional
 public class AtualizarImagemUsuario {
 
 

@@ -7,7 +7,6 @@ export const useVerifySession = () => {
     const [, setClassroomToken] = useClassroomToken()
     const [, setClassroomUtils] = useClassroomUtils()
     const [, setClassroomSelectedWork] = useClassroomSelectedWork()
-    const [, setUserGlobalState] = useGlobalState()
     const [globalModal, setGlobalModal] = useGlobalModal()
     const navigate = useNavigate()
 
@@ -15,8 +14,6 @@ export const useVerifySession = () => {
     const verifySessionUser = (data) => {
         
         if (data.response.status == 401) {
-            localStorage.removeItem("user");
-            setUserGlobalState({})
             setTimeout(() => navigate("/", {state: "expired"}), 1000);
         }
     }

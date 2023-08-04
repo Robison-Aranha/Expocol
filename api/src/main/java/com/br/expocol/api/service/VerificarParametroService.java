@@ -2,9 +2,11 @@ package com.br.expocol.api.service;
 
 
 import com.br.expocol.api.exception.InvalidCredentials;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 @Service
+@Transactional
 public class VerificarParametroService {
 
     public void verificar(String parametro) {

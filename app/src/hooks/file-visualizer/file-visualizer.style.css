@@ -11,7 +11,9 @@
     align-items: center;
     justify-content: center;
     display: none;
+    z-index: 1002;
 }
+
 
 .File-container {
     width: 30%;
@@ -26,7 +28,7 @@
     align-items: center;
     justify-content: space-around;
     overflow: hidden;
-    min-width: 50vh;
+    min-width: 350px;
 }
 
 .modal {

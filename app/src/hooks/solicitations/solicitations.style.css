@@ -10,7 +10,7 @@
     align-items: center;
     justify-content: center;
     display: none;
-    z-index: 2;
+    z-index: 5;
 }
 
 .modal {
@@ -30,7 +30,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
-    min-width: 250px;
+    min-width: 350px;
 
 }
 
@@ -107,7 +107,7 @@
     height: 100%;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-end;
     justify-content: space-around;
 }
 

@@ -35,5 +35,11 @@ export const useLoginRegister = () => {
     return response.data
   }
 
-  return {login, register, refreshToken};
+  const logout = async () => {
+
+    await http.get("/logout")
+
+  }
+
+  return {login, logout, register, refreshToken};
 };

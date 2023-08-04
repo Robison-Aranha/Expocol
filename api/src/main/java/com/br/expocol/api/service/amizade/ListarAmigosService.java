@@ -8,6 +8,7 @@ import com.br.expocol.api.security.controller.response.UsuarioResponse;
 import com.br.expocol.api.security.service.BuscarUsuarioSecurityAuthService;
 import com.br.expocol.api.security.service.UsuarioAutenticadoService;
 import com.br.expocol.api.service.usuario.BuscarUsuarioService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -17,6 +18,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 public class ListarAmigosService {
 
 

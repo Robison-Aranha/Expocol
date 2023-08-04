@@ -133,7 +133,7 @@ export const NewsPaper = () => {
                 <div className="NewsPaper-article-header">
                     <p> <strong> Data de publicação: </strong> { ZonedDateTime.parse(selectedNew.publishedAt).format(
                     DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")) } </p>
-                    <img src={selectedNew.urlToImage} alt="No Image..."/>
+                    <img src={selectedNew.urlToImage} alt="Sem Imagem..."/>
                 </div>
                 <div className="NewsPaper-article-content">
                     <div className="NewsPaper-article-item">

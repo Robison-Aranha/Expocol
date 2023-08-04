@@ -5,18 +5,30 @@ import { useFriendsApi } from "../../api/api";
 import { useVerifySession } from "../../api/verifySessions";
 import defaultImgAccount from "../../assets/account/default.png";
 import "./solicitations.style.css";
-import { useGlobalModal, useGlobalState } from "../../globalState/globalState";
+import { useGlobalModal, useGlobalState, useSolicitationsModal } from "../../globalState/globalState";
 
-export const Solicitations = (props) => {
+export const Solicitations = () => {
   const [useFriendsSolicitation, setUseFriendsSolicitation] = useState([]);
-  const [globalModal, setGlobalModal] = useGlobalModal();
+  const [solicitationsModal, setSolicitationsModal] = useSolicitationsModal()
+  const [, setGlobalModal] = useGlobalModal();
   const [userGlobalState] = useGlobalState();
   const [useSock, setUseSock] = useState();
   const [useIsSocket, setUseIsSocket] = useState();
   const [useStomp, setUseStomp] = useState({});
-  const [userData] = useState({
-    email: userGlobalState.email,
+  const [userData, setUserData] = useState({
+    email: "",
   });
+
+  useEffect(() => {
+
+    if (userGlobalState) {
+      setUserData({ ...userData, email: userGlobalState.email })
+      setUseIsSocket(1);
+    } 
+
+
+
+  }, [userGlobalState])
 
   const {
     acceptFriendSolicitation,
@@ -29,7 +41,6 @@ export const Solicitations = (props) => {
   useEffect(() => {
     setUseSock(new SockJS("http://localhost:8080/ws"));
     listFriendsSolicitationsService();
-    setUseIsSocket(1);
   }, []);
 
   useEffect(() => {
@@ -107,7 +118,7 @@ export const Solicitations = (props) => {
   };
 
   return (
-    <div className={"Friends-section" + (props.modal == false ? "" : " modal")}>
+    <div className={"Friends-section" + (solicitationsModal ? " modal" : "")}>
       <div className="Friends-container">
         <div className="Friends-exit">
           <h2 className="Friends-title">
@@ -115,7 +126,7 @@ export const Solicitations = (props) => {
           </h2>
           <button
             className="Friends-exit-button button-black button-small"
-            onClick={props.setModal}
+            onClick={() => setSolicitationsModal(false)}
           >
             {" "}
             X{" "}

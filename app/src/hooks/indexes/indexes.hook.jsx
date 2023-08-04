@@ -119,7 +119,7 @@ export const Indexes = () => {
       if (classroomUtils.monthWorks[`${globalCalendar.dia}`]) {
         return (
           <div className="Indexes-content">
-            <h1> Trabalhos Classroom </h1>
+            <h3> Trabalhos Classroom </h3>
             <div className="Indexes-details">
               {classroomUtils.monthWorks[`${globalCalendar.dia}`].map((work, key) => (
                 <div className="Indexes-item button button-classroom" key={key} onClick={() => setSelectedClassroomWork({...work})}>
@@ -137,11 +137,7 @@ export const Indexes = () => {
     <div className={"Indexes-section" + (indexesGlobalState ? " modal" : "")}>
       <div className="Indexes-container" id="index">
         <div className="Indexes-content">
-          <h1> Arquivos </h1>
-          <p>
-            {" "}
-            Os arquivos devem ter um maximo de 25 caracteres em seus titulos!
-          </p>
+          <h3> Arquivos </h3>
           <p> <strong>  30MB permitido para upload... </strong> </p>
           <div className="Indexes-details">
             {files.length > 0 ? (
@@ -160,7 +156,7 @@ export const Indexes = () => {
           </div>
         </div>
         <div className="Indexes-content">
-          <h1> Eventos </h1>
+          <h3> Eventos </h3>
           <div className="Indexes-details">
             {events.length > 0 ? (
               events.map((event, index) => (

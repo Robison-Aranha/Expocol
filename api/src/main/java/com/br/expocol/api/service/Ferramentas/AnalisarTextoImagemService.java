@@ -2,6 +2,7 @@ package com.br.expocol.api.service.Ferramentas;
 
 
 import com.br.expocol.api.controller.response.Ferramentas.AnaliseDeImagemResponse;
+import jakarta.transaction.Transactional;
 import net.sourceforge.tess4j.Tesseract;
 import net.sourceforge.tess4j.TesseractException;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -2,10 +2,12 @@ package com.br.expocol.api.service.Calendario;
 
 
 import com.br.expocol.api.repository.Calendario.EventoRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
+@Transactional
 public class DeletarEventoService {
 
     @Autowired

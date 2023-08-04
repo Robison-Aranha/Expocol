@@ -10,6 +10,7 @@ import com.br.expocol.api.mapper.Calendario.RetornarDiasMapper;
 import com.br.expocol.api.repository.Calendario.DiaRepository;
 import com.br.expocol.api.security.service.UsuarioAutenticadoService;
 import com.br.expocol.api.service.VerificarParametroService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -8,10 +8,12 @@ import com.br.expocol.api.security.service.UsuarioAutenticadoService;
 import com.br.expocol.api.service.mensagem.MandarNotificaçãoService;
 import com.br.expocol.api.service.usuario.BuscarUsuarioService;
 import com.br.expocol.api.websocket.domain.Notification;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
+@Transactional
 public class IgnorarSolicitacaoService {
 
 

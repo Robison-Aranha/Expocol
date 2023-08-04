@@ -7,7 +7,7 @@
     justify-content: flex-start;
     width: max-content;
     height: max-content;
-    z-index: 400;
+    z-index: 9999;
     max-height: 20vh;
     overflow: hidden;
     padding: 5px;

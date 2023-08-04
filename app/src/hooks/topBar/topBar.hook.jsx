@@ -6,10 +6,12 @@ import OcrIcon from "../../assets/tools/ocr.png";
 import NewsIcon from "../../assets/tools/news.png"
 import DictionaryIcon from "../../assets/tools/dictionary.png";
 import defaultImgAccount from "../../assets/account/default.png";
-import MenuIcon from "../../assets/marca_da_agua.png"
+import LogoIcon from "../../assets/TopBar/logo.png"
+import WaterMarkIcon from "../../assets/marca_da_agua.png"
 import { useEffect, useState } from "react";
-import { Chat, Solicitations } from "../hooks";
 import { useUsersApi } from "../../api/api";
+import { useLoginRegister } from "../../api/api";
+import { useNavigate } from "react-router-dom";
 import {
   useGlobalModal,
   useGlobalState,
@@ -19,7 +21,9 @@ import {
   useGlobalLoading,
   useImageTextAnaliserModal,
   useDicionaryModal,
-  useNewsPaperModal
+  useNewsPaperModal,
+  useChatModal,
+  useSolicitationsModal
 } from "../../globalState/globalState";
 import { clientId } from "../../consts/googleAccountSecrets";
 import { SCOPES } from "../../consts/scopes";
@@ -27,11 +31,11 @@ import { useVerifySession } from "../../api/verifySessions";
 import jwt_decode from "jwt-decode";
 
 export const ToPBar = () => {
-  const [modalChat, setModalChat] = useState(false);
-  const [modalFriends, setModalFriends] = useState(false);
   const [userGlobalState, setUserGlobalState] = useGlobalState();
   const [isUserLoaded, setIsUserLoaded] = useState(false);
   const [globalModal, setGlobalModal] = useGlobalModal();
+  const [, setChatModal] = useChatModal()
+  const [, setSolicitationsModal] = useSolicitationsModal()
   const [, setLoading] = useGlobalLoading();
   const [, setGlobalChangeProfile] = useGlobalChangeProfile();
   const [googleCredentials, setGoogleCredentials] = useGoogleCredentials();
@@ -43,6 +47,8 @@ export const ToPBar = () => {
 
   const { detailUser } = useUsersApi();
   const { verifySessionUser } = useVerifySession();
+  const { logout } = useLoginRegister()
+  const navigate = useNavigate()
 
   useEffect(() => {
     if (!googleCredentials && isUserLoaded) {
@@ -86,6 +92,19 @@ export const ToPBar = () => {
 
     google.accounts.id.prompt();
   };
+
+  const logoutService = async () => {
+
+    try {
+
+      await logout()
+      setTimeout(() => navigate("/", {state: "logout"}), 1000);
+
+    } catch {
+      setGlobalModal([...globalModal, { message: "Problema ao deslogar! Tente Novamente mais tarde!" }])
+    }
+
+  }
 
   const handleGetClassroomToken = () => {
     tokenClient.requestAccessToken();
@@ -164,63 +183,63 @@ export const ToPBar = () => {
   const returnTopBar = () => {
     return (
       <section className="TopBar-section">
-        <div className="TopBar-perfil">
-          <div className="TopBar-user-info">
-            <div className="TopBar-perfil-img">
-              <img
-                src={
-                  userGlobalState.imagem
-                    ? userGlobalState.imagem
-                    : defaultImgAccount
-                }
-                onClick={() => setGlobalChangeProfile(true)}
-              />
-            </div>
-            <div className="TopBar-perfil-credentials">
-              <p> {userGlobalState?.nome} </p>
-              <p> {userGlobalState?.email} </p>
+        <input type="checkbox" id="menu-control"></input>
+        <div className="TopBar-container" id="mobile">
+          <div className="TopBar-perfil">
+            <div className="TopBar-user-info">
+              <div className="TopBar-perfil-img">
+                <img
+                  src={
+                    userGlobalState.imagem
+                      ? userGlobalState.imagem
+                      : defaultImgAccount
+                  }
+                  onClick={() => setGlobalChangeProfile(true)}
+                />
+              </div>
+              <div className="TopBar-perfil-credentials">
+                <p> {userGlobalState?.nome} </p>
+                <p> {userGlobalState?.email} </p>
+              </div>
             </div>
           </div>
-        </div>
-        <div
-          className="TopBar-google-auth"
-          onClick={handleLogOutGoogle}
-          style={{ cursor: "pointer" }}
-        >
-          {returnGoogleIcon()}
-          <p>
-            {" "}
-            <strong> {googleCredentials ? "Logado" : "Login"} </strong>{" "}
-          </p>
-        </div>
-        <div className="TopBar-tools">
-          {returnGoogleTools()}
-          <img src={OcrIcon} onClick={() => setImageTextAnaliser(true)} />
-          <img src={NewsIcon} onClick={() => setNewsPaperModal(true)} />
-          <img src={DictionaryIcon} onClick={() => setDictionaryModal(true)} />
-        </div>
-        {isUserLoaded ? (
+          <div
+            className="TopBar-google-auth"
+            onClick={handleLogOutGoogle}
+            style={{ cursor: "pointer" }}
+          >
+            {returnGoogleIcon()}
+            <p>
+              {" "}
+              <strong> {googleCredentials ? "Logado" : "Login"} </strong>{" "}
+            </p>
+          </div>
+          <div className="TopBar-tools">
+            {returnGoogleTools()}
+            <img src={OcrIcon} onClick={() => setImageTextAnaliser(true)} />
+            <img src={NewsIcon} onClick={() => setNewsPaperModal(true)} />
+            <img src={DictionaryIcon} onClick={() => setDictionaryModal(true)} />
+          </div>
           <div className="TopBar-user-intereration">
             <img
               className="TopBar-icons"
               src={MensageImg}
               alt="icone de mensagem"
-              onClick={() => setModalChat(!modalChat)}
+              onClick={() => setChatModal(true)}
             />
-            <Chat modal={modalChat} setModal={() => setModalChat(!modalChat)} />
             <img
               className="TopBar-icons"
               src={FriendsImg}
               alt="icone de amigos"
-              onClick={() => setModalFriends(!modalFriends)}
-            />
-            <Solicitations
-              modal={modalFriends}
-              setModal={() => setModalFriends(!modalFriends)}
-              user={userGlobalState}
+              onClick={() => setSolicitationsModal(true)}
             />
           </div>
-        ) : null}
+          <button className="button-black button-small" onClick={logoutService}> Logout </button>
+        </div>
+        <label className="menu-control"  htmlFor="menu-control">
+          <img  src={LogoIcon} />
+        </label>
+        <img src={WaterMarkIcon} />
       </section>
     );
   };

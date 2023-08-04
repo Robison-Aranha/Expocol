@@ -376,7 +376,7 @@ export const Conversation = (props) => {
   const returnChat = () => {
     if (useRelationShip == 0) {
       return (
-        <div className="Chat-conversation-section">
+        <div className="Chat-conversation-section" id="conversation">
           <div className="Chat-conversation-header">
             <button
               className="button-small button-outline"

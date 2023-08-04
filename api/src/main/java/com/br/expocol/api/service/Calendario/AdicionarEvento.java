@@ -8,6 +8,7 @@ import com.br.expocol.api.domain.Calendario.Mes;
 import com.br.expocol.api.domain.Usuario.Usuario;
 import com.br.expocol.api.repository.Calendario.EventoRepository;
 import com.br.expocol.api.security.service.UsuarioAutenticadoService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +16,7 @@ import java.util.stream.Collectors;
 
 
 @Service
+@Transactional
 public class AdicionarEvento {
 
     @Autowired

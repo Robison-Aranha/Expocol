@@ -104,7 +104,7 @@ export const ImageTextAnaliser = () => {
         </div>
       );
     } else if (fileSwitch == 3 && !imagePreview) {
-      return <video id="video-imageTextAnaliser" autoPlay />;
+      return <video id="video-imageTextAnaliser" autoPlay/>;
     }
   };
 

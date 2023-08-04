@@ -3,11 +3,13 @@ package com.br.expocol.api.service.Anexo;
 import com.br.expocol.api.controller.response.Anexo.AnexoContentResponse;
 import com.br.expocol.api.domain.Usuario.Anexo;
 import com.br.expocol.api.security.service.UsuarioAutenticadoService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
 @Service
+@Transactional
 public class RetornarAnexoMensagem {
 
     @Autowired

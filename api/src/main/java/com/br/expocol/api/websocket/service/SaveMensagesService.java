@@ -12,10 +12,12 @@ import com.br.expocol.api.service.Anexo.BuscarAnexoService;
 import com.br.expocol.api.service.mensagem.BuscarChatService;
 import com.br.expocol.api.service.usuario.BuscarUsuarioService;
 import com.br.expocol.api.websocket.domain.Message;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
+@Transactional
 public class SaveMensagesService {
 
     @Autowired
