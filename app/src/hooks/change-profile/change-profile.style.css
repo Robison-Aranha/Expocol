@@ -91,6 +91,7 @@
 .ChangeProfile-img {
     width: 150px;
     height: 150px;
+    min-height: 150px;
     border-radius: 50%;
     border: 3px solid var(--main-quaternary-color);
     overflow: hidden;

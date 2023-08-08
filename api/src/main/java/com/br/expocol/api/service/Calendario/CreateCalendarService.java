@@ -20,6 +20,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 
@@ -62,6 +64,9 @@ public class CreateCalendarService {
 
             anoRepository.save(ano);
 
+            List<Dia> dias = new ArrayList<>();
+            List<Mes> meses = new ArrayList<>();
+
             for (int c = 0; c < 12; c++) {
                 Integer mesCount;
 
@@ -75,7 +80,7 @@ public class CreateCalendarService {
                 mes.setAno(ano);
                 mes.setMes(MesesDoAno.values()[c]);
 
-                mesRepository.save(mes);
+                meses.add(mes);
 
                 for (int i = 1; i <= mesCount; i++) {
 
@@ -87,11 +92,13 @@ public class CreateCalendarService {
 
                     dia.setDiaDaSemana(diasDaSemana);
 
-                    diaRepository.save(dia);
+                    dias.add(dia);
                 }
             }
-        }
 
+            mesRepository.saveAll(meses);
+            diaRepository.saveAll(dias);
+        }
     }
 
 

@@ -12,6 +12,8 @@ export const useVerifySession = () => {
 
 
     const verifySessionUser = (data) => {
+
+        console.log(data)
         
         if (data.response.status == 401) {
             setTimeout(() => navigate("/", {state: "expired"}), 1000);

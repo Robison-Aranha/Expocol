@@ -72,8 +72,6 @@ export const Chat = () => {
 
       switchButton.style.transform = "rotate(0)"
 
-      setUserState(false)
-
     } else {
 
       friends.style.width = "0"
