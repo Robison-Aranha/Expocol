@@ -38,7 +38,7 @@ create table token (
 );
 
 alter table token add constraint pk_token primary key (id);
-alter table token add constraint fk_id_usuario foreign key (id_usuario) references usuario;
+alter table token add constraint fk_token_id_usuario foreign key (id_usuario) references usuario;
 
 
 CREATE TABLE permissao (

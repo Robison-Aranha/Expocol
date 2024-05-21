@@ -10,7 +10,7 @@ import com.br.expocol.api.mapper.Calendario.RetornarDiasMapper;
 import com.br.expocol.api.repository.Calendario.DiaRepository;
 import com.br.expocol.api.security.service.UsuarioAutenticadoService;
 import com.br.expocol.api.service.VerificarParametroService;
-import jakarta.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,7 +34,8 @@ public class RetornarMesService {
     @Autowired
     DiaRepository diaRepository;
 
-    public CalendarioResponse retornar(Integer anoRequest, String mesRequest) {
+   
+	public CalendarioResponse retornar(Integer anoRequest, String mesRequest) {
 
         Usuario usuario = usuarioAutenticadoService.get();
 
@@ -44,15 +45,13 @@ public class RetornarMesService {
 
         CalendarioResponse calendarioResponse = new CalendarioResponse();
 
-        Map dias = new HashMap<String, List<DiaResponse>>();
-
-        Boolean verificador = false;
+        Map<String, List<DiaResponse>> dias = new HashMap<String, List<DiaResponse>>();
 
         Integer maiorFila = 0;
 
         for (DiasDaSemana dia : DiasDaSemana.values()) {
 
-            List diasDaSemana = mes.getDias().stream().filter(d -> d.getDiaDaSemana() == dia).map(d -> {
+            List<DiaResponse> diasDaSemana = mes.getDias().stream().filter(d -> d.getDiaDaSemana() == dia).map(d -> {
 
                 DiaResponse diaResponse = RetornarDiasMapper.toResponse(d);
 

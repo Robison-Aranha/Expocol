@@ -8,7 +8,7 @@ export const [useGlobalState, Provider] = createGlobalState(
         nome: "",
         imagem: "",
         gmail: "",
-        schedulerKey: "",
+        token: "",
         loged: false,
         zoneId: "America/Sao_Paulo",
       }

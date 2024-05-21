@@ -2,18 +2,13 @@ package com.br.expocol.api.service.Ferramentas;
 
 
 import com.br.expocol.api.controller.response.Ferramentas.AnaliseDeImagemResponse;
-import jakarta.transaction.Transactional;
 import net.sourceforge.tess4j.Tesseract;
 import net.sourceforge.tess4j.TesseractException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 
 @Service

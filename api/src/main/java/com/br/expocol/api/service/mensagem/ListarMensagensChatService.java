@@ -3,12 +3,8 @@ package com.br.expocol.api.service.mensagem;
 
 import com.br.expocol.api.mapper.Usuario.MensagemMapper;
 import com.br.expocol.api.repository.Usuario.MensagemRepository;
-import com.br.expocol.api.security.controller.response.UsuarioResponse;
-import com.br.expocol.api.security.service.BuscarUsuarioSecurityAuthService;
 import com.br.expocol.api.security.service.UsuarioAutenticadoService;
-import com.br.expocol.api.service.usuario.BuscarUsuarioService;
 import com.br.expocol.api.websocket.domain.Message;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -1,14 +1,11 @@
 package com.br.expocol.api.service.amizade.solicitacao;
 
 import com.br.expocol.api.domain.Usuario.Usuario;
-import com.br.expocol.api.security.controller.response.UsuarioResponse;
 import com.br.expocol.api.security.repository.UsuarioRepository;
-import com.br.expocol.api.security.service.BuscarUsuarioSecurityAuthService;
 import com.br.expocol.api.security.service.UsuarioAutenticadoService;
 import com.br.expocol.api.service.mensagem.MandarNotificaçãoService;
 import com.br.expocol.api.service.usuario.BuscarUsuarioService;
 import com.br.expocol.api.websocket.domain.Notification;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

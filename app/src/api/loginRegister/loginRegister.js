@@ -1,46 +1,47 @@
-import axios from "axios";
-import { BaseUrl } from "../BaseUrl";
+import returnIstanceCalendar from "../istanceCalendar";
 
-const http = axios.create({
-  baseURL: BaseUrl,
-  withCredentials: true,
-});
 
 export const useLoginRegister = () => {
+
+
+  const http = returnIstanceCalendar()
+
   const register = async (gmail, username, password) => {
-    const response = await http.post("/register", {
+    const data = {
       email: gmail,
       nome: username,
       senha: password,
-    });
+    };
+
+    const response = await http.post("/register", data);
+
 
     return response.data;
   };
 
   const login = async (gmail, password) => {
+    
+    const data = {
+      gmail: gmail,
+      password: password,
+    };
 
-    const authorization = btoa(gmail + ":" + password);
+    const response = await http.post("/login", data);
 
-    const response = await http.post(
-    "/login",
-    {},
-    { headers: { Authorization: "Basic " + authorization } }
-    );
+    console.log(response)
+
     return response.data;
   };
 
   const refreshToken = async () => {
+    const response = await http.get("/refresh");
 
-    const response = await http.get("/refresh")
-
-    return response.data
-  }
+    return response.data;
+  };
 
   const logout = async () => {
+    await http.get("/logout");
+  };
 
-    await http.get("/logout")
-
-  }
-
-  return {login, logout, register, refreshToken};
+  return { login, logout, register, refreshToken };
 };

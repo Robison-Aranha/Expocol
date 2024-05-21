@@ -1,15 +1,20 @@
 import { over } from "stompjs";
 import SockJS from "sockjs-client";
+import { DOMAIN_SOCK } from "../../consts/Sock";
 import { useEffect, useState } from "react";
 import { useFriendsApi } from "../../api/api";
 import { useVerifySession } from "../../api/verifySessions";
 import defaultImgAccount from "../../assets/account/default.png";
 import "./solicitations.style.css";
-import { useGlobalModal, useGlobalState, useSolicitationsModal } from "../../globalState/globalState";
+import {
+  useGlobalModal,
+  useGlobalState,
+  useSolicitationsModal,
+} from "../../globalState/globalState";
 
 export const Solicitations = () => {
   const [useFriendsSolicitation, setUseFriendsSolicitation] = useState([]);
-  const [solicitationsModal, setSolicitationsModal] = useSolicitationsModal()
+  const [solicitationsModal, setSolicitationsModal] = useSolicitationsModal();
   const [, setGlobalModal] = useGlobalModal();
   const [userGlobalState] = useGlobalState();
   const [useSock, setUseSock] = useState();
@@ -20,15 +25,11 @@ export const Solicitations = () => {
   });
 
   useEffect(() => {
-
     if (userGlobalState) {
-      setUserData({ ...userData, email: userGlobalState.email })
+      setUserData({ ...userData, email: userGlobalState.email });
       setUseIsSocket(1);
-    } 
-
-
-
-  }, [userGlobalState])
+    }
+  }, [userGlobalState]);
 
   const {
     acceptFriendSolicitation,
@@ -39,7 +40,7 @@ export const Solicitations = () => {
   const { verifySessionUser } = useVerifySession();
 
   useEffect(() => {
-    setUseSock(new SockJS("http://localhost:8080/ws"));
+    setUseSock(new SockJS(DOMAIN_SOCK));
     listFriendsSolicitationsService();
   }, []);
 

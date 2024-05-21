@@ -1,12 +1,10 @@
-import axios from "axios";
-import { BaseUrl } from "../BaseUrl";
+import returnIstanceCalendar from "../istanceCalendar";
 
-const http = axios.create({
-  baseURL: BaseUrl + "/anexo",
-  withCredentials: true,
-});
 
 export const useAttachmentApi = () => {
+
+  const http = returnIstanceCalendar("/anexo")
+
   const addAttachment = async (file) => {
     const response = await http.post("", file, {
       headers: { "Content-Type": "multipart/form-data" },

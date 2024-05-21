@@ -1,14 +1,12 @@
-import axios from "axios";
-import { BaseUrl } from "../BaseUrl";
-
-const http = axios.create({
-  baseURL: BaseUrl + "/usuario",
-  withCredentials: true,
-});
+import returnIstanceCalendar from "../istanceCalendar";
 
 const FINAL_SIZE = 8;
 
 export const useUsersApi = () => {
+
+
+  const http = returnIstanceCalendar("/usuario")
+
   const listUser = async (nome, page) => {
     const response = await http.get(
       "/search?nome=" + nome + "&page=" + page + "&size=" + FINAL_SIZE

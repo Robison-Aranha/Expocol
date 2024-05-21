@@ -7,7 +7,6 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.Type;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
@@ -36,10 +35,10 @@ public class Dia {
     private Mes mes;
 
     @OneToMany(mappedBy = "diaIndex")
-    private List<Index> indexes = new ArrayList<>();
+    private List<Index> indexes;
 
     @OneToMany(mappedBy = "diaEvento")
-    private List<Evento> eventos = new ArrayList<>();
+    private List<Evento> eventos;
 
 
 }

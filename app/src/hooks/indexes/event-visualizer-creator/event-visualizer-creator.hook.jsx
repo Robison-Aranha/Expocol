@@ -59,7 +59,7 @@ export const EventVisualizerCreator = () => {
     if (globalEvent.visualization) {
       createEventService();
     }
-  }, [userGlobalState.schedulerKey]);
+  }, [userGlobalState.token]);
 
   useEffect(() => {
     if (globalEvent.visualization) {
@@ -200,7 +200,7 @@ export const EventVisualizerCreator = () => {
 
               setUserGlobalState({
                 ...userGlobalState,
-                schedulerKey: response.token,
+                token: response.token,
               });
             } catch (errorRefresh) {
               verifySessionUser(errorRefresh);

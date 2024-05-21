@@ -1,7 +1,6 @@
 package com.br.expocol.api.domain.Calendario;
 
 
-import com.br.expocol.api.domain.Calendario.Dia;
 import jakarta.persistence.*;
 import lombok.*;
 

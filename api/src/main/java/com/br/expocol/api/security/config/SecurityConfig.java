@@ -1,49 +1,75 @@
 package com.br.expocol.api.security.config;
 
-
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import com.br.expocol.api.security.jwt.JwtAuthenticationFilter;
 
 import static org.springframework.http.HttpMethod.POST;
 import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
+import static org.springframework.security.web.util.matcher.AntPathRequestMatcher.antMatcher;
+
+import java.util.List;
+
 @Configuration
-@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true)
+@EnableMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true)
 public class SecurityConfig {
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+	@Autowired
+	JwtAuthenticationFilter jwtAuthenticationFilter;
 
-    @Bean
+	@Bean
+	public PasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
+
+	@Bean
+	public CorsConfigurationSource corsConfigurationSource() {
+		CorsConfiguration corsConfiguration = new CorsConfiguration();
+		corsConfiguration.setAllowedOrigins(List.of("http://localhost:5173"));
+		corsConfiguration.setAllowedMethods(List.of("*"));
+		corsConfiguration.setAllowCredentials(true);
+		corsConfiguration.setAllowedHeaders(List.of("*"));
+		corsConfiguration.setMaxAge(3600L);
+		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+		source.registerCorsConfiguration("/**", corsConfiguration);
+		return source;
+	}
+
+	@Bean
     protected SecurityFilterChain configure(HttpSecurity http) throws Exception {
         http
-                .csrf().disable().cors()
-                .and()
-                    .authorizeRequests().requestMatchers(POST, "/login").permitAll()
-                .and()
-                    .authorizeRequests().requestMatchers(POST, "/register").permitAll()
-                .and()
-                    .authorizeRequests().anyRequest().authenticated()
-                .and()
-                    .logout().logoutSuccessHandler((request, response, authentication) -> response.setStatus(OK.value()))
-                .and()
-                    .httpBasic().authenticationEntryPoint((request, response, authException) -> response.setStatus(UNAUTHORIZED.value()))
-                .and()
-                    .sessionManagement()
-                    .sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
-
-
-
+                .csrf((csrf) ->
+                        csrf.disable()
+                )
+                .cors(httpSecurityCorsConfigurer -> httpSecurityCorsConfigurer.configurationSource(corsConfigurationSource()))
+                .authorizeHttpRequests((authz) -> authz
+                        .requestMatchers(antMatcher(POST, "/login")).permitAll()
+                        .requestMatchers(antMatcher(POST, "/register")).permitAll()
+                        .requestMatchers(antMatcher("/ws/**")).permitAll()
+                        .anyRequest().authenticated()
+                )
+                .logout((logout) ->
+                        logout.logoutSuccessHandler((request, response, authentication) -> response.setStatus(OK.value())))
+                .httpBasic((httpBasic) ->
+                        httpBasic.authenticationEntryPoint((request, response, authException) -> response.setStatus(UNAUTHORIZED.value())))
+                .sessionManagement((session) ->
+                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                )
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
         ;
 
         return http.build();

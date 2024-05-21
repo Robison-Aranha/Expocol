@@ -9,7 +9,6 @@ import com.br.expocol.api.domain.Calendario.Mes;
 import com.br.expocol.api.domain.Usuario.Usuario;
 import com.br.expocol.api.mapper.Calendario.RetornarDiasMapper;
 import com.br.expocol.api.security.service.UsuarioAutenticadoService;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -37,9 +36,7 @@ public class RetornarMobileMesService {
 
         Mes mes = ano.getMeses().stream().filter(m -> m.getMes().toString().equals(mesRequest.toUpperCase())).collect(Collectors.toList()).get(0);
 
-        ArrayList dias = new ArrayList<DiaResponse>();
-
-        Boolean verificador = false;
+        ArrayList<DiaResponse> dias = new ArrayList<DiaResponse>();
 
         for (Dia dia : mes.getDias()) {
 

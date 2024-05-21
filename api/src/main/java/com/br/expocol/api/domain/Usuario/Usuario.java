@@ -11,7 +11,7 @@ import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
+
 
 import static jakarta.persistence.GenerationType.IDENTITY;
 
@@ -38,9 +38,10 @@ public class Usuario {
 
     @OneToMany(mappedBy = "usuarioChat")
     private List<Chat> chats = new ArrayList<>();
-
+    
     @OneToOne(mappedBy = "usuarioToken")
     private Token token;
+    
 
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Permissao> permissoes = new ArrayList<>();

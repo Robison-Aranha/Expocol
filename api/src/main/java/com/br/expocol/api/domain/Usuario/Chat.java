@@ -5,7 +5,7 @@ package com.br.expocol.api.domain.Usuario;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.HashMap;
+
 import java.util.Map;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
@@ -32,6 +32,6 @@ public class Chat {
 
     @OneToMany(mappedBy = "chat")
     @MapKey(name = "index")
-    private Map<Integer , Mensagem> usuarioMensagens = new HashMap();
+    private Map<Integer , Mensagem> usuarioMensagens;
 
 }

@@ -1,12 +1,10 @@
-import axios from "axios";
-import { BaseUrl } from "../BaseUrl";
-
-const http = axios.create({
-  baseURL: BaseUrl + "/amigos",
-  withCredentials: true,
-});
+import returnIstanceCalendar from "../istanceCalendar";
 
 export const useFriendsApi = () => {
+
+
+  const http = returnIstanceCalendar("/amigos")
+
   const sendFriendSolicitation = async (id) => {
     const response = await http.put("/enviar/" + id);
 
@@ -70,11 +68,11 @@ export const useFriendsApi = () => {
     sendFriendSolicitation,
     acceptFriendSolicitation,
     ignoreFriendSolicitation,
+    blockFriendship,
+    unblockFriendship,
     listFriendSolicitations,
     listFriends,
     undoFriendship,
-    blockFriendship,
-    unblockFriendship,
     verifyRelationShip,
   };
 };

@@ -9,7 +9,12 @@ import java.util.stream.Collectors;
 
 public class UsuarioSecurity implements UserDetails {
 
-    private static final String PREFIXO_PERMISSAO_SPRING = "ROLE_";
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	private static final String PREFIXO_PERMISSAO_SPRING = "ROLE_";
 
     private Long id;
     private String email;

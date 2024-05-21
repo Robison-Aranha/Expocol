@@ -3,7 +3,6 @@ package com.br.expocol.api.service.usuario;
 import com.br.expocol.api.domain.Usuario.Usuario;
 import com.br.expocol.api.exception.UserNotFound;
 import com.br.expocol.api.security.repository.UsuarioRepository;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

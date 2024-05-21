@@ -6,7 +6,6 @@ import com.br.expocol.api.domain.Usuario.Usuario;
 import com.br.expocol.api.mapper.Usuario.PerfilUsuarioMapper;
 import com.br.expocol.api.repository.Usuario.PerfilUsuarioRepository;
 import com.br.expocol.api.security.service.UsuarioAutenticadoService;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;

@@ -2,7 +2,6 @@ package com.br.expocol.api.websocket;
 
 
 import com.br.expocol.api.websocket.domain.Message;
-import com.br.expocol.api.websocket.domain.Notification;
 import com.br.expocol.api.websocket.service.SaveMensagesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;

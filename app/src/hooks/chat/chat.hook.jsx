@@ -9,13 +9,13 @@ import { useFriendsApi } from "../../api/api";
 import { useGlobalState, useChatModal } from "../../globalState/globalState";
 import { useVerifyScrollBottom } from "../../scripts/verifyScrollBottom";
 import searchImage from "../../assets/chat/search.png";
-import switchChatIcon from "../../assets/chat/Seta.png"
+import switchChatIcon from "../../assets/chat/Seta.png";
 import { DOMAIN_SOCK } from "../../consts/Sock";
 import { useVerifySession } from "../../api/verifySessions";
 
 export const Chat = () => {
   const [userState, setUserState] = useState(false);
-  const [chatModal, setChatModal] = useChatModal()
+  const [chatModal, setChatModal] = useChatModal();
   const [userGlobalState] = useGlobalState();
   const [notificationMessage, setNotificationMessage] = useState([]);
   const [useSearch, setUseSearch] = useState([]);
@@ -34,17 +34,12 @@ export const Chat = () => {
     email: "",
   });
 
-
   useEffect(() => {
-
     if (userGlobalState) {
-      setUserData({ ...userData, email: userGlobalState.email})
+      setUserData({ ...userData, email: userGlobalState.email });
       setUseIsSocket(1);
     }
-
-
-  }, [userGlobalState])
-
+  }, [userGlobalState]);
 
   const { listUser } = useUsersApi();
   const { listFriends } = useFriendsApi();
@@ -57,32 +52,26 @@ export const Chat = () => {
   };
 
   useEffect(() => {
+    const friends = document.getElementById("friends");
 
-    const friends = document.getElementById("friends")
+    const userInteration = document.getElementById("userInteration");
 
-    const userInteration  = document.getElementById("userInteration")
-
-    const switchButton = document.getElementById("switch-button")
+    const switchButton = document.getElementById("switch-button");
 
     if (!switchChat) {
+      friends.style.width = "100%";
 
-      friends.style.width = "100%"
-      
-      userInteration.style.width = "0"
+      userInteration.style.width = "0";
 
-      switchButton.style.transform = "rotate(0)"
-
+      switchButton.style.transform = "rotate(0)";
     } else {
+      friends.style.width = "0";
 
-      friends.style.width = "0"
-      
-      userInteration.style.width = "100%"
+      userInteration.style.width = "100%";
 
-      switchButton.style.transform = "rotate(180deg)"
+      switchButton.style.transform = "rotate(180deg)";
     }
-    
-
-  }, [switchChat])
+  }, [switchChat]);
 
   useEffect(() => {
     setUserData({ ...userData, page: 0 });
@@ -105,7 +94,9 @@ export const Chat = () => {
 
     if (notificationMessage.length > 0) {
       if (
-        notificationMessage.filter((n) => n == lastNotification).length > 1 || userData.to.email == lastNotification) {
+        notificationMessage.filter((n) => n == lastNotification).length > 1 ||
+        userData.to.email == lastNotification
+      ) {
         notificationMessage.splice(
           notificationMessage.indexOf(lastNotification),
           1
@@ -151,10 +142,8 @@ export const Chat = () => {
   }, [loadMore]);
 
   const handleSwitch = () => {
-
-    setSwitchChat(!switchChat)
-
-  }
+    setSwitchChat(!switchChat);
+  };
 
   const connectChat = () => {
     useStomp.chat.debug = null;
@@ -303,7 +292,12 @@ export const Chat = () => {
         </div>
 
         <div className="Chat-content">
-          <img src={switchChatIcon} className="Chat-search-box-img-switch" id="switch-button" onClick={handleSwitch}/>
+          <img
+            src={switchChatIcon}
+            className="Chat-search-box-img-switch"
+            id="switch-button"
+            onClick={handleSwitch}
+          />
           <div className="Chat-friends" id="friends">
             <div className="Chat-friends-title">
               <h4>
@@ -319,7 +313,7 @@ export const Chat = () => {
                       onClick={() => {
                         setUserState(userState == true ? true : !userState);
                         handlerRemoverNotification(friend.email);
-                        handleSwitch()
+                        handleSwitch();
                         setUserData({ ...userData, to: { ...friend } });
                       }}
                     >
@@ -345,7 +339,9 @@ export const Chat = () => {
                 : null}
             </div>
           </div>
-          <div className="Chat-conversation" id="userInteration">{returnUserInteration()}</div>
+          <div className="Chat-conversation" id="userInteration">
+            {returnUserInteration()}
+          </div>
         </div>
       </div>
     </div>

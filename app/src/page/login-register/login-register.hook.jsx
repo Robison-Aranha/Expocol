@@ -101,13 +101,16 @@ export const LoginRegister = () => {
   const loginService = async () => {
     setLoading(true)
     try {
+
+      console.log(userData)
+
       const response = await login(userData.gmail, userData.password);
 
       const userInfo = {
         ...userGlobalState,
         loged: true,
         id: response.id,
-        schedulerKey: response.token,
+        token: response.token,
       };
 
       setUserGlobalState({ ...userInfo });
@@ -121,10 +124,11 @@ export const LoginRegister = () => {
     setLoading(false)
   };
 
-  const registerService = async () => {
+  const registerService = () => {
     setLoading(true)
     try {
-      await register(userData.gmail, userData.username, userData.password);
+      
+      register(userData.gmail, userData.username, userData.password);
 
       setUserState(false);
       setGlobalModal([
@@ -160,7 +164,7 @@ export const LoginRegister = () => {
           <img src={MenuIcon} />
         </div>
 
-        <div className="LoginRegister">
+        <div className={ "LoginRegister" + (userState ? " register-state" : " login-state") }>
           
         { userState ?
           <div className="LoginRegister-credentials-register">
@@ -205,6 +209,7 @@ export const LoginRegister = () => {
               />
             </div>
             <div className="LoginRegister-credentials-item">
+              <label>Confirmar senha: </label>
               <input
                 name="passwordConfirm"
                 type="password"
@@ -253,13 +258,16 @@ export const LoginRegister = () => {
         
         }
           <div className="LoginRegister-switch">
-            <a onClick={handleChangeState}>
-              {" "}
+            <div className="LoginRegister-switch-text">
+              <p>
               {userState == false
-                ? "Não possui uma Conta ainda?"
-                : "Ja possui uma conta?"}{" "}
-              {userState == false ? "Registrar" : "Logar"}{" "}
-            </a>
+                  ? "Não possui uma Conta ainda?"
+                  : "Ja possui uma conta?"}{" "}
+              </p>
+              <a onClick={handleChangeState}>
+                {userState == false ? "Registrar" : "Logar"}{" "}
+              </a>
+            </div>
             <button onClick={handleCommit}>
               {" "}
               {userState == false ? "Login" : "Register"}

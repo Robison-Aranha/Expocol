@@ -4,7 +4,6 @@ spring:
     driver-class-name: org.postgresql.Driver
     username: postgres
     password: postgres
-    initialization-mode: always
   jpa:
     hibernate:
       ddl-auto: none

@@ -2,7 +2,6 @@ package com.br.expocol.api.service;
 
 
 import com.br.expocol.api.exception.InvalidCredentials;
-import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 @Service

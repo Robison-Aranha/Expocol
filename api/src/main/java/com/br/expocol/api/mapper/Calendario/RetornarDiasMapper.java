@@ -1,7 +1,6 @@
 package com.br.expocol.api.mapper.Calendario;
 
 import com.br.expocol.api.controller.response.Calendario.DiaResponse;
-import com.br.expocol.api.controller.response.Calendario.IndexesEventosResponse;
 import com.br.expocol.api.domain.Calendario.Dia;
 
 

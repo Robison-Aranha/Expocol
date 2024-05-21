@@ -10,11 +10,7 @@ import com.br.expocol.api.enumerator.MesesDoAno;
 import com.br.expocol.api.repository.Calendario.AnoRepository;
 import com.br.expocol.api.repository.Calendario.DiaRepository;
 import com.br.expocol.api.repository.Calendario.MesRepository;
-import com.br.expocol.api.security.controller.response.UsuarioResponse;
-import com.br.expocol.api.security.service.BuscarUsuarioSecurityAuthService;
 import com.br.expocol.api.security.service.UsuarioAutenticadoService;
-import com.br.expocol.api.service.usuario.BuscarUsuarioService;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -22,7 +18,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 
 @Service

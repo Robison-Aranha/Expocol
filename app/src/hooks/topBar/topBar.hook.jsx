@@ -28,7 +28,7 @@ import {
 import { clientId } from "../../consts/googleAccountSecrets";
 import { SCOPES } from "../../consts/scopes";
 import { useVerifySession } from "../../api/verifySessions";
-import jwt_decode from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 
 export const ToPBar = () => {
   const [userGlobalState, setUserGlobalState] = useGlobalState();
@@ -125,7 +125,7 @@ export const ToPBar = () => {
         message: "Login com o google concluido! Serviços adicionais liberados!",
       },
     ]);
-    const decodeCredentials = jwt_decode(response.credential);
+    const decodeCredentials = jwtDecode(response.credential);
 
     setGoogleCredentials(decodeCredentials);
   };

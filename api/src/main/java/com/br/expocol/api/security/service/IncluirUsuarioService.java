@@ -8,8 +8,6 @@ import com.br.expocol.api.security.controller.request.UsuarioRequest;
 import com.br.expocol.api.security.domain.Permissao;
 import com.br.expocol.api.security.jwt.JwtService;
 import com.br.expocol.api.security.repository.UsuarioRepository;
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -32,7 +30,7 @@ public class IncluirUsuarioService {
     @Autowired
     JwtService jwtService;
 
-    public void incluir(UsuarioRequest request, HttpServletResponse response) {
+    public void incluir(UsuarioRequest request) {
 
         Usuario usuario = toEntity(request);
         usuario.setSenha(passwordEncoder.encode(request.getSenha()));

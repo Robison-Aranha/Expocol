@@ -19,8 +19,8 @@
 }
 
 .Logo > img {
-    width: 70%;
-    min-width: 70px;
+    width: 60%;
+    min-width: 150px;
 }
 
 .Logo > h1::first-letter {
@@ -34,22 +34,28 @@
 }
 
 .LoginRegister {
-
     display: flex;
     flex-direction: column;
     justify-content: space-around;
     align-items: center;
     width: 40%;
-    height: 90%;
     border: 1px solid var(--main-secundary-color);
     background-color: var(--main-secundary-color);
     border-radius: 25px;
-    min-width: 300px;
-    min-height: 200px;
-    max-height: 500px;
+    min-width: 370px;
+    min-height: 300px;
+    max-height: 600px;
     padding: 3%;
+    transition: 0.05s;
 }
 
+.register-state {
+  height: 65%;
+}
+
+.login-state {
+  height: 40%;
+}
 
 .LoginRegister-credentials-register {
     display: flex;
@@ -58,7 +64,6 @@
     justify-content: center;
     width: 90%;
     height: 90%;
-    padding: 3%;
 }
 
 .LoginRegister-credentials-item {
@@ -68,6 +73,7 @@
     justify-content: space-around;
     width: 100%;
     height: fit-content;
+    margin-bottom: 10px;
 }
 
 
@@ -89,7 +95,6 @@
     width: 90%;
     height: 90%;
     margin-bottom: 20px;
-    padding: 2%;
 }
 
 
@@ -103,10 +108,19 @@
     height: 20%;
 }
 
-.LoginRegister-switch > a {
-    margin-bottom: 10px;
+.LoginRegister-switch-text {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 90%;
+  margin-bottom: 10px;
+}
+
+.LoginRegister-switch-text > a {
     cursor: pointer;
     text-align: center;
+    margin-left: 3px;
+    text-decoration: underline;
 }
 
 
@@ -114,7 +128,7 @@
     font-size: 12px;
 }
 
-@media (max-width : 1000px)  {
+@media (max-width : 1025px)  {
 
     .LoginRegister-Section {
         flex-direction: column;
@@ -122,16 +136,15 @@
         text-align: center;
       }
     
-      .LoginRegister-credentials-register, .LoginRegister-credentials-register {
+      .LoginRegister-credentials-register {
         font-size: 10px;
         height: 80%;
       }
 
-      .LoginRegister {
-        height: 60%;
-        padding: 2%;
+      .LoginRegister-credentials-login {
+        justify-content: center;
       }
-    
+
       .Logo > h1  {
         font-size: 25px;
       }
@@ -144,26 +157,13 @@
         height: 17%;
       }
 
-      .LoginRegister-credentials-item > input {
-        height: 80%;
-        margin: 0;
-      }
-
       .LoginRegister-credentials-item > blockquote {
         font-size: 10px;
         margin: 0;
       }
 
-
-      .LoginRegister-switch > button {
-        height: 30%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-
       .Logo > img {
-        max-width: 90px;
+        max-width: 200px;
       }
 
 }

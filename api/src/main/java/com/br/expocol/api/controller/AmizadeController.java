@@ -33,13 +33,13 @@ public class AmizadeController {
 
     @Autowired
     IgnorarSolicitacaoService ignorarSolicitacaoService;
-
-
+    
     @Autowired
     BloquearUsuariosService bloquearUsuariosService;
 
     @Autowired
     DesbloquearUsuarioService desbloquearUsuarioService;
+
 
     @Autowired
     VerificarAmizadeSolicitacaoService verificarAmizadeSolicitacaoService;
@@ -78,7 +78,7 @@ public class AmizadeController {
     public void desfazerAmizade(@PathVariable Long id){
         desfazerAmizadeService.desfazer(id);
     }
-
+    
     @PutMapping("/bloquear/{id}")
     public void bloquearUsuario(@PathVariable Long id) { bloquearUsuariosService.bloquearUsuario(id); }
 

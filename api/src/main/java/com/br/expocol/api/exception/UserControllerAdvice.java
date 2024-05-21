@@ -1,21 +1,19 @@
 package com.br.expocol.api.exception;
 
 
-import jakarta.validation.ConstraintViolation;
-import jakarta.validation.ConstraintViolationException;
+
 import org.apache.tomcat.util.http.fileupload.impl.SizeLimitExceededException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
-import java.util.Set;
-import java.util.concurrent.atomic.AtomicReference;
+
 
 
 @RestControllerAdvice
@@ -80,10 +78,10 @@ public class UserControllerAdvice {
        return new ResponseEntity<>(error, HttpStatus.CONFLICT);
 
     }
-
+    
     @ResponseBody
     @ExceptionHandler(InvalidCredentials.class)
-    public ResponseEntity<ExceptionMessageHandler> userAlreadyExists(InvalidCredentials invalidCredentials){
+    public ResponseEntity<ExceptionMessageHandler> invalidCredentials(InvalidCredentials invalidCredentials){
 
         ExceptionMessageHandler error = new ExceptionMessageHandler(
                 HttpStatus.CONFLICT.value(), "Credenciais Inválidas!", ""
@@ -101,6 +99,17 @@ public class UserControllerAdvice {
         );
 
         return new ResponseEntity<>(error, HttpStatus.FORBIDDEN);
+    }
+    
+    @ResponseBody
+    @ExceptionHandler(ResponseStatusException.class)
+    public ResponseEntity<ExceptionMessageHandler> responseStatus(ResponseStatusException responseStatusException) {
+
+        ExceptionMessageHandler error = new ExceptionMessageHandler(
+                responseStatusException.getStatusCode().value(), responseStatusException.getReason(), ""
+        );
+
+        return new ResponseEntity<>(error, responseStatusException.getStatusCode());
     }
 
 }

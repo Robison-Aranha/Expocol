@@ -1,12 +1,10 @@
-import axios from "axios";
-import { BaseUrl } from "../BaseUrl";
+import returnIstanceCalendar from "../istanceCalendar";
 
-const http = axios.create({
-  baseURL: BaseUrl + "/calendario",
-  withCredentials: true,
-});
 
 export const useCalendarApi = () => {
+
+  const http = returnIstanceCalendar("/calendario")
+
   const returnMonth = async (year, month) => {
     const response = await http.get("/" + year + "?mes=" + month);
 

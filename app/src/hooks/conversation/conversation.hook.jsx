@@ -55,7 +55,7 @@ export const Conversation = (props) => {
   const { verifyScrollTop } = useVerifyScrollTop();
   const { setScrollDown } = useSetScrollDown();
   const { addAttachment } = useAttachmentApi();
-  const { verifySessionUser } = useVerifySession()
+  const { verifySessionUser } = useVerifySession();
 
   useEffect(() => {
     setUseSockChat(new SockJS(DOMAIN_SOCK));
@@ -248,7 +248,7 @@ export const Conversation = (props) => {
 
       props.return();
     } catch (error) {
-      verifySessionUser(error)
+      verifySessionUser(error);
     }
     setLoading(false);
   };
@@ -288,7 +288,7 @@ export const Conversation = (props) => {
 
         setUserData({ ...userData, anexo: { ...response } });
       } catch (error) {
-        verifySessionUser(error)
+        verifySessionUser(error);
         if (error.response.data.status == 411) {
           setGlobalModal([
             ...globalModal,
@@ -325,7 +325,8 @@ export const Conversation = (props) => {
       return (
         <>
           <p> Você e o usuario não são amigos ainda!! </p>
-          <button onClick={sendSolicitation}> Mandar solicitação</button>
+          <button onClick={sendSolicitation}> Mandar solicitação </button>
+          <button onClick={blockFriendshipService}> Bloquear Usuario </button>
         </>
       );
     } else if (useRelationShip == 2) {
@@ -333,7 +334,7 @@ export const Conversation = (props) => {
     } else if (useRelationShip == 3) {
       return <p> O usuario enviou uma solicitação para você!! </p>;
     } else if (useRelationShip == 4) {
-      return (
+      return (    
         <>
           <p> Você bloqueou o usuario!!</p>
           <button onClick={unblockFriendshipService}>
@@ -390,12 +391,6 @@ export const Conversation = (props) => {
                 onClick={undoFriendshipService}
               >
                 Desfazer amizade
-              </button>
-              <button
-                className="button-small button-black"
-                onClick={blockFriendshipService}
-              >
-                Bloquear usuario
               </button>
             </div>
             <p>
