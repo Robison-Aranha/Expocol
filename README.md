@@ -3,7 +3,7 @@
 
 ![Static Badge](https://img.shields.io/badge/Back-SpringBoot-grenn)
 ![Static Badge](https://img.shields.io/badge/Front-ReactJs-purple)
-![Static Badge](https://img.shields.io/badge/database-PostgreSQL-blue)
+![Static Badge](https://img.shields.io/badge/Database-PostgreSQL-blue)
 
 
 >Class Mate is a web application designed to support students in organizing their distance learning (EAD) experience. It offers a range of management tools, seamless integration with Google Classroom, and study features to enhance productivity and streamline educational tasks.
