@@ -104,12 +104,15 @@
 }
 
 .Friends-solicitation-actions {
-    width: 40%;
+    width: 50%;
     height: 100%;
     display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    justify-content: space-around;
+    align-items: center;
+    justify-content: center;
+}
+
+.Friends-solicitation-actions > button {
+    margin-right: 15px;
 }
 
 .Friends-title {
