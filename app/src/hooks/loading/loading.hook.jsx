@@ -1,18 +1,12 @@
-import { useGlobalLoading } from "../../globalState/globalState"
-import "./loading.style.css"
-
-
+import { useGlobalLoading } from "../../globalState/globalState";
+import "./loading.style.css";
 
 export const Loading = () => {
+  const [loading] = useGlobalLoading();
 
-    const [loading, ] = useGlobalLoading()
-
-
-    return (
-        <div className={"Loading-section" + (loading ? " modal" : "")}>
-            <div className="Loading-loader"></div>
-        </div>
-
-    )
-
-}
+  return (
+    <div className={"Loading-section" + (loading ? " modal" : "")}>
+      <div className="Loading-loader"></div>
+    </div>
+  );
+};

@@ -3,11 +3,11 @@ import MensageImg from "../../assets/TopBar/02-6.png";
 import FriendsImg from "../../assets/solicitations/friends.png";
 import ClassroomIcon from "../../assets/tools/classroom.png";
 import OcrIcon from "../../assets/tools/ocr.png";
-import NewsIcon from "../../assets/tools/news.png"
+import NewsIcon from "../../assets/tools/news.png";
 import DictionaryIcon from "../../assets/tools/dictionary.png";
 import defaultImgAccount from "../../assets/account/default.png";
-import LogoIcon from "../../assets/TopBar/logo.png"
-import WaterMarkIcon from "../../assets/marca_da_agua.png"
+import LogoIcon from "../../assets/TopBar/logo.png";
+import WaterMarkIcon from "../../assets/marca_da_agua.png";
 import { useEffect, useState } from "react";
 import { useUsersApi } from "../../api/api";
 import { useLoginRegister } from "../../api/api";
@@ -23,7 +23,7 @@ import {
   useDicionaryModal,
   useNewsPaperModal,
   useChatModal,
-  useSolicitationsModal
+  useSolicitationsModal,
 } from "../../globalState/globalState";
 import { clientId } from "../../consts/googleAccountSecrets";
 import { SCOPES } from "../../consts/scopes";
@@ -34,21 +34,21 @@ export const ToPBar = () => {
   const [userGlobalState, setUserGlobalState] = useGlobalState();
   const [isUserLoaded, setIsUserLoaded] = useState(false);
   const [globalModal, setGlobalModal] = useGlobalModal();
-  const [, setChatModal] = useChatModal()
-  const [, setSolicitationsModal] = useSolicitationsModal()
+  const [, setChatModal] = useChatModal();
+  const [, setSolicitationsModal] = useSolicitationsModal();
   const [, setLoading] = useGlobalLoading();
   const [, setGlobalChangeProfile] = useGlobalChangeProfile();
   const [googleCredentials, setGoogleCredentials] = useGoogleCredentials();
   const [classroomToken, setClassroomToken] = useClassroomToken();
   const [, setImageTextAnaliser] = useImageTextAnaliserModal();
   const [, setDictionaryModal] = useDicionaryModal();
-  const [, setNewsPaperModal] = useNewsPaperModal()
+  const [, setNewsPaperModal] = useNewsPaperModal();
   const [tokenClient, setTokenClient] = useState({});
 
   const { detailUser } = useUsersApi();
   const { verifySessionUser } = useVerifySession();
-  const { logout } = useLoginRegister()
-  const navigate = useNavigate()
+  const { logout } = useLoginRegister();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!googleCredentials && isUserLoaded) {
@@ -94,17 +94,16 @@ export const ToPBar = () => {
   };
 
   const logoutService = async () => {
-
     try {
-
-      await logout()
-      setTimeout(() => navigate("/", {state: "logout"}), 1000);
-
+      await logout();
+      setTimeout(() => navigate("/", { state: "logout" }), 1000);
     } catch {
-      setGlobalModal([...globalModal, { message: "Problema ao deslogar! Tente Novamente mais tarde!" }])
+      setGlobalModal([
+        ...globalModal,
+        { message: "Problema ao deslogar! Tente Novamente mais tarde!" },
+      ]);
     }
-
-  }
+  };
 
   const handleGetClassroomToken = () => {
     tokenClient.requestAccessToken();
@@ -218,7 +217,10 @@ export const ToPBar = () => {
             {returnGoogleTools()}
             <img src={OcrIcon} onClick={() => setImageTextAnaliser(true)} />
             <img src={NewsIcon} onClick={() => setNewsPaperModal(true)} />
-            <img src={DictionaryIcon} onClick={() => setDictionaryModal(true)} />
+            <img
+              src={DictionaryIcon}
+              onClick={() => setDictionaryModal(true)}
+            />
           </div>
           <div className="TopBar-user-intereration">
             <img
@@ -234,10 +236,13 @@ export const ToPBar = () => {
               onClick={() => setSolicitationsModal(true)}
             />
           </div>
-          <button className="button-black button-small" onClick={logoutService}> Logout </button>
+          <button className="button-black button-small" onClick={logoutService}>
+            {" "}
+            Logout{" "}
+          </button>
         </div>
-        <label className="menu-control"  htmlFor="menu-control">
-          <img  src={LogoIcon} />
+        <label className="menu-control" htmlFor="menu-control">
+          <img src={LogoIcon} />
         </label>
         <img src={WaterMarkIcon} />
       </section>

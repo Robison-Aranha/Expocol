@@ -22,7 +22,7 @@ import {
   NewsPaperProvider,
   DictionaryProvider,
   ChatProvider,
-  SolicitationsProvider
+  SolicitationsProvider,
 } from "./globalState/globalState";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));

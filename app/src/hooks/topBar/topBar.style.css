@@ -190,6 +190,23 @@
         display: block;
     }
 
+    .TopBar-user-info {
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .TopBar-perfil-credentials {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .TopBar-perfil-credentials > p {
+        width: fit-content;
+        margin-left: 0;
+    }
+
     .TopBar-container {
         top: 0;
         left: 0;
@@ -216,7 +233,7 @@
     }
 
     .TopBar-tools {
-        justify-content: flex-start;
+        flex-direction: column;
     }
 
     .TopBar-google-auth, .TopBar-tools, .TopBar-user-intereration {
@@ -225,7 +242,7 @@
 
     .TopBar-perfil {
         border-bottom: 2px dashed var(--main-quaternary-color);
-        justify-content: flex-start;
+        justify-content: center;
         overflow-x: auto;
     }
 

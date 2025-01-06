@@ -3,9 +3,7 @@ import returnIstanceCalendar from "../istanceCalendar";
 const FINAL_SIZE = 8;
 
 export const useUsersApi = () => {
-
-
-  const http = returnIstanceCalendar("/usuario")
+  const http = returnIstanceCalendar("/usuario");
 
   const listUser = async (nome, page) => {
     const response = await http.get(
@@ -16,9 +14,7 @@ export const useUsersApi = () => {
   };
 
   const detailUser = async () => {
-    
     const response = await http.get();
-
 
     return response.data;
   };
@@ -31,13 +27,14 @@ export const useUsersApi = () => {
     return response.data;
   };
 
-
   const updateCredentialsUser = async (nome, email) => {
+    const response = await http.post("/credenciais", {
+      nome: nome,
+      email: email,
+    });
 
-    const response = await http.post("/credenciais", { nome: nome, email: email })
+    return response.data;
+  };
 
-    return response.data
-  }
-
-  return { listUser, detailUser, updateImageUser,  updateCredentialsUser};
+  return { listUser, detailUser, updateImageUser, updateCredentialsUser };
 };

@@ -13,7 +13,7 @@ export const AnexoFile = () => {
   const [, setLoading] = useGlobalLoading();
 
   const { returnAttachment } = useAttachmentApi();
-  const { verifySessionUser } = useVerifySession()
+  const { verifySessionUser } = useVerifySession();
 
   useEffect(() => {
     if (anexoModal) {

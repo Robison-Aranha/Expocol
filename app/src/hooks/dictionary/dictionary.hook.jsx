@@ -89,18 +89,18 @@ export const Dictionary = () => {
                 {" "}
                 <strong> Significado: </strong>{" "}
               </p>
-            <blockquote>
-                {result.search}
-            </blockquote>
+              <blockquote>{result.search}</blockquote>
             </div>
             <div className="Dictionary-result-search">
               <p>
                 {" "}
                 <strong> Palavras Próximas: </strong>{" "}
               </p>
-                <blockquote>
-                    { result.near.map((word, key) => <p key={key}> {word} </p>) }
-                </blockquote>
+              <blockquote>
+                {result.near.map((word, key) => (
+                  <p key={key}> {word} </p>
+                ))}
+              </blockquote>
             </div>
           </div>
         </div>

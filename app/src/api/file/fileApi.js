@@ -1,10 +1,7 @@
 import returnIstanceCalendar from "../istanceCalendar";
 
-
 export const useIndexApi = () => {
-
-
-  const http = returnIstanceCalendar("/index")
+  const http = returnIstanceCalendar("/index");
 
   const returnIndex = async (id) => {
     const response = await http.get("/" + id);
@@ -17,8 +14,6 @@ export const useIndexApi = () => {
 
     return response.data;
   };
-
-
 
   return { returnIndex, deleteIndex };
 };

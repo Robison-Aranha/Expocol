@@ -26,7 +26,8 @@ export const [useGlobalChangeProfile, ChangeProfileProvider] =
 
 export const [useGlobalLoading, LoadingProvider] = createGlobalState(false);
 
-export const [useImageTextAnaliserModal, ImageTextAnaliserProvider] = createGlobalState();
+export const [useImageTextAnaliserModal, ImageTextAnaliserProvider] =
+  createGlobalState();
 
 export const [useGoogleCredentials, GoogleProvider] = createGlobalState();
 
@@ -39,11 +40,12 @@ export const [useClassroomUtils, ClassroomUtilsProvider] = createGlobalState({
 
 export const [useNewsPaperModal, NewsPaperProvider] = createGlobalState();
 
-export const [useChatModal, ChatProvider] = createGlobalState()
+export const [useChatModal, ChatProvider] = createGlobalState();
 
-export const [useSolicitationsModal, SolicitationsProvider] = createGlobalState()
+export const [useSolicitationsModal, SolicitationsProvider] =
+  createGlobalState();
 
-export const [useDicionaryModal, DictionaryProvider] = createGlobalState()
+export const [useDicionaryModal, DictionaryProvider] = createGlobalState();
 
 export const [useClassroomSelectedWork, ClassroomSelectedWorkProvider] =
   createGlobalState();

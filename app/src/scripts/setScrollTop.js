@@ -1,16 +1,9 @@
-
-
 export const useSetScrollTop = () => {
+  const setScrollTop = (id) => {
+    var objDiv = document.getElementById(id);
 
-    const setScrollTop = (id) => {
+    objDiv.scrollTop = 0;
+  };
 
-        var objDiv = document.getElementById(id)
-        
-        objDiv.scrollTop = 0;        
-    
-    }
-
-
-    return { setScrollTop }
-
-}
+  return { setScrollTop };
+};

@@ -17,7 +17,7 @@
 .Chat-container {
 
     width: 50%;
-    height: 70%;
+    height: 60%;
     background-color: var(--main-secundary-color);
     border: 2px dashed var(--main-quaternary-color);
     border-radius: 10px;

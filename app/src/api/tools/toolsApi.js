@@ -3,9 +3,7 @@ import returnIstanceCalendar from "../istanceCalendar";
 const LANGUAGE = "por";
 
 export const useToolsApi = () => {
-
-
-  const http = returnIstanceCalendar("/ferramentas")
+  const http = returnIstanceCalendar("/ferramentas");
 
   const analiseImageText = async (file) => {
     const response = await http.post("/analiseDeTexto/" + LANGUAGE, file, {

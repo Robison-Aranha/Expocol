@@ -1,9 +1,7 @@
 import returnIstanceCalendar from "../istanceCalendar";
 
 export const useFriendsApi = () => {
-
-
-  const http = returnIstanceCalendar("/amigos")
+  const http = returnIstanceCalendar("/amigos");
 
   const sendFriendSolicitation = async (id) => {
     const response = await http.put("/enviar/" + id);
@@ -24,27 +22,22 @@ export const useFriendsApi = () => {
   };
 
   const undoFriendship = async (id) => {
-
     const response = await http.put("/desfazer/" + id);
 
-
-    return response.data
-
-  }
+    return response.data;
+  };
 
   const blockFriendship = async (id) => {
+    const response = await http.put("/bloquear/" + id);
 
-    const response = await http.put("/bloquear/" + id)
-
-    return response.data
-  }
+    return response.data;
+  };
 
   const unblockFriendship = async (id) => {
+    const response = await http.put("/desbloquear/" + id);
 
-    const response = await http.put("/desbloquear/" + id)
-
-    return response.data
-  }
+    return response.data;
+  };
 
   const listFriendSolicitations = async () => {
     const response = await http.get("/solicitacoes");
@@ -56,7 +49,7 @@ export const useFriendsApi = () => {
     const response = await http.get();
 
     return response.data;
-  }
+  };
 
   const verifyRelationShip = async (id) => {
     const response = await http.get("/verificar/" + id);

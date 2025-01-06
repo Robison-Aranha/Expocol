@@ -138,6 +138,7 @@
 .Calendar-table-day-mobile > p {
     position: absolute;
     top: 50%;
+    font-size: 30px;
 }
 
 .Calendar-table-day-mobile-sticky-title {

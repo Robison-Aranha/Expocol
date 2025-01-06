@@ -4,7 +4,7 @@ import {
   useGlobalIndex,
   useGlobalCalendar,
   useAnexoModal,
-  useImageTextAnaliserModal
+  useImageTextAnaliserModal,
 } from "../../globalState/globalState";
 import {
   FileVisualizer,
@@ -22,38 +22,35 @@ import {
   NewsPaper,
   Chat,
   Solicitations,
-  ModalWelcome
+  ModalWelcome,
 } from "../../hooks/hooks";
 import { useLocation } from "react-router-dom";
 import "./home.style.css";
-
 
 export const Home = () => {
   const [indexesGlobalStateModal, setIndexesGlobalIndexModal] =
     useGlobalIndexesModal();
   const [, setGlobalCalendar] = useGlobalCalendar();
   const [globalIndex, setGlobalIndex] = useGlobalIndex();
-  const [anexoModal, setAnexoModal] = useAnexoModal()
-  const [imageTextAnaliserModal, setImageTextAnaliserModal] = useImageTextAnaliserModal()
-  const [isFirst, setIsFirst] = useState(false)
+  const [anexoModal, setAnexoModal] = useAnexoModal();
+  const [imageTextAnaliserModal, setImageTextAnaliserModal] =
+    useImageTextAnaliserModal();
+  const [isFirst, setIsFirst] = useState(false);
 
-  const location = useLocation()
+  const location = useLocation();
 
   useEffect(() => {
-
     if (location.state == "first") {
-      setIsFirst(true)
+      setIsFirst(true);
     }
-
-  }, [])
+  }, []);
 
   const handleIndexModal = (event) => {
     const indexContainer = document.getElementById("index");
     const fileSection = document.getElementById("file-index-section");
     const fileContainer = document.getElementById("file-index-container");
     const eventSection = document.getElementById("event");
-    const classroomSection = document.getElementById("classroom")
-  
+    const classroomSection = document.getElementById("classroom");
 
     if (
       !indexContainer.contains(event.target) &&
@@ -66,42 +63,40 @@ export const Home = () => {
       setIndexesGlobalIndexModal(false);
     }
 
-
-
     if (!fileContainer.contains(event.target) && globalIndex) {
       setGlobalIndex(false);
     }
-
   };
 
   const handleAnexoModal = (event) => {
-
-    const anexoContainer = document.getElementById("anexo")
+    const anexoContainer = document.getElementById("anexo");
 
     if (!anexoContainer.contains(event.target) && anexoModal) {
-      setAnexoModal(false)
+      setAnexoModal(false);
     }
-
-  }
+  };
 
   const handleImageTextAnaliserModal = (event) => {
+    const imageTextAnaliserContainer =
+      document.getElementById("imageTextAnaliser");
 
-    const imageTextAnaliserContainer = document.getElementById("imageTextAnaliser")
-
-    if (!imageTextAnaliserContainer.contains(event.target) && imageTextAnaliserModal) {
-      setImageTextAnaliserModal(false)
+    if (
+      !imageTextAnaliserContainer.contains(event.target) &&
+      imageTextAnaliserModal
+    ) {
+      setImageTextAnaliserModal(false);
     }
-
-  }
-
-
+  };
 
   return (
-    <div className="Home-section" onClick={(event) => {
-        handleIndexModal(event)
-        handleAnexoModal(event)
-        handleImageTextAnaliserModal(event)
-      }}>
+    <div
+      className="Home-section"
+      onClick={(event) => {
+        handleIndexModal(event);
+        handleAnexoModal(event);
+        handleImageTextAnaliserModal(event);
+      }}
+    >
       <Notification />
       <ToPBar />
       <Calendar />
@@ -117,7 +112,7 @@ export const Home = () => {
       <ClassroomWorkVisualizer />
       <ChangeProfile />
       <Loading />
-      <ModalWelcome modal={isFirst} setModal={() => setIsFirst(false)}/>
+      <ModalWelcome modal={isFirst} setModal={() => setIsFirst(false)} />
     </div>
   );
 };

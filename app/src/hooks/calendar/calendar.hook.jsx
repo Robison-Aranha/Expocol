@@ -38,7 +38,7 @@ export const Calendar = () => {
 
   useEffect(() => {
     setCalendar({ ...calendar, days: "" });
-
+  
     if (window.screen.width <= 850) {
       if (calendarState == false) {
         returnMonthMobileService();

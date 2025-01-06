@@ -1,10 +1,7 @@
 import returnIstanceCalendar from "../istanceCalendar";
 
-
 export const useLoginRegister = () => {
-
-
-  const http = returnIstanceCalendar()
+  const http = returnIstanceCalendar();
 
   const register = async (gmail, username, password) => {
     const data = {
@@ -15,20 +12,16 @@ export const useLoginRegister = () => {
 
     const response = await http.post("/register", data);
 
-
     return response.data;
   };
 
   const login = async (gmail, password) => {
-    
     const data = {
       gmail: gmail,
       password: password,
     };
 
     const response = await http.post("/login", data);
-
-    console.log(response)
 
     return response.data;
   };

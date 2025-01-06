@@ -13,6 +13,7 @@
     "@js-joda/core": "^5.6.1",
     "@js-joda/locale_en-us": "^4.8.11",
     "axios": "^1.6.7",
+    "dotenv": "^16.4.7",
     "jwt-decode": "^4.0.0",
     "milligram": "^1.4.1",
     "react": "^18.2.0",

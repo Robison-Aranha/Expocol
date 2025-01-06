@@ -1,4 +1,9 @@
-import { useGlobalIndex, useGlobalModal, useLoadCalendar, useGlobalLoading } from "../../globalState/globalState";
+import {
+  useGlobalIndex,
+  useGlobalModal,
+  useLoadCalendar,
+  useGlobalLoading,
+} from "../../globalState/globalState";
 import { useIndexApi } from "../../api/api";
 import { useEffect, useState } from "react";
 import { useVerifySession } from "../../api/verifySessions";
@@ -6,13 +11,13 @@ import "./file-visualizer.style.css";
 
 export const FileVisualizer = () => {
   const [globalIndex, setGlobalIndex] = useGlobalIndex();
-  const [,setLoadCalendar] = useLoadCalendar()
+  const [, setLoadCalendar] = useLoadCalendar();
   const [file, setFile] = useState();
   const [globalModal, setGlobalModal] = useGlobalModal();
-  const [, setLoading] = useGlobalLoading()
+  const [, setLoading] = useGlobalLoading();
 
   const { returnIndex, deleteIndex } = useIndexApi();
-  const { verifySessionUser } = useVerifySession()
+  const { verifySessionUser } = useVerifySession();
 
   useEffect(() => {
     if (globalIndex) {
@@ -23,15 +28,15 @@ export const FileVisualizer = () => {
   }, [globalIndex]);
 
   const returnIndexService = async () => {
-    setLoading(true)
+    setLoading(true);
     try {
       const response = await returnIndex(globalIndex);
-     
+
       setFile(response);
     } catch (error) {
-      verifySessionUser(error)
+      verifySessionUser(error);
     }
-    setLoading(false)
+    setLoading(false);
   };
 
   const deleteIndexService = async () => {
@@ -42,10 +47,10 @@ export const FileVisualizer = () => {
         ...globalModal,
         { message: "Arquivo excluido com sucesso!" },
       ]);
-      setLoadCalendar(true)
+      setLoadCalendar(true);
       setGlobalIndex(false);
     } catch (error) {
-      verifySessionUser(error)
+      verifySessionUser(error);
     }
   };
 

@@ -1,11 +1,11 @@
 import {
   useGlobalState,
   useGlobalChangeProfile,
-  useGlobalModal
+  useGlobalModal,
 } from "../../globalState/globalState";
 import dafaultImgAccount from "../../assets/account/default.png";
 import { useUsersApi } from "../../api/api";
-import {  useState } from "react";
+import { useState } from "react";
 import "./change-profile.style.css";
 import { MAX_FILE } from "../../consts/FileMax.js";
 import { verifyFile } from "../../scripts/verifyImage";
@@ -19,89 +19,97 @@ export const ChangeProfile = () => {
   });
   const [imagePreview, setImagePreview] = useState();
   const [userGlobalState, setUserGlobalState] = useGlobalState();
-  const [globalModal, setGlobalModal] = useGlobalModal()
-  const [globalChangeProfile, setGlobalChangeProfile] = useGlobalChangeProfile();
+  const [globalModal, setGlobalModal] = useGlobalModal();
+  const [globalChangeProfile, setGlobalChangeProfile] =
+    useGlobalChangeProfile();
 
   const { updateCredentialsUser, updateImageUser } = useUsersApi();
-  const { verifySessionUser } = useVerifySession()
-  const { isImg } = verifyFile()
-
+  const { verifySessionUser } = useVerifySession();
+  const { isImg } = verifyFile();
 
   const updateUserService = async () => {
-
     if (verifyCredentials()) {
-
       try {
-
         if (userData.email != "" || userData.nome != "") {
-         
           await updateCredentialsUser(userData.nome, userData.email);
-          
+
           if (userData.nome != "") {
-            userGlobalState.nome = userData.nome
+            userGlobalState.nome = userData.nome;
           }
 
           if (userData.email != "") {
-            userGlobalState.email = userData.email
+            userGlobalState.email = userData.email;
           }
 
-          setUserGlobalState({...userGlobalState})
-          globalModal.push({ message: "Crendenciais atualizadas com sucesso!!" })
+          setUserGlobalState({ ...userGlobalState });
+          globalModal.push({
+            message: "Crendenciais atualizadas com sucesso!!",
+          });
         }
       } catch (error) {
-        verifySessionUser(error)
-        if (error.response.status == 406 || error.response.status == 409 || error.response.status == 302) {
-          globalModal.push({ message: error.response.data.message })
+        verifySessionUser(error);
+        if (
+          error.response.status == 406 ||
+          error.response.status == 409 ||
+          error.response.status == 302
+        ) {
+          globalModal.push({ message: error.response.data.message });
         }
       }
 
       try {
         if (userData.file) {
-          await updateImageUser(userData.file)
+          await updateImageUser(userData.file);
 
-          globalModal.push({ message: "Imagem atualizada com sucesso!!" })
-          setUserGlobalState({...userGlobalState, imagem: URL.createObjectURL(imagePreview)})
+          globalModal.push({ message: "Imagem atualizada com sucesso!!" });
+          setUserGlobalState({
+            ...userGlobalState,
+            imagem: URL.createObjectURL(imagePreview),
+          });
         }
-      } catch (error){
-        verifySessionUser(error)
+      } catch (error) {
+        verifySessionUser(error);
       }
-      setGlobalModal([...globalModal])
+      setGlobalModal([...globalModal]);
     }
-    setUserData({...userData, nome: "", email: "", file: null})
-    
+    setUserData({ ...userData, nome: "", email: "", file: null });
   };
 
   const verifyCredentials = () => {
-
     if (userData.nome == "" && userData.email == "" && userData.file == null) {
-      setGlobalModal([...globalModal, { message: "Nenhuma alteração feita!!" }])
-      return false
+      setGlobalModal([
+        ...globalModal,
+        { message: "Nenhuma alteração feita!!" },
+      ]);
+      return false;
     }
 
-    return true
-  }
-
+    return true;
+  };
 
   const handlerFile = (event) => {
-
-    const file = event.target.files[0]
+    const file = event.target.files[0];
 
     if (isImg(file)) {
-
       if (file.size <= MAX_FILE) {
-
         const formData = new FormData();
 
         formData.append("file", file);
 
-        setImagePreview(file)
+        setImagePreview(file);
 
-        setUserData({...userData, file: formData})
+        setUserData({ ...userData, file: formData });
       } else {
-        setGlobalModal([...globalModal, { message: "Arquivo excedeu o limite de donwload!!" }])
+        setGlobalModal([
+          ...globalModal,
+          { message: "Arquivo excedeu o limite de donwload!!" },
+        ]);
       }
     } else {
-      setGlobalModal([...globalModal,  { message: "O arquivo selecionado não é uma imagem!!" }])
+      setGlobalModal([
+        ...globalModal,
+        { message: "O arquivo selecionado não é uma imagem!!" },
+      ]);
     }
   };
 
@@ -111,11 +119,10 @@ export const ChangeProfile = () => {
   };
 
   const returnImageUser = () => {
-
     if (imagePreview) {
       return URL.createObjectURL(imagePreview);
     } else if (userGlobalState.imagem) {
-      return userGlobalState.imagem
+      return userGlobalState.imagem;
     } else {
       return dafaultImgAccount;
     }
@@ -153,7 +160,14 @@ export const ChangeProfile = () => {
           </div>
           <div className="ChangeProfile-item">
             <label> Nome: </label>
-            <input placeholder={(userGlobalState.nome) + " -- 6 a 12 / apenas letras e numeros..."} onChange={handlerValue} value={userData.nome} name="nome"/>
+            <input
+              placeholder={
+                userGlobalState.nome + " -- 6 a 12 / apenas letras e numeros..."
+              }
+              onChange={handlerValue}
+              value={userData.nome}
+              name="nome"
+            />
           </div>
           <div className="ChangeProfile-item">
             <label> Email: </label>
